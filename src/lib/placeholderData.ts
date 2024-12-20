@@ -804,6 +804,34 @@ const personnelInfo = [
   },
 ];
 
+const personnelsInfo = [
+  {
+      id: '1',
+      name: 'Johnson Michael',
+      Address: "Block 9a, Shokunbi street off Berger, Lagos"
+  },
+  {
+      id: '2',
+      name: 'Oladokun Olaoluwa',
+      Address: "No. 19, Jakande street Agege, Benue"
+  },
+  {
+      id: '3',
+      name: 'Adenekan Samuel',
+      Address: "No. 201, Albert Nkuku str. off Berger, Lagos"
+  },
+  {
+      id: '4',
+      name: 'Banks Evans',
+      Address: "Block 144b, Allen Road, Jawonson str., Ikeje, Anambra"
+  },
+  {
+      id: '5',
+      name: 'Peter Nwanneri',
+      Address: "Block 9a, Shokunbi street off Berger, Lagos"
+  }
+]
+
 const tabs = [
   "Personal Information",
   "Guarantor's Information",
@@ -812,4 +840,4 @@ const tabs = [
   "Mental Assessment Information",
 ];
 
-export { cardsData, verificationsData, headers, personnelsData, personnelInfo, tabs };
+export { cardsData, verificationsData, headers, personnelsData, personnelInfo, personnelsInfo, tabs };

@@ -2,9 +2,13 @@ import Skeleton from "@/components/Skeleton";
 import AuthLayout from "@/layouts/AuthLayout";
 import BackOfficeLayout from "@/layouts/BackOfficeLayout";
 import DashboardLayout from "@/layouts/DashboardLayout";
+import AddressLayout from "@/layouts/AddressLayout";
+import GuarantorLayout from "@/layouts/GuarantorLayout";
 import Index from "@/pages/user/auth/Index";
 import AppIndex from "@/pages/user/dashboard/Index";
 import BackOfficeIndex from "@/pages/back-office";
+import AddressIndex from "@/pages/address-verification";
+import GuarantorIndex from "@/pages/guarantor-verification";
 
 import { lazy, Suspense } from "react";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
@@ -36,6 +40,13 @@ const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Das
 const VerificationInfo  = lazy(() => import("@/pages/back-office/verification-batch/VerificationsBatch"));
 const PersonnelInfo = lazy(() => import("@/pages/back-office/personnel/Personnel"));
 const EditPersonnelInfo = lazy(() => import("@/pages/back-office/edit-personnel/EditPersonnelInfo"));
+const CreateAgentForm = lazy(() => import("@/pages/back-office/CreateAgentForm"));
+
+const AddressVerification = lazy(() => import("@/pages/address-verification/Address"));
+const PersonnelsList = lazy(() => import("@/pages/address-verification/PersonnelsList"));
+const AddressVettForm = lazy(() => import("@/pages/address-verification/AddressVettForm"));
+const VideoRecorder = lazy(() => import("@/pages/address-verification/VideoRecorder"));
+const GuarantorForm  = lazy(() => import("@/pages/guarantor-verification/GuarantorForm"));
 
 export const routes = [
   {
@@ -161,6 +172,10 @@ export const routes = [
         path: "/back-office/verification/:verification_id/personnel/:personnel_id",
         element: <PersonnelInfo />,
       },
+      {
+        path: "create-agent",
+        element: <CreateAgentForm />,
+      },
     ]
   },
 
@@ -171,5 +186,51 @@ export const routes = [
         <EditPersonnelInfo />
       </Suspense>
     ),
+  },
+
+  {
+    path: "/address-verification",
+    element: (
+      <AddressLayout>
+        <AddressIndex/>
+      </AddressLayout>
+    ),
+    children: [
+      {
+        path: "",
+        element: <AddressVerification/>,
+      },
+      {
+        path: "personnelslist",
+        element: <PersonnelsList />,
+      },
+      {
+        path: "personnelslist/address-form/:personnel_id",
+        element: <AddressVettForm />,
+      },
+      {
+        path: "personnelslist/address-form/:personnel_id/video-recorder",
+        element: <VideoRecorder />,
+      },
+    ]
+  },
+
+  {
+    path: "/guarantor-form",
+    element: (
+      <GuarantorLayout>
+        <GuarantorIndex/>
+      </GuarantorLayout>
+    ),
+    children: [
+      {
+        path: "",
+        element: <GuarantorForm/>,
+      },
+      // {
+      //   path: "personnelslist/address-form/:personnel_id",
+      //   element: <AddressVettForm />,
+      // },
+    ]
   },
 ];
