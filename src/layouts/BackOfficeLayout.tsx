@@ -27,7 +27,7 @@ const navLinks = [
     icon: <ReaderIcon />,
   },
   {
-    path: "/guarantor-verification",
+    path: "/guarantor-form",
     title: "Guarantor Form",
     icon: <ChatBubbleIcon />,
   },
@@ -79,7 +79,7 @@ export default function DashboardLayout({ children }: LayoutProps) {
             ))}
           </div>
           <button
-          className="create_btn mt-44 ml-10"
+          className="create_btn text-sm mt-44 ml-10"
           onClick={() => setCreateAddressModal(true)}
           >
             Create Address

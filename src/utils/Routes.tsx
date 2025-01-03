@@ -11,6 +11,7 @@ import AddressIndex from "@/pages/address-verification";
 import GuarantorIndex from "@/pages/guarantor-verification";
 
 import { lazy, Suspense } from "react";
+import { VideoProvider } from "./context/VideoContext";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const VerifyEmail = lazy(() => import("@/pages/user/auth/VerifyEmail"));
 const ForgotPassword = lazy(() => import("@/pages/user/auth/ForgotPassword"));
@@ -191,9 +192,11 @@ export const routes = [
   {
     path: "/address-verification",
     element: (
-      <AddressLayout>
-        <AddressIndex/>
-      </AddressLayout>
+      <VideoProvider>
+        <AddressLayout>
+          <AddressIndex/>
+        </AddressLayout>
+      </VideoProvider>
     ),
     children: [
       {
