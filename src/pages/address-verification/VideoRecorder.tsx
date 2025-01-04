@@ -200,11 +200,11 @@ const VideoRecorder: React.FC = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <button onClick={switchCamera} aria-label="Switch Camera">
-                Switch Camera
+                <FcSwitchCamera />
               </button>
             </TooltipTrigger>
             <TooltipContent>
-              <FcSwitchCamera />
+              Switch Camera
             </TooltipContent>
           </Tooltip>
         </div>
