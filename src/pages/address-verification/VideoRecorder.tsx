@@ -16,6 +16,7 @@ const VideoRecorder: React.FC = () => {
   const { setVideo } = useVideoContext();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const [error, setError] = useState<boolean>(false);
   const [recording, setRecording] = useState<boolean>(false);
   const [paused, setPaused] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0); // Timer in seconds
@@ -117,6 +118,7 @@ const VideoRecorder: React.FC = () => {
         if (timerRef.current) clearInterval(timerRef.current);
       } catch (err) {
         console.warn("Pause is not supported on this device.");
+        setError(true);
         setPaused(false); // Fallback: indicate it's not paused
       }
     }
@@ -156,7 +158,7 @@ const VideoRecorder: React.FC = () => {
                     </button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Pause</p>
+                    <p>{error? "Not supported" : "Pause"}</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (
