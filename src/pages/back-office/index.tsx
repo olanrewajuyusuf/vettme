@@ -1,11 +1,11 @@
 import Skeleton from "@/components/Skeleton";
 import { Suspense } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 export default function BackOfficeIndex() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  // const isLoggedIn = localStorage.getItem("isLoggedIn");
 
-  return isLoggedIn ? (
+  return (
     <Suspense
       fallback={
         <div className="w-full min-h-[500px] h-full flex items-center justify-center">
@@ -15,8 +15,9 @@ export default function BackOfficeIndex() {
     >
       <Outlet />
     </Suspense>
-  ) : (
-    <Navigate to="/auth/back-office/login" />
-  );
+  ) 
+  // : (
+  //   <Navigate to="/auth/back-office/login" />
+  // );
 }
 
