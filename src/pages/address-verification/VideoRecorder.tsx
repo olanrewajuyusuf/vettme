@@ -19,15 +19,17 @@ const VideoRecorder: React.FC = () => {
   const [paused, setPaused] = useState<boolean>(false);
   const [time, setTime] = useState<number>(0); // Timer in seconds
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [cameraFacingMode, setCameraFacingMode] = useState<'user' | 'environment'>('user');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const startWebcam = async () => {
+    const startWebcam = async (facingMode: 'user' | 'environment') => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode },
+        });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-
           videoRef.current.onloadedmetadata = () => {
             videoRef.current?.play();
           };
@@ -39,7 +41,7 @@ const VideoRecorder: React.FC = () => {
       }
     };
 
-    startWebcam();
+    startWebcam(cameraFacingMode);
 
     return () => {
       if (videoRef.current?.srcObject instanceof MediaStream) {
@@ -49,7 +51,11 @@ const VideoRecorder: React.FC = () => {
       }
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, []);
+  }, [cameraFacingMode]);
+
+  const switchCamera = () => {
+    setCameraFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'));
+  };
 
   const startRecording = () => {
     if (mediaRecorderRef.current) {
@@ -126,70 +132,64 @@ const VideoRecorder: React.FC = () => {
         className='w-[100%] h-full object-cover'
       />
       <TooltipProvider>
-        <div className={`flex justify-center items-center ${recording? 'gap-2' : 'gap-0'} text-6xl absolute bottom-14 left-1/2 -translate-x-1/2`}>
-          <Tooltip delayDuration={200}>
-            <TooltipTrigger asChild>
-              <span>
-                {recording && !paused && (
-                  <button 
-                    onClick={pauseRecording} aria-label="Pause Recording" 
-                    className='w-14 h-14 bg-white text-[20px] rounded-full place-items-center'
-                  >
-                    <FaPause className={`text-destructive hover:text-yellow-400`} />
-                  </button>
-                )}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Pause</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip delayDuration={200}>
-            <TooltipTrigger asChild>
-              <span>
-                {recording && paused && (
-                  <button 
-                    onClick={resumeRecording} aria-label="Resume Recording"
-                    className='w-14 h-14 bg-white text-[20px] rounded-full place-items-center'
-                  >
-                    <FaPlayCircle className="text-destructive hover:text-yellow-400" />
-                  </button>
-                )}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Resume</p>
-            </TooltipContent>
-          </Tooltip>
-          {recording && <hr className='w-[1px] h-14 bg-gray-200' />}
-          <Tooltip delayDuration={200}>
-            <TooltipTrigger asChild>
-              <span>
-              {recording && (
-                <button onClick={stopRecording} aria-label="Stop Recording">
-                  <FaStopCircle className='bg-destructive text-white rounded-full' />
-                </button>
+        <div className={`flex justify-center items-center gap-2 text-3xl absolute bottom-14 left-1/2 -translate-x-1/2`}>
+          {recording && (
+            <>
+              {!paused ? (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button onClick={pauseRecording} aria-label="Pause Recording">
+                      <FaPause className="text-yellow-400" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Pause</p>
+                  </TooltipContent>
+                </Tooltip>
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button onClick={resumeRecording} aria-label="Resume Recording">
+                      <FaPlayCircle className="text-yellow-400" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Resume</p>
+                  </TooltipContent>
+                </Tooltip>
               )}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Stop</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip delayDuration={200}>
-            <TooltipTrigger asChild>
-              <span>
-              {!recording && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button onClick={stopRecording} aria-label="Stop Recording">
+                    <FaStopCircle className="text-destructive" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Stop</p>
+                </TooltipContent>
+              </Tooltip>
+            </>
+          )}
+          {!recording && (
+            <Tooltip>
+              <TooltipTrigger asChild>
                 <button onClick={startRecording} aria-label="Start Recording">
-                  <PiRecordFill
-                    className='text-destructive bg-white rounded-full'
-                  />
+                  <PiRecordFill className="text-destructive" />
                 </button>
-              )}
-              </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Start Recording</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button onClick={switchCamera} aria-label="Switch Camera">
+                Switch Camera
+              </button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Start Recording</p>
+              <p>Switch Camera</p>
             </TooltipContent>
           </Tooltip>
         </div>
