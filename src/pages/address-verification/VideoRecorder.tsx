@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PiRecordFill } from "react-icons/pi";
 import { FaPlayCircle, FaStopCircle, FaPause } from "react-icons/fa";
+import { FcSwitchCamera } from "react-icons/fc";
 import {
   Tooltip,
   TooltipContent,
@@ -53,7 +54,12 @@ const VideoRecorder: React.FC = () => {
     };
   }, [cameraFacingMode]);
 
-  const switchCamera = () => {
+  const switchCamera = async () => {
+    if (recording) {
+      alert("Please stop recording before switching the camera.");
+      return;
+    }
+
     setCameraFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'));
   };
 
@@ -105,21 +111,28 @@ const VideoRecorder: React.FC = () => {
 
   const pauseRecording = () => {
     if (mediaRecorderRef.current && recording && !paused) {
-      mediaRecorderRef.current.pause();
-      setPaused(true);
-
-      if (timerRef.current) clearInterval(timerRef.current);
+      try {
+        mediaRecorderRef.current.pause();
+        setPaused(true);
+        if (timerRef.current) clearInterval(timerRef.current);
+      } catch (err) {
+        console.warn("Pause is not supported on this device.");
+        setPaused(false); // Fallback: indicate it's not paused
+      }
     }
   };
 
   const resumeRecording = () => {
     if (mediaRecorderRef.current && recording && paused) {
-      mediaRecorderRef.current.resume();
-      setPaused(false);
-
-      timerRef.current = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, 1000);
+      try {
+        mediaRecorderRef.current.resume();
+        setPaused(false);
+        timerRef.current = setInterval(() => {
+          setTime((prevTime) => prevTime + 1);
+        }, 1000);
+      } catch (err) {
+        console.warn("Resume is not supported on this device.");
+      }
     }
   };
 
@@ -189,7 +202,7 @@ const VideoRecorder: React.FC = () => {
               </button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Switch Camera</p>
+              <FcSwitchCamera />
             </TooltipContent>
           </Tooltip>
         </div>
