@@ -44,7 +44,7 @@ const VideoRecorder: React.FC = () => {
     startWebcam(cameraFacingMode);
 
     return () => stopStream();
-  }, [cameraFacingMode, recording]);
+  }, [cameraFacingMode]);
 
   const stopStream = () => {
     if (videoRef.current?.srcObject instanceof MediaStream) {
