@@ -52,7 +52,8 @@ export const Signup = async (
       toast.success(res?.data?.message || "Account creation successful", {
         id: toastId,
       });
-      navigate("/auth/confirm-email");
+      console.log(res.data);
+      navigate("/auth/confirm-mail");
     })
     .catch((err) => {
       toast.error(err?.response?.data?.message || "Unable to create account", {

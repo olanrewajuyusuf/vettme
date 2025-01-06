@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EyeNoneIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
+import { Signup as SignupCall } from "@/api/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
@@ -17,22 +18,26 @@ export default function Register() {
     password: "",
   });
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const data = "";
-    setIsLoading(false);
-    navigate("/auth/confirm-mail", { state: { type: "account-creation" } });
+    const form = e.target as HTMLFormElement;
+    const data = Object.fromEntries(new FormData(form));
+    console.log(data);
+    
+    
+    SignupCall(data, setIsLoading, navigate);
   };
 
   return (
     <div className="flex flex-col items-center justify-center">
       <h1>Create your Account</h1>
 
-      <form onSubmit={handleRegister} className="mt-[50px] w-full">
+      <form onSubmit={handleSignup} className="mt-[50px] w-full">
         <label htmlFor="company_name" className="block">
           <p className="text-sm">Company Name</p>
           <Input
             type="text"
+            name="companyName"
             placeholder="e.g. Your Company"
             disabled={isLoading}
             required
@@ -46,6 +51,7 @@ export default function Register() {
           <p className="text-sm">Company ID</p>
           <Input
             type="text"
+            name="companyId"
             placeholder="RF127001"
             disabled={isLoading}
             id="company_id"
@@ -59,6 +65,7 @@ export default function Register() {
           <p className="text-sm">Email Address</p>
           <Input
             type="email"
+            name="email"
             placeholder="e.g. yourcompany@email.com"
             disabled={isLoading}
             id="email"
@@ -73,6 +80,7 @@ export default function Register() {
           <div className="relative flex items-center">
             <Input
               type={passwordVisible ? "password" : "text"}
+              name="password"
               placeholder="********"
               disabled={isLoading}
               id="password"

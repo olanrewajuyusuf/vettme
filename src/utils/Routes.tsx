@@ -13,6 +13,7 @@ import GuarantorIndex from "@/pages/guarantor-verification";
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
+const Activate = lazy(() => import("@/pages/user/auth/Activate"));
 const VerifyEmail = lazy(() => import("@/pages/user/auth/VerifyEmail"));
 const ForgotPassword = lazy(() => import("@/pages/user/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("@/pages/user/auth/ResetPassword"));
@@ -69,6 +70,10 @@ export const routes = [
       {
         path: "confirm-mail",
         element: <ConfirmMail />,
+      },
+      {
+        path: "activate/:token",
+        element: <Activate />,
       },
       {
         path: "verify-mail",

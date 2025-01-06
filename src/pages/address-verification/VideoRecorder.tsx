@@ -21,20 +21,24 @@ const VideoRecorder: React.FC = () => {
   const [time, setTime] = useState<number>(0); // Timer in seconds
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [cameraFacingMode, setCameraFacingMode] = useState<'user' | 'environment'>('user');
-  const [chunks, setChunks] = useState<Blob[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const startWebcam = async (facingMode: 'user' | 'environment') => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode } });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode },
+        });
+
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          videoRef.current.onloadedmetadata = () => videoRef.current?.play();
+          videoRef.current.onloadedmetadata = () => {
+            videoRef.current?.play();
+          };
         }
-        if (recording) {
-          initializeMediaRecorder(stream);
-        }
+
+        // Reinitialize MediaRecorder
+        mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
       } catch (err) {
         console.error('Error accessing webcam:', err);
         alert('Failed to access webcam. Please check your permissions.');
@@ -43,29 +47,38 @@ const VideoRecorder: React.FC = () => {
 
     startWebcam(cameraFacingMode);
 
-    return () => stopStream();
+    return () => {
+      if (videoRef.current?.srcObject instanceof MediaStream) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, [cameraFacingMode]);
 
-  const stopStream = () => {
-    if (videoRef.current?.srcObject instanceof MediaStream) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
+  const switchCamera = async () => {
+    if (recording) {
+      alert("Please stop recording before switching the camera.");
+      return;
     }
-    if (timerRef.current) clearInterval(timerRef.current);
-  };
 
-  const initializeMediaRecorder = (stream: MediaStream) => {
-    mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
-    mediaRecorderRef.current.ondataavailable = (event: BlobEvent) => {
-      if (event.data.size > 0) {
-        setChunks((prevChunks) => [...prevChunks, event.data]);
-      }
-    };
+    setCameraFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'));
   };
 
   const startRecording = () => {
     if (mediaRecorderRef.current) {
+      const chunks: Blob[] = [];
+      mediaRecorderRef.current.ondataavailable = (event: BlobEvent) => {
+        if (event.data.size > 0) {
+          chunks.push(event.data);
+        }
+      };
+      mediaRecorderRef.current.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const videoFile = new File([blob], "recorded-video.webm", { type: "video/webm" });
+        setVideo(videoFile);
+      };
       mediaRecorderRef.current.start();
       setRecording(true);
       setPaused(false);
@@ -82,15 +95,20 @@ const VideoRecorder: React.FC = () => {
       setRecording(false);
       setPaused(false);
 
-      const blob = new Blob(chunks, { type: 'video/webm' });
-      const videoFile = new File([blob], "recorded-video.webm", { type: "video/webm" });
-      setVideo(videoFile);
+      if (videoRef.current?.srcObject instanceof MediaStream) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+        videoRef.current.srcObject = null;
+      }
 
-      stopStream();
       if (timerRef.current) clearInterval(timerRef.current);
       setTime(0);
-      setChunks([]);
-      navigate(-1);
+
+      if (window.history.length > 1) {
+        navigate(-1); // Go back to the last page
+      } else {
+        navigate('/'); // Fallback to homepage if no history
+      }
     }
   };
 
@@ -101,9 +119,8 @@ const VideoRecorder: React.FC = () => {
         setPaused(true);
         if (timerRef.current) clearInterval(timerRef.current);
       } catch (err) {
-        console.warn('Pause is not supported on this device. Stopping and restarting recording.');
-        stopRecording();
-        startRecording();
+        console.warn("Pause is not supported on this device.");
+        setPaused(false); // Fallback: indicate it's not paused
       }
     }
   };
@@ -117,17 +134,9 @@ const VideoRecorder: React.FC = () => {
           setTime((prevTime) => prevTime + 1);
         }, 1000);
       } catch (err) {
-        console.warn('Resume is not supported on this device.');
+        console.warn("Resume is not supported on this device.");
       }
     }
-  };
-
-  const switchCamera = async () => {
-    if (recording) {
-      alert('Switching camera mid-recording. Recording will pause.');
-      pauseRecording();
-    }
-    setCameraFacingMode((prev) => (prev === 'user' ? 'environment' : 'user'));
   };
 
   return (

@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: AuthProps) {
         <img
           src={images.logo}
           alt="Vettme"
-          className="w-[90px] mx-auto my-[70px]"
+          className="w-[90px] mx-auto my-[40px]"
         />
         {children}
       </div>

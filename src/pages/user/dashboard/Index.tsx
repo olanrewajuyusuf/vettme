@@ -4,6 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 export default function AppIndex() {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
+  console.log(isLoggedIn);
 
   return isLoggedIn ? (
     <Suspense

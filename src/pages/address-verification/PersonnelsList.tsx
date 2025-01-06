@@ -20,8 +20,6 @@ const PersonnelsList = () => {
         console.log('Latitude:', location.lat, 'Longitude:', location.lon, 'Accuracy:', accuracy);
   
         // Save the location to localStorage
-        // const updatedLocations = [...savedLocations, location];
-        // setSavedLocations(updatedLocations);
         localStorage.setItem('savedLocations', JSON.stringify(location));
 
       },
@@ -30,8 +28,7 @@ const PersonnelsList = () => {
       }
     );
 
-      console.log("Its Clicked");
-      navigate(`address-form/${id}`)
+    navigate(`address-form/${id}`)
   }
   return (
     <>

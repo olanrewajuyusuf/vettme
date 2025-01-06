@@ -7,6 +7,7 @@ import screens from "@/assets/images/screens.png";
 import favicon from "@/assets/images/favicon.png";
 import phone from "@/assets/images/phone.png";
 import email from "@/assets/images/email.png";
+import sad from "@/assets/images/sad.png";
 
 const images = {
   authImg,
@@ -18,6 +19,7 @@ const images = {
   favicon,
   phone,
   email,
+  sad,
 };
 
 export default images;
