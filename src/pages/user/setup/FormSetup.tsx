@@ -70,7 +70,7 @@ export default function FormSetup() {
     e.preventDefault();
     console.log(setupData);
     
-    // setCreationModalActive(true);
+    setCreationModalActive(true);
   };
 
   return (

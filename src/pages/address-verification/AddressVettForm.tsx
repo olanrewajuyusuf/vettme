@@ -30,7 +30,6 @@ const AddressVettForm = () => {
       } catch (error) {
         console.error("Error uploading video to Cloudinary:", error);
       }
-      // setVideo(e.target.files[0]); // Save uploaded video to context
     }
   };
   

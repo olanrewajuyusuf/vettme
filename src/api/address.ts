@@ -14,7 +14,7 @@ export const VerifiedAddress = async (
   const toastId = toast.loading("Verifying...", { id: "verifyToast" });
 
   await axios
-    .post(`${baseUrl}/auth/login`, data)
+    .post(`${baseUrl}/address-verification`, data)
     .then((res) => {
       toast.success(res?.data?.message || "Data submited", {
         id: toastId,
