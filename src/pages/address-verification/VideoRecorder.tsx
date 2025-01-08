@@ -9,8 +9,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useVideoContext } from '@/utils/context/VideoContext';
+import { useVideoContext } from '@/hooks/useVideoContext';
 import { formatTime } from '@/lib/formatter';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 
 const VideoRecorder: React.FC = () => {
   const { setVideo } = useVideoContext();
@@ -37,7 +38,6 @@ const VideoRecorder: React.FC = () => {
           };
         }
 
-        // Reinitialize MediaRecorder
         mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: 'video/webm' });
       } catch (err) {
         console.error('Error accessing webcam:', err);
@@ -57,7 +57,7 @@ const VideoRecorder: React.FC = () => {
     };
   }, [cameraFacingMode]);
 
-  const switchCamera = async () => {
+  const switchCamera = () => {
     if (recording) {
       alert("Please stop recording before switching the camera.");
       return;
@@ -74,11 +74,30 @@ const VideoRecorder: React.FC = () => {
           chunks.push(event.data);
         }
       };
-      mediaRecorderRef.current.onstop = () => {
+
+      mediaRecorderRef.current.onstop = async () => {
         const blob = new Blob(chunks, { type: 'video/webm' });
-        const videoFile = new File([blob], "recorded-video.webm", { type: "video/webm" });
-        setVideo(videoFile);
-      };
+        console.log("Blob created with size:", blob.size);
+      
+        if (blob.size === 0) {
+          console.error("Blob is empty. Recording might have failed.");
+          return;
+        }
+      
+        const videoFile: File = new File([blob], "recorded-video.webm", { type: "video/webm" });
+        console.log("File created:", videoFile);
+      
+        try {
+          const videoURL = await uploadToCloudinary(videoFile); // Upload the file to Cloudinary
+          if (videoURL) {
+            setVideo(videoURL); // Save the Cloudinary URL in the context
+            console.log("Video URL saved in context:", videoURL);
+          }
+        } catch (error) {
+          console.error("Error uploading video to Cloudinary:", error);
+        }
+      };      
+
       mediaRecorderRef.current.start();
       setRecording(true);
       setPaused(false);
@@ -104,11 +123,7 @@ const VideoRecorder: React.FC = () => {
       if (timerRef.current) clearInterval(timerRef.current);
       setTime(0);
 
-      if (window.history.length > 1) {
-        navigate(-1); // Go back to the last page
-      } else {
-        navigate('/'); // Fallback to homepage if no history
-      }
+      navigate(-1);
     }
   };
 
@@ -120,7 +135,7 @@ const VideoRecorder: React.FC = () => {
         if (timerRef.current) clearInterval(timerRef.current);
       } catch (err) {
         console.warn("Pause is not supported on this device.");
-        setPaused(false); // Fallback: indicate it's not paused
+        setPaused(false);
       }
     }
   };

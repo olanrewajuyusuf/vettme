@@ -4,36 +4,29 @@ import { useNavigate } from "react-router-dom";
 
 const AddressVerification = () => {
   const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
-  const handleSubmit = () => {
-    setLoading(false);
-    // event.preventDefault();
-    // setTimeout(()=> {
-    //   setLoading(true);
-    // }, 1000)
-    navigate('/address-verification/personnelslist');
+  const navigate = useNavigate();
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(false);
+    e.preventDefault();
+    navigate('/address-verification/personnelslist');
   }
   return (
     <div className="h-[100svh] grid place-content-center">
-        <form onSubmit={handleSubmit} className="address w-[90%] max-w-[500px] rounded-2xl mx-auto border-[1px] border-destructive overflow-hidden">
-            <div className="h-[70px] flex items-center bg-destructive md:gap-10 pr-5">
-                <div className="layoff">
-                  <img src={images.logo} alt="Vettme" className="h-8 pl-5" />
-                </div>
-                <h2 className="text-white font-light text-xl uppercase mt-1">Agent Sign in Form</h2>
-            </div>
-            <div className="px-5 pt-10">
-                <label htmlFor="name" className="text-white">Field agent should login with his/her precise name!</label>
+        <form onSubmit={handleSubmit} className="bg-white w-[90%] max-w-[500px] p-5 rounded-lg mx-auto ">
+            <img src={images.logo} alt="Vettme" className="h-8" />
+            <div className="p-5 mt-10 bg-gray-50 rounded-lg">
+                <h1 className="font-light text-xl">Kindly input the access code!</h1>
                 <input 
-                    type="text"
-                    id="name" 
-                    placeholder="Field agent full name"
-                    className="w-full border-2 border-destructive py-4 px-5 rounded-xl my-5 outline-pink-500 placeholder:text-black"
+                    type="password"
+                    id="accessCode" 
+                    name="accessCode"
+                    maxLength={4}
+                    className="w-full py-2 px-3 rounded-lg my-5 shadow-sm shadow-gray-300"
                  />
 
                  <button type="submit"
-                  className="w-full bg-destructive py-4 mt-2 rounded-xl text-white font-bold hover:bg-red-700"
+                  className="w-full bg-destructive py-2 mt-2 rounded-lg text-white hover:bg-red-700"
                  >
                   {loading?"Log In": "Loading..."}
                 </button>

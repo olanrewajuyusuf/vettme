@@ -33,8 +33,8 @@ const Notification = lazy(
 const Support = lazy(() => import("@/pages/user/support/Support"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
-const NewVerification = lazy(() => import("@/pages/user/new/NewVerification"));
-const Upload = lazy(() => import("@/pages/user/upload/Upload"));
+// const NewVerification = lazy(() => import("@/pages/user/new/NewVerification"));
+// const Upload = lazy(() => import("@/pages/user/upload/Upload"));
 const FormSetup = lazy(() => import("@/pages/user/setup/FormSetup"));
 const Forms = lazy(() => import("@/pages/user/forms/Forms"));
 
@@ -132,20 +132,20 @@ export const routes = [
       },
       {
         path: "verifications/new",
-        element: <NewVerification />,
-      },
-      {
-        path: "verifications/new/upload",
-        element: <Upload />,
-      },
-      {
-        path: "verifications/new/form",
         element: <FormSetup />,
       },
-      {
-        path: "verifications/new/:type/setup",
-        element: <FormSetup />,
-      },
+      // {
+      //   path: "verifications/new/upload",
+      //   element: <Upload />,
+      // },
+      // {
+      //   path: "verifications/new/form",
+      //   element: <FormSetup />,
+      // },
+      // {
+      //   path: "verifications/new/:type/setup",
+      //   element: <FormSetup />,
+      // },
     ],
   },
 

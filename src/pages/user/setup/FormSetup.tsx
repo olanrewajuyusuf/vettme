@@ -11,11 +11,11 @@ export default function FormSetup() {
 
   const [setupData, setSetupData] = useState({
     title: "",
-    personal_information: [] as String[],
-    academic_information: [] as String[],
-    guarantor_information: [] as String[],
-    professional_information: [] as String[],
-    mental_information: [] as String[],
+    personal_information: [] as string[],
+    academic_information: [] as string[],
+    guarantor_information: [] as string[],
+    professional_information: [] as string[],
+    mental_information: [] as string[],
   });
 
   const setInfo = (
@@ -97,13 +97,13 @@ export default function FormSetup() {
                 }
               />
             </label>
-            <label htmlFor="">
+            <label htmlFor="verificationType">
               <p className="text-[16px]">Verification Type</p>
-              <select name="type" id="type" className="btn px-2">
+              <select id="verificationType" className="btn px-2">
                 <option value="">Choose Verification Type</option>
-                <option value="personnel">Personnel Verification</option>
-                <option value="loan">Loan Verification Type</option>
-                <option value="criminal">Criminal Record Verification</option>
+                <option value="personnelVerification">Personnel Verification</option>
+                <option value="loanVerification">Loan Verification Type</option>
+                <option value="criminalVerification">Criminal Record Verification</option>
                 <option value="other">Other Verification</option>
               </select>
             </label>
@@ -126,7 +126,8 @@ export default function FormSetup() {
                   <input
                     type="checkbox"
                     id="full_name"
-                    onChange={setPersonalInfo}
+                    name="fullname"
+                    // onChange={setPersonalInfo}
                   />
                   <p className="text-sm">Full Name</p>
                 </label>
@@ -137,7 +138,8 @@ export default function FormSetup() {
                 <label htmlFor="gender" className="flex gap-2">
                   <input
                     type="checkbox"
-                    onChange={setPersonalInfo}
+                    name="dob"
+                    // onChange={setPersonalInfo}
                     id="gender"
                   />
                   <p className="text-sm">Gender</p>
@@ -145,7 +147,8 @@ export default function FormSetup() {
                 <label htmlFor="nationaliy" className="flex gap-2">
                   <input
                     type="checkbox"
-                    onChange={setPersonalInfo}
+                    name="gender"
+                    // onChange={setPersonalInfo}
                     id="nationaliy"
                   />
                   <p className="text-sm">Nationality</p>
@@ -153,7 +156,7 @@ export default function FormSetup() {
                 <label htmlFor="address" className="flex gap-2">
                   <input
                     type="checkbox"
-                    onChange={setPersonalInfo}
+                    // onChange={setPersonalInfo}
                     id="address"
                   />
                   <p className="text-sm">Residential Address</p>

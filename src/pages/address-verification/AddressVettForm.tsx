@@ -5,7 +5,7 @@ import { PiRecordFill } from "react-icons/pi";
 import { getGeolocation } from "@/lib/geolocation";
 import { useState } from "react";
 import { Location } from "@/lib/geolocation";
-import { useVideoContext } from "@/utils/context/VideoContext";
+import { useVideoContext } from "@/hooks/useVideoContext";
 import { VerifiedAddress } from "@/api/address";
 import Spinner from "@/components/Spinner";
 
@@ -45,7 +45,7 @@ const AddressVettForm = () => {
     VerifiedAddress(newData, setIsLoading, navigate);
   }
   return (
-    <div className="min-h-[100svh] py-20 grid place-content-center">
+    <div className="min-h-[100svh] py-10">
         <form onSubmit={handleSubmit} className="address w-[90%] max-w-[500px] rounded-2xl mx-auto border-[1px] border-destructive overflow-hidden">
             <div className="h-[70px] flex justify-between items-center bg-destructive gap-10 pr-5">
                 <div className="layoff">
@@ -101,7 +101,7 @@ const AddressVettForm = () => {
                 </div>
 
                  <button type="submit"
-                  className="w-full bg-destructive py-4 mt-2 rounded-xl text-white font-bold hover:bg-red-700"
+                  className="w-full flex items-center justify-center bg-destructive py-4 mt-2 rounded-xl text-white font-bold hover:bg-red-700"
                  >
                   {isLoading ? <Spinner /> : "Submit"}
                 </button>
