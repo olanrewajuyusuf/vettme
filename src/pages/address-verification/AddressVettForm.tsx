@@ -8,6 +8,7 @@ import { Location } from "@/lib/geolocation";
 import { useVideoContext } from "@/hooks/useVideoContext";
 import { VerifiedAddress } from "@/api/address";
 import Spinner from "@/components/Spinner";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 const AddressVettForm = () => {
   const [userLocation, setUserLocation] = useState<Location | null>(null);
@@ -18,9 +19,18 @@ const AddressVettForm = () => {
   const { personnel_id } = useParams();
   const info = personnelsInfo.find(x => x.id === personnel_id);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setVideo(e.target.files[0]); // Save uploaded video to context
+      try {
+        const videoURL = await uploadToCloudinary(e.target.files[0]); // Upload the file to Cloudinary
+        if (videoURL) {
+          setVideo(videoURL); // Save the Cloudinary URL in the context
+          console.log("Video URL saved in context:", videoURL);
+        }
+      } catch (error) {
+        console.error("Error uploading video to Cloudinary:", error);
+      }
+      // setVideo(e.target.files[0]); // Save uploaded video to context
     }
   };
   

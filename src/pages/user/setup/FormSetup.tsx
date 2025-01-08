@@ -68,7 +68,9 @@ export default function FormSetup() {
 
   const handleSetup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setCreationModalActive(true);
+    console.log(setupData);
+    
+    // setCreationModalActive(true);
   };
 
   return (
