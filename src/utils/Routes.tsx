@@ -35,7 +35,7 @@ const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
 // const NewVerification = lazy(() => import("@/pages/user/new/NewVerification"));
 // const Upload = lazy(() => import("@/pages/user/upload/Upload"));
-const FormSetup = lazy(() => import("@/pages/user/setup/FormSetup"));
+const FormSetup = lazy(() => import("@/pages/user/setup/Form"));
 const Forms = lazy(() => import("@/pages/user/forms/Forms"));
 
 const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Dashboard"));

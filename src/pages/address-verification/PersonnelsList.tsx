@@ -77,13 +77,14 @@ const PersonnelsList = () => {
                   key={info.id}
                   className="w-full border-b-2 border-white py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
-                  <td className="whitespace-nowrap py-3 pl-3">
+                  <td className="whitespace-nowrap w-[5%]  py-3 pl-3">
                     <div className="rounded-full w-10 h-10 bg-white text-green-400 mr-1 grid place-items-center">{info.name.slice(0, 1)}</div>
                   </td>
                   <td className="whitespace-nowrap py-3">
                     {info.name}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
+                    <div className="bg-blue-500 h-2 w-2"></div>
                     {info.Address}
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">

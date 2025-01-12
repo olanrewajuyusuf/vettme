@@ -45,13 +45,13 @@ export default function FormCreation({ isOpen }: DialogModal) {
             process will start on 23/01/2024 05:00 when it expires for
             submission by your employees. Copy the form URL below and share it
             with the employees that needs to be verified.
-            <div
+            <span
               className="w-full border-[1px] border-red-clr bg-red-50 hover:bg-red-100 text-xs pl-5 cursor-pointer py-2 rounded-lg my-2 flex gap-2 transition-colors"
               onClick={handleCopy}
             >
               <CopyIcon />
               {url}
-            </div>
+            </span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

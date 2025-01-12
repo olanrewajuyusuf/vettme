@@ -23,6 +23,7 @@ export const VerifiedAddress = async (
       navigate("/address-verification");
     })
     .catch((err) => {
+      console.error("Error response:", err.response);
       toast.error(err?.response?.data?.message || "Unable to submit", {
         id: toastId,
       });

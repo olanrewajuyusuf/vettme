@@ -53,7 +53,7 @@ export default function FormSetup() {
   const setAcademicInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInfo("academic_information", e.target.id);
   };
-
+ 
   const setMentalInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInfo("mental_information", e.target.id);
   };
