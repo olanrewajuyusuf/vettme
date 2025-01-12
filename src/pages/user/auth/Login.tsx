@@ -21,7 +21,6 @@ export default function Login() {
     const data = Object.fromEntries(new FormData(form));
 
     console.log(data);
-    
 
     LoginCall(data, setIsLoading, navigate);
   };
