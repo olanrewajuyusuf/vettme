@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useMemo } from "react";
 import { Navigate } from "react-router-dom";
-import { useFetchCompany } from "../../hooks/company";
+import { useFetchCompany } from "@/hooks/company";
 import Loader from "@/components/Loader";
 
 interface UserContextType {

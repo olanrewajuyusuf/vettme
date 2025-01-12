@@ -21,14 +21,23 @@ const Form = () => {
     });
 
     // Handle changes for inputs and checkboxes
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value, type, checked } = e.target;
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    //     const { name, value, type, checked } = e.target;
 
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: type === "checkbox" ? checked : value,
+    //     }));
+    // };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value, type } = e.target;
+    
         setFormData((prevData) => ({
             ...prevData,
-            [name]: type === "checkbox" ? checked : value,
+            [name]: type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value,
         }));
-    };
+    };    
 
     // Handle form submission
     const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
