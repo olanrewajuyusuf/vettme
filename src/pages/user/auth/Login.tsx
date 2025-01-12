@@ -20,6 +20,9 @@ export default function Login() {
     const form = e.target as HTMLFormElement;
     const data = Object.fromEntries(new FormData(form));
 
+    console.log(data);
+    
+
     LoginCall(data, setIsLoading, navigate);
   };
 
@@ -35,6 +38,7 @@ export default function Login() {
             placeholder="e.g. yourcompany@email.com"
             disabled={isLoading}
             id="email"
+            name="email"
             required
             value={cred.email}
             onChange={(e) => setCred({ ...cred, email: e.target.value })}
@@ -49,6 +53,7 @@ export default function Login() {
               placeholder="********"
               disabled={isLoading}
               id="password"
+              name="password"
               required
               value={cred.password}
               onChange={(e) => setCred({ ...cred, password: e.target.value })}
