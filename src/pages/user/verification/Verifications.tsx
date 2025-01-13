@@ -47,8 +47,11 @@ export default function Verifications() {
           />
           <div className=""></div>
         </div>
+        <div className="w-full h-[300px] flex justify-center items-center">
+          <h3>No Verification Batch available.</h3>
+        </div>
 
-        <Table>
+        {/* <Table>
           <TableHeader className="bg-stroke-clr">
             <TableRow>
               <TableHead>Title</TableHead>
@@ -87,7 +90,7 @@ export default function Verifications() {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </Table> */}
       </div>
     </>
   );

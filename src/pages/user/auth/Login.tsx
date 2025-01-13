@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { EyeNoneIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Login as LoginCall } from "@/api/auth";
+// import { Login as LoginCall } from "@/api/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,12 +17,15 @@ export default function Login() {
 
   const handleSignin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const data = Object.fromEntries(new FormData(form));
+    setIsLoading(true);
+    localStorage.setItem("isLoggedIn", "1");
+    // const form = e.target as HTMLFormElement;
+    // const data = Object.fromEntries(new FormData(form));
 
-    console.log(data);
+    // console.log(data);
 
-    LoginCall(data, setIsLoading, navigate);
+    // LoginCall(data, setIsLoading, navigate);
+    navigate('/');
   };
 
   return (
