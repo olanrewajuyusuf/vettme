@@ -1,20 +1,20 @@
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ClipboardIcon, TrashIcon } from "@radix-ui/react-icons";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+import { ClipboardIcon } from "@radix-ui/react-icons"; //, TrashIcon useNavigate
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
-import { verifications } from "@/utils/data";
-import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
+// import { verifications } from "@/utils/data";
+// import { Badge } from "@/components/ui/badge";
 
 export default function Verifications() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <>
       <div className="mb-[30px] flex justify-between items-center">
