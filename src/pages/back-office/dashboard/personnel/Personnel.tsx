@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import PersonelAccordion from "../components/personnel/personelAccordion";
+import PersonelAccordion from "../../components/personnel/personelAccordion";
 import { useLocation, useNavigate } from "react-router-dom";
-import HeaderInfo from "../components/personnel/header";
+import HeaderInfo from "../../components/personnel/header";
 
 const PersonnelInfo = () => {
   const location = useLocation();

@@ -4,11 +4,13 @@ import BackOfficeLayout from "@/layouts/BackOfficeLayout";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import AddressLayout from "@/layouts/AddressLayout";
 import GuarantorLayout from "@/layouts/GuarantorLayout";
+import AgentFormLayout from "@/layouts/AgentFormLayout";
 import Index from "@/pages/user/auth/Index";
 import AppIndex from "@/pages/user/dashboard/Index";
 import BackOfficeIndex from "@/pages/back-office";
 import AddressIndex from "@/pages/address-verification";
 import GuarantorIndex from "@/pages/guarantor-verification";
+import AgentFormIndex from "@/pages/agent-form";
 
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
@@ -39,16 +41,18 @@ const FormSetup = lazy(() => import("@/pages/user/setup/Form"));
 const Forms = lazy(() => import("@/pages/user/forms/Forms"));
 
 const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Dashboard"));
-const VerificationInfo  = lazy(() => import("@/pages/back-office/verification-batch/VerificationsBatch"));
-const PersonnelInfo = lazy(() => import("@/pages/back-office/personnel/Personnel"));
-const EditPersonnelInfo = lazy(() => import("@/pages/back-office/edit-personnel/EditPersonnelInfo"));
-const CreateAgentForm = lazy(() => import("@/pages/back-office/CreateAgentForm"));
+const VerificationInfo  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationsBatch"));
+const PersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/personnel/Personnel"));
+const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-personnel/EditPersonnelInfo"));
+const AllAgents = lazy(() => import("@/pages/back-office/all-agents/AllAgents"));
+const AllAddresses = lazy(() => import("@/pages/back-office/all-addresses/AllAddresses"));
 
 const AddressVerification = lazy(() => import("@/pages/address-verification/Address"));
 const PersonnelsList = lazy(() => import("@/pages/address-verification/PersonnelsList"));
 const AddressVettForm = lazy(() => import("@/pages/address-verification/AddressVettForm"));
 const VideoRecorder = lazy(() => import("@/pages/address-verification/VideoRecorder"));
 const GuarantorForm  = lazy(() => import("@/pages/guarantor-verification/GuarantorForm"));
+const AgentForm  = lazy(() => import("@/pages/agent-form/AgentForm"));
 
 export const routes = [
   {
@@ -179,8 +183,12 @@ export const routes = [
         element: <PersonnelInfo />,
       },
       {
-        path: "create-agent",
-        element: <CreateAgentForm />,
+        path: "all-addresses",
+        element: <AllAddresses />,
+      },
+      {
+        path: "all-agents",
+        element: <AllAgents />,
       },
     ]
   },
@@ -234,6 +242,25 @@ export const routes = [
       {
         path: "",
         element: <GuarantorForm/>,
+      },
+      // {
+      //   path: "personnelslist/address-form/:personnel_id",
+      //   element: <AddressVettForm />,
+      // },
+    ]
+  },
+
+  {
+    path: "/agent-form",
+    element: (
+      <AgentFormLayout>
+        <AgentFormIndex/>
+      </AgentFormLayout>
+    ),
+    children: [
+      {
+        path: "",
+        element: <AgentForm/>,
       },
       // {
       //   path: "personnelslist/address-form/:personnel_id",

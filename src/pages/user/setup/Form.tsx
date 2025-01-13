@@ -75,12 +75,12 @@ const Form = () => {
                                 required
                             />
                         </label>
-                        <label htmlFor="verificationType">
+                        <label htmlFor="verificationType" className="w-[41.1%]">
                             <p className="text-[16px]">Verification Type</p>
                             <select
                                 id="verificationType"
                                 name="verificationType"
-                                className="btn px-2"
+                                className="btn px-2 w-full"
                                 value={formData.verificationType as string}
                                 onChange={handleChange}
                                 required

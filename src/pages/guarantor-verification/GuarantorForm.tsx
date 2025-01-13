@@ -22,7 +22,7 @@ const GuarantorForm = () => {
             <p
             className="text-lg font-light mb-5 pl-5 pt-5 pb-2 shadow-sm shadow-gray-200 text-white border-b-[1px] border-gray-200"
             >
-              Our employment process requires that a person seeking employment in our establishment shoild produce a creditable, responsible and acceptable person as a guarantor as a prerequisite to employment confirmation.
+              Our employment process requires that a person seeking employment in our establishment should produce a creditable, responsible and acceptable person as a guarantor as a prerequisite to employment confirmation.
             </p>
 
             <div className="px-5">

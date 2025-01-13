@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { EditPersonnelInformation } from "../components/editInfo/edit";
-import { EditGuarantorInformation } from "../components/editInfo/editGuarantorInfo";
-import { EditProffessionalInformation } from "../components/editInfo/editProffessionalInfo";
-import { EditMentalHealth } from "../components/editInfo/editMentalHealth";
-import Nav from "../components/nav";
+import { EditPersonnelInformation } from "../../components/editInfo/edit";
+import { EditGuarantorInformation } from "../../components/editInfo/editGuarantorInfo";
+import { EditProffessionalInformation } from "../../components/editInfo/editProffessionalInfo";
+import { EditMentalHealth } from "../../components/editInfo/editMentalHealth";
+import Nav from "../../components/nav";
 
 const EditPersonnelInfo = () => {
   return (

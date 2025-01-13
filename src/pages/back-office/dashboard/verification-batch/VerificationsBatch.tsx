@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { CopyIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import VerificationsHeader from "../components/verification-batch/verificationsHeader";
-import PersonnelsLog from "../components/verification-batch/personnels";
+import VerificationsHeader from "../../components/verification-batch/verificationsHeader";
+import PersonnelsLog from "../../components/verification-batch/personnels";
 import { verificationsData } from "@/lib/placeholderData";
 import { useParams } from "react-router-dom";
 

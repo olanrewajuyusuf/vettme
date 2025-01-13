@@ -246,14 +246,14 @@ a.nav-link.active .nav-icon {
   background: linear-gradient(60deg, #7286e9, #374798);
 }
 
-.bang {
+/* .bang {
   background: linear-gradient(
     105deg,
     white 0%,
     white 33%,
     hsla(0 84.2% 60.2%) 33%
   );
-}
+} */
 
 .layoff {
   height: 100%;
@@ -279,19 +279,7 @@ a.nav-link.active .nav-icon {
   padding-bottom: 50px;
 }
 
-.create_btn {
-  background: linear-gradient(60deg, #cc0483, #1f2d71);
-  padding: 10px 15px;
-  box-shadow: 0 5px 10px #1c1b1b;
-  border-radius: 30px;
-  color: white;
-}
-
-.create_btn:hover {
-  background: linear-gradient(60deg, #2e3f93, #ed0c9b);
-}
-
-.my_div label {
+/* .my_div label {
   transition: top 1s;
 }
 
@@ -302,7 +290,7 @@ a.nav-link.active .nav-icon {
   top: -7%;
   translate: 0;
   color: black;
-}
+} */
 
 /* Screen notice style */
 .small-screen-notice {

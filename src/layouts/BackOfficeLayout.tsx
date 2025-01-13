@@ -8,9 +8,8 @@ import {
   ReaderIcon,
   // SpeakerModerateIcon,
 } from "@radix-ui/react-icons";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
-import CreateAddressModal from "@/components/modals/CreateAddressModal";
 
 interface LayoutProps {
   children: ReactNode;
@@ -22,41 +21,25 @@ const navLinks = [
     icon: <DashboardIcon />,
   },
   {
-    path: "/address-verification",
-    title: "Address Verification",
+    path: "/back-office/all-addresses",
+    title: "All Address",
     icon: <ReaderIcon />,
+  },
+  {
+    path: "/back-office/all-agents",
+    title: "All Agent",
+    icon: <AvatarIcon />,
   },
   {
     path: "/guarantor-form",
     title: "Guarantor Form",
     icon: <ChatBubbleIcon />,
   },
-  {
-    path: "/back-office/create-agent",
-    title: "Create Agent",
-    icon: <AvatarIcon />,
-  },
-  // {
-  //   path: "/wallet",
-  //   title: "Wallet",
-  //   icon: <CardStackIcon />,
-  // },
-  // {
-  //   path: "/notifications",
-  //   title: "Notifications",
-  //   icon: <SpeakerModerateIcon />,
-  // },
 ];
+
 export default function DashboardLayout({ children }: LayoutProps) {
-  const [createAddressModal, setCreateAddressModal] = useState(false);
   return (
     <>
-      {createAddressModal && (
-          <CreateAddressModal
-            isOpen={createAddressModal}
-            setIsOpen={setCreateAddressModal}
-          />
-      )}
       <div className="small-screen-notice">
         <ScreenNotice />
       </div>
@@ -78,12 +61,6 @@ export default function DashboardLayout({ children }: LayoutProps) {
               </NavLink>
             ))}
           </div>
-          <button
-          className="create_btn text-sm mt-44 ml-10"
-          onClick={() => setCreateAddressModal(true)}
-          >
-            Create Address
-          </button>
         </div>
 
         <div className="flex-1 h-screen overflow-y-scroll">
