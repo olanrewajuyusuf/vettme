@@ -14,6 +14,7 @@ import AgentFormIndex from "@/pages/agent-form";
 
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
+// import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
 const VerifyEmail = lazy(() => import("@/pages/user/auth/VerifyEmail"));
@@ -244,8 +245,8 @@ export const routes = [
         element: <GuarantorForm/>,
       },
       // {
-      //   path: "personnelslist/address-form/:personnel_id",
-      //   element: <AddressVettForm />,
+      //   path: "/guarantor-form/liveness-check",
+      //   element: <LivenessWidget />,
       // },
     ]
   },

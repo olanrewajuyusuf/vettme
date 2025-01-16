@@ -20,7 +20,7 @@ const GuarantorForm = () => {
                 <h2 className="text-white font-light md:text-xl uppercase mt-1">Guarantor's Verification Form</h2>
             </div>
             <p
-            className="text-lg font-light mb-5 pl-5 pt-5 pb-2 shadow-sm shadow-gray-200 text-white border-b-[1px] border-gray-200"
+            className="text-sm font-normal mb-5 pl-5 pt-5 pb-2  text-white border-b-[1px] border-gray-200"
             >
               Our employment process requires that a person seeking employment in our establishment should produce a creditable, responsible and acceptable person as a guarantor as a prerequisite to employment confirmation.
             </p>
@@ -118,7 +118,7 @@ const GuarantorForm = () => {
               <div className="mt-3 text-gray-200 text-sm font-light border-t-[1px] border-b-[1px] border-slate-500 py-3 mb-5">
                   <span>Click the button below for the liveness check!</span>
                   <button
-                    onClick={()=> navigate('/')}
+                    onClick={()=> navigate('liveness-check')}
                     className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 mt-3 pl-3 rounded-full text-gray-900 text-sm font-bold"
                   >
                     <span>Click</span>

@@ -22,12 +22,12 @@ const navLinks = [
   },
   {
     path: "/back-office/all-addresses",
-    title: "All Address",
+    title: "All Addresses",
     icon: <ReaderIcon />,
   },
   {
     path: "/back-office/all-agents",
-    title: "All Agent",
+    title: "All Agents",
     icon: <AvatarIcon />,
   },
   {
