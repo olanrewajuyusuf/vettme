@@ -45,6 +45,8 @@ export const Signup = async (
 ) => {
   setIsLoading(true);
   const toastId = toast.loading("Creating account...", { id: "authToast" });
+  console.log(baseUrl);
+  
 
   await axios
     .post(`${baseUrl}/auth/signup`, data)
