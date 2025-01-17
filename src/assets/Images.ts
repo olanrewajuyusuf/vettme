@@ -8,6 +8,7 @@ import favicon from "@/assets/images/favicon.png";
 import phone from "@/assets/images/phone.png";
 import email from "@/assets/images/email.png";
 import sad from "@/assets/images/sad.png";
+import verify from "@/assets/images/verify.png";
 
 const images = {
   authImg,
@@ -20,6 +21,7 @@ const images = {
   phone,
   email,
   sad,
+  verify
 };
 
 export default images;

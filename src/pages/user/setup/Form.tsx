@@ -42,7 +42,7 @@ const Form = () => {
     // Handle form submission
     const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const companyId = localStorage.getItem("isLoggedIn");
+        const companyId = "ghfshjfs6547764";
         const newFormData = {...formData, companyId};
         console.log(newFormData);
         

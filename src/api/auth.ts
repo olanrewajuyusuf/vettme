@@ -190,3 +190,25 @@ export const ResetPassword = async (
     })
     .finally(() => setIsLoading(false));
 };
+
+// Verify email
+export const EmailVerification = async (
+  id: string | undefined,
+  navigate: NavigateFunction
+) => {
+  const toastId = toast.loading("Verifying email", { id: "verifyToast" });
+  await axios
+    .put(`${baseUrl}/auth/verify-email/${id}`)
+    .then((res) => {
+      toast.success(res?.data?.message || "Email verified", {
+        id: toastId,
+      });
+      navigate('/auth/email-success')
+    })
+    .catch((err) => {
+      toast.error(
+        err?.response?.data?.message || "Unable to verify email",
+        { id: toastId }
+      );
+    })
+};

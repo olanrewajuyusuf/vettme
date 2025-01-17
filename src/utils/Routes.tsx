@@ -18,6 +18,7 @@ import { VideoProvider } from "./context/VideoContext";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
 const VerifyEmail = lazy(() => import("@/pages/user/auth/VerifyEmail"));
+const EmailVerified = lazy(() => import("@/pages/user/auth/EmailVerified"));
 const ForgotPassword = lazy(() => import("@/pages/user/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("@/pages/user/auth/ResetPassword"));
 const Login = lazy(() => import("@/pages/user/auth/Login"));
@@ -77,12 +78,16 @@ export const routes = [
         element: <ConfirmMail />,
       },
       {
-        path: "activate/:token",
-        element: <Activate />,
+        path: "verify-email",
+        element: <VerifyEmail />,
       },
       {
-        path: "verify-mail",
-        element: <VerifyEmail />,
+        path: "email-success",
+        element: <EmailVerified />,
+      },
+      {
+        path: "activate/:token",
+        element: <Activate />,
       },
       {
         path: "forgot-password",
