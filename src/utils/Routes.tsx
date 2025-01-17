@@ -78,7 +78,7 @@ export const routes = [
         element: <ConfirmMail />,
       },
       {
-        path: "verify-email",
+        path: "verify-email/:id",
         element: <VerifyEmail />,
       },
       {
