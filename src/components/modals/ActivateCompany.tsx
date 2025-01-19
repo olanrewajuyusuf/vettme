@@ -52,7 +52,7 @@ export default function CreateAppModal({
         setIsLoading(false);
         setIsOpen(false);
         console.log("Activation response:", response);
-    } catch (error) {
+    } catch (error: any) {
         console.error("Failed to activate company:", error.message);
         setIsLoading(false);
         setIsOpen(false);

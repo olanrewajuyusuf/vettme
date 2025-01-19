@@ -10,13 +10,13 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { TbFilterSearch } from "react-icons/tb";
 import Pagination from "../pagination";
+import loader from "@/assets/loader.svg";
 import { useEffect, useState } from "react";
-import { useActivateCompany, useFetchCompany } from "@/hooks/backOffice";
+import { useActivateCompany, useDeleteCompany, useFetchCompany } from "@/hooks/backOffice";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { UpdateIcon, TrashIcon } from "@radix-ui/react-icons";
 import DeleteCompany from "@/components/modals/DeleteCompany";
-import ActivateCompany from "@/components/modals/ActivateCompany";
 
 interface companyProps {
     id: string,
@@ -33,11 +33,12 @@ interface companyProps {
     const navigate = useNavigate();
     const { fetchCompany } = useFetchCompany();
     const { activateCompany } = useActivateCompany();
+    const { deleteCompany } = useDeleteCompany();
     // console.log(fetchCompany);
     
-    const [companyInfo, setCompanyInfo] = useState<companyProps | null>(null);
+    const [companyInfo, setCompanyInfo] = useState<companyProps[] | null>(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [activateModalOpen, setActivateModalOpen] = useState(false);
+    // const [activateModalOpen, setActivateModalOpen] = useState(false);
   
     useEffect(() => {
       const getCompanyInfo = async () => {
@@ -64,6 +65,17 @@ interface companyProps {
         }
     };
 
+    const handleDelete = async (companyId: string) => {
+      try {
+          await deleteCompany(companyId);
+          const updatedCompanies = await fetchCompany();
+          setCompanyInfo(updatedCompanies.result.companies);
+          // console.log("Activation response:", response);
+      } catch (error: any) {
+          console.error("Failed to delete company:", error.message);
+      }
+  };
+
     console.log(companyInfo);
     return (
       <>
@@ -71,12 +83,6 @@ interface companyProps {
             <DeleteCompany
             isOpen={deleteModalOpen}
             setIsOpen={setDeleteModalOpen}
-            />
-        )}
-        {activateModalOpen && (
-            <ActivateCompany
-            isOpen={activateModalOpen}
-            setIsOpen={setActivateModalOpen}
             />
         )}
         <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
@@ -88,11 +94,11 @@ interface companyProps {
           </div>
 
           {companyInfo === null ? (
-            <div className="w-full h-[300px] flex justify-center items-center">
-                <h3>No Company found.</h3>
+            <div className="w-full h-[500px] flex items-center justify-center">
+              <img src={loader} alt="" className="w-10" />
             </div>
           ) :
-           companyInfo?.length < 1 ? (
+           companyInfo?.length === 0 ? (
             <div className="w-full h-[300px] flex justify-center items-center">
                 <h3>No Company available.</h3>
             </div>
@@ -113,7 +119,7 @@ interface companyProps {
               {companyInfo?.map((company: any) => (
                 <TableRow
                   key={company.id}
-                //   onClick={() => navigate(`verification/${company.id}`)}
+                  onClick={() => navigate(`verification-batch/${company.id}`)}
                 >
                   <TableCell className="text-gray-400">{company.companyId}</TableCell>
                   <TableCell className="font-medium">{company.companyName}</TableCell>
@@ -143,21 +149,32 @@ interface companyProps {
                   <TableCell>{moment(company.createdAt).format("MMM DD, YYYY")}</TableCell>
                   <TableCell>
                     <Popover>
-                        <PopoverTrigger>
+                        <PopoverTrigger asChild>
+                          <button
+                            className="focus:outline-none"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <BiDotsVerticalRounded className="text-xl" />
+                          </button>
                         </PopoverTrigger>
                         <PopoverContent className="cursor-pointer">
-                            <div 
-                            className="cursor-pointer border-b-[1px] border-gray-200 px-4 pb-2 mb-2"
-                            onClick={()=>handleActivate(company.id)}
+                            <div
+                              className="cursor-pointer border-b-[1px] text-xs border-gray-200 px-4 pb-2 mb-2 flex items-center gap-1"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleActivate(company.id);
+                              }}
                             >
-                                <UpdateIcon /> 
+                                <UpdateIcon className={`${company.isActive && 'text-destructive'}`} /> 
                                 {!company.isActive? "Activate": (<span className="text-destructive">Deactivate</span>)}
                             </div>
-                            <div 
-                             className="cursor-pointer text-destructive px-4 flex items-center gap-1"
-                             onClick={()=>setDeleteModalOpen(true)}
-                             >
+                            <div
+                              className="cursor-pointer text-destructive text-xs px-4 flex items-center gap-1"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(company.id);
+                              }}
+                            >
                                 <TrashIcon /> 
                                 Delete
                             </div>
@@ -168,7 +185,7 @@ interface companyProps {
               ))}
             </TableBody>
           </Table>)}
-          {companyInfo === null || companyInfo?.length < 1  || <Pagination />}
+          {companyInfo === null || companyInfo?.length === 0  || <Pagination />}
         </div>
       </>
     );

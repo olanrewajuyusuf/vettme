@@ -4,7 +4,7 @@ import DashboardCards from "../components/dashboard/cards";
 const BackOfficeDashboard = () => {
 
   return (
-    <div className="px-10 pb-10">
+    <div className="pb-10">
       <DashboardCards />
       <AllCompanies />
     </div>

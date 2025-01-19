@@ -32,9 +32,7 @@ export const useActivateCompany = () => {
     const activateCompany = useCallback(
       async (
         data: any,
-        // setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
     ) => {
-        // setIsLoading(true);
         try {
           const token = localStorage.getItem("adminToken");
   
@@ -66,6 +64,62 @@ export const useActivateCompany = () => {
       },[] 
     );
     return { activateCompany };
+};
+
+export const useDeleteCompany = () => {
+  const deleteCompany = useCallback(
+    async (id: string) => {
+      try {
+        const token = localStorage.getItem("adminToken");
+
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const res = await axios.delete(`${baseUrl}/company/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        toast.success("Company deleted successfully");
+        return res.data;
+      } catch (error: any) {
+        console.error("Error deleting company:", error);
+        const errorMessage = error?.response?.data?.message || "Failed to delete the company.";
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
+      }
+    },
+    []
+  );
+
+  return { deleteCompany };
+};
+
+export const useFetchVerificationBatches = (id: string | undefined) => {
+  const FetchVerificationBatches = useCallback(async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/verification/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("Verification Batches fetched successfully");
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching company info:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch verification batches");
+    throw new Error(error?.response?.data?.message || "Cannot fetch verification batches");
+  }
+}, []);
+return { FetchVerificationBatches };
 };
 
 
