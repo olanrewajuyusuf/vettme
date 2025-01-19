@@ -48,6 +48,7 @@ const PersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/personnel
 const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-personnel/EditPersonnelInfo"));
 const AllAgents = lazy(() => import("@/pages/back-office/all-agents/AllAgents"));
 const AllAddresses = lazy(() => import("@/pages/back-office/all-addresses/AllAddresses"));
+const AdminLoginPage = lazy(() => import("@/pages/back-office/auth/AdminLoginPage"));
 
 const AddressVerification = lazy(() => import("@/pages/address-verification/Address"));
 const PersonnelsList = lazy(() => import("@/pages/address-verification/PersonnelsList"));
@@ -166,6 +167,20 @@ export const routes = [
         <Forms />
       </Suspense>
     ),
+  },
+
+  // {
+  //   path: "auth/back-office/login",
+  //   element: (
+  //     <Suspense fallback={<Skeleton />}>
+  //       <AdminLoginPage />
+  //     </Suspense>
+  //   ),
+  // },
+
+  {
+    path: "auth/back-office/login",
+    element: (<AdminLoginPage />),
   },
 
   {

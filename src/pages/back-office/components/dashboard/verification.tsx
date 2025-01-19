@@ -14,6 +14,7 @@ import Pagination from "../pagination";
 
 export default function BackOfficeVerifications() {
   const navigate = useNavigate();
+  
   return (
     <>
       <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
