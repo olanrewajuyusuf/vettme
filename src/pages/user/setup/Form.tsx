@@ -30,19 +30,33 @@ const Form = () => {
     //     }));
     // };
 
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    //     const { name, value, type } = e.target;
+    
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value,
+    //     }));
+    // };    
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-    
+        
         setFormData((prevData) => ({
             ...prevData,
-            [name]: type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value,
+            [name]: type === "checkbox" && e.target instanceof HTMLInputElement 
+                ? e.target.checked 
+                : type === "number" 
+                ? parseFloat(value)  // Convert string value to number if it's a number field
+                : value,
         }));
-    };    
+    };
+    
 
     // Handle form submission
     const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const companyId = "ghfshjfs6547764";
+        const companyId = "e3952560-c47d-4794-a175-04961d8b6d92";
         const newFormData = {...formData, companyId};
         console.log(newFormData);
         
@@ -86,10 +100,10 @@ const Form = () => {
                                 required
                             >
                                 <option value="">Choose Verification Type</option>
-                                <option value="personnelVerification">Personnel Verification</option>
-                                <option value="loanVerification">Loan Verification</option>
-                                <option value="criminalVerification">Criminal Record Verification</option>
-                                <option value="other">Other Verification</option>
+                                <option value="PERSONNEL">Personnel Verification</option>
+                                <option value="LOAN">Loan Verification</option>
+                                <option value="CRIMINALRECORD">Criminal Record Verification</option>
+                                {/* <option value="other">Other Verification</option> */}
                             </select>
                         </label>
                         <div className=" basis-full">
