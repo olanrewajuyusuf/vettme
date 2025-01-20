@@ -3,10 +3,10 @@ import { Suspense } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 export default function AppIndex() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  console.log(isLoggedIn);
+  const token = localStorage.getItem("token");
+  console.log(token);
 
-  return isLoggedIn ? (
+  return token ? (
     <Suspense
       fallback={
         <div className="w-full min-h-[500px] h-full flex items-center justify-center">
