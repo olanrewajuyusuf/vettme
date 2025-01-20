@@ -16,7 +16,9 @@ import { useActivateCompany, useDeleteCompany, useFetchCompany } from "@/hooks/b
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { UpdateIcon, TrashIcon } from "@radix-ui/react-icons";
-import DeleteCompany from "@/components/modals/DeleteCompany";
+import { Input } from "@/components/ui/input";
+import { SearchCodeIcon } from "lucide-react";
+// import DeleteCompany from "@/components/modals/DeleteCompany";
 
 interface companyProps {
     id: string,
@@ -34,11 +36,7 @@ interface companyProps {
     const { fetchCompany } = useFetchCompany();
     const { activateCompany } = useActivateCompany();
     const { deleteCompany } = useDeleteCompany();
-    // console.log(fetchCompany);
-    
     const [companyInfo, setCompanyInfo] = useState<companyProps[] | null>(null);
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    // const [activateModalOpen, setActivateModalOpen] = useState(false);
   
     useEffect(() => {
       const getCompanyInfo = async () => {
@@ -79,19 +77,29 @@ interface companyProps {
     console.log(companyInfo);
     return (
       <>
-        {deleteModalOpen && (
-            <DeleteCompany
-            isOpen={deleteModalOpen}
-            setIsOpen={setDeleteModalOpen}
-            />
-        )}
         <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
           <div className="flex justify-between items-center p-5">
-            <p className="text-[20px] font-semibold">All Companies</p>
-            <p className="text-[16px] mr-5 flex items-center gap-2 cursor-pointer">
-              <TbFilterSearch /> Filter
-            </p>
+            <h2 className="font-normal">All Companies</h2>
           </div>
+          <div className="w-full px-5 pb-10 grid grid-cols-3 border-b-[1px] border-stroke-clr">
+                <div className="flex items-center gap-3">
+                    <p>Filter by: </p>
+                    <select name="" id="" className="btn px-3">
+                    <option value="active">Active</option>
+                    <option value="not_active">Not active</option>
+                    <option value="verified">Verified</option>
+                    <option value="not_verified">Not verified</option>
+                    </select>
+                </div>
+                <div className="relative">
+                  <Input
+                      type="text"
+                      placeholder="Search by company name"
+                      className="max-w-sm"
+                  />
+                  <SearchCodeIcon className="text-stroke-clr absolute right-3 top-1/2 -translate-y-1/2" />
+                </div>
+            </div>
 
           {companyInfo === null ? (
             <div className="w-full h-[500px] flex items-center justify-center">
@@ -106,7 +114,7 @@ interface companyProps {
           <Table>
             <TableHeader className="bg-stroke-clr">
               <TableRow>
-                <TableHead>Id</TableHead>
+                <TableHead>Company Id</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Status</TableHead>

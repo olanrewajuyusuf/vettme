@@ -9,10 +9,11 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import loader from "@/assets/loader.svg";
 import { Badge } from "@/components/ui/badge";
-import { TbFilterSearch } from "react-icons/tb";
 import Pagination from "../../components/pagination";
 import { useFetchVerificationBatches } from "@/hooks/backOffice";
 import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { SearchCodeIcon } from "lucide-react";
 
 interface batchesProps {
   id: string,
@@ -46,10 +47,28 @@ export default function VerificationBatches() {
   return (
     <>
       <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
-        <div className="flex justify-between items-center p-5">
-            <p className="text-[20px] font-semibold">All Verifications</p>
-            <p className="text-[16px] mr-5 flex items-center gap-2 cursor-pointer"><TbFilterSearch /> Filter</p>
-        </div>
+          <div className="flex justify-between items-center p-5">
+            <h2 className="font-normal">All Verifications</h2>
+          </div>
+          <div className="w-full px-5 pb-10 grid grid-cols-3 border-b-[1px] border-stroke-clr">
+                <div className="flex items-center gap-3">
+                    <p>Filter by: </p>
+                    <select name="" id="" className="btn px-3">
+                    <option value="pending">Pending</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="failed">Failed</option>
+                    </select>
+                </div>
+                <div className="relative">
+                  <Input
+                      type="text"
+                      placeholder="Search by title or type"
+                      className="max-w-sm"
+                  />
+                  <SearchCodeIcon className="text-stroke-clr absolute right-3 top-1/2 -translate-y-1/2" />
+                </div>
+          </div>
         
         {getBatches === null ? (
             <div className="w-full h-[500px] flex items-center justify-center">
