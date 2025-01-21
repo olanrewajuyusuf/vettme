@@ -178,6 +178,37 @@ export const useFetchAgents = () => {
 return { fetchAgents };
 };
 
+// Delete a field agent
+export const useDeleteAgent = () => {
+  const deleteAgent = useCallback(
+    async (id: string) => {
+      try {
+        const token = localStorage.getItem("adminToken");
+
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const res = await axios.delete(`${baseUrl}/field-agent/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        toast.success("Agent deleted successfully");
+        return res.data;
+      } catch (error: any) {
+        console.error("Error deleting agent:", error);
+        const errorMessage = error?.response?.data?.message || "Failed to delete the agent.";
+        toast.error(errorMessage);
+        throw new Error(errorMessage);
+      }
+    },
+    []
+  );
+  return { deleteAgent };
+}
+
 
 // import { axiosInstance } from "@/api/axiosConfig";
 // import { useQuery } from "@tanstack/react-query";

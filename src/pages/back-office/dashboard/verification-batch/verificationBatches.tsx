@@ -26,14 +26,14 @@ interface batchesProps {
 
 export default function VerificationBatches() {
   const { id } = useParams();
-  const { FetchVerificationBatches } = useFetchVerificationBatches(id);
+  const { fetchVerificationBatches } = useFetchVerificationBatches(id);
   const [ getBatches, setGetBatches ] = useState<batchesProps[] | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getBatchesInfo = async () => {
       try {
-        const data = await FetchVerificationBatches();
+        const data = await fetchVerificationBatches();
           console.log(data)
           setGetBatches(data.data);
       } catch (error) {
@@ -42,15 +42,16 @@ export default function VerificationBatches() {
     };
 
     getBatchesInfo();
-  }, [FetchVerificationBatches, id]);
+  }, [fetchVerificationBatches, id]);
   
   return (
     <>
+      <div className="mb-10">
+          <h1 className="font-normal">All Verification Batches</h1>
+          <p>This is where you get all batches being process by this company</p>
+      </div>
       <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
-          <div className="flex justify-between items-center p-5">
-            <h2 className="font-normal">All Verifications</h2>
-          </div>
-          <div className="w-full px-5 pb-10 grid grid-cols-3 border-b-[1px] border-stroke-clr">
+          <div className="w-full p-5 grid grid-cols-3 border-b-[1px] border-stroke-clr">
                 <div className="flex items-center gap-3">
                     <p>Filter by: </p>
                     <select name="" id="" className="btn px-3">

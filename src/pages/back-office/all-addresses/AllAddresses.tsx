@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 // import { useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination";
+import { Badge } from "@/components/ui/badge";
 import loader from "@/assets/loader.svg";
 import { HomeIcon, MixerVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useFetchAddresses } from "@/hooks/backOffice";
@@ -20,7 +21,8 @@ interface addressesProps {
     country: string,
     state: string,
     lga: string,
-    streetName: string,
+    address: string,
+    status: string,
 }
 
 const AllAddresses = () => {
@@ -74,8 +76,8 @@ const AllAddresses = () => {
                                 <TableHead className="text-white">Country</TableHead>
                                 <TableHead className="text-white">State</TableHead>
                                 <TableHead className="text-white">LGA</TableHead>
-                                <TableHead className="text-white">Street name</TableHead>
-                                <TableHead></TableHead>
+                                <TableHead className="text-white">Address</TableHead>
+                                <TableHead className="text-white">Status</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -84,10 +86,10 @@ const AllAddresses = () => {
                                 key={address.id}
                                 // onClick={() => navigate(`verification-batch/${company.id}`)}
                             >
-                                <TableCell className="font-medium uppercase flex items-center gap-1">
+                                <TableCell className="font-medium text-xs uppercase flex items-center gap-1">
                                     <div 
                                     className={`
-                                        w-fit p-1 text-white rounded-md ${address.personnelType === "guarantor" ? "bg-blue-500" : "bg-purple-600"}
+                                        w-6 h-6 grid place-items-center text-white rounded-md ${address.personnelType === "guarantor" ? "bg-blue-500" : "bg-purple-600"}
                                     `}
                                     >
                                         {address.personnelName.slice(0, 2)}
@@ -98,22 +100,26 @@ const AllAddresses = () => {
                                     ${address.personnelType === "guarantor" ? "text-blue-500" : "text-purple-600"}
                                 `}
                                 >
-                                    <MixerVerticalIcon/>{address.personnelType}
+                                    <MixerVerticalIcon/><span>{address.personnelType}</span>
                                 </TableCell>
                                 <TableCell className="text-gray-400">{address.country}</TableCell>
                                 <TableCell className="text-gray-400">{address.state}</TableCell>
                                 <TableCell className="text-gray-400">{address.lga}</TableCell>
-                                <TableCell className="text-gray-400"><HomeIcon/>{address.streetName}</TableCell>
+                                <TableCell className="text-gray-400 flex items-center gap-1"><HomeIcon/>{address.address}</TableCell>
                                 <TableCell>
-                                    <div
-                                    className="cursor-pointer text-destructive text-xs px-4 flex items-center gap-1"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        // handleDelete(company.id);
-                                    }}
+                                    <Badge
+                                        className={`pointer-events-none ${
+                                        address.status === "verified"
+                                            ? "bg-green-400"
+                                            : address.status === "pending"
+                                            ? "border-yellow-500 border-[1px] text-yellow-500 bg-transparent"
+                                            : address.status === "failed"
+                                            ? "bg-red-500"
+                                            : "bg-orange-400"
+                                        }`}
                                     >
-                                        <TrashIcon /> 
-                                    </div>
+                                        {address.status}
+                                    </Badge>
                                 </TableCell>
                             </TableRow>))}
                         </TableBody>

@@ -10,7 +10,7 @@ import {
 import Pagination from "../components/pagination";
 import loader from "@/assets/loader.svg";
 import { TrashIcon } from "@radix-ui/react-icons";
-import { useFetchAgents } from "@/hooks/backOffice";
+import { useDeleteAgent, useFetchAgents } from "@/hooks/backOffice";
 import { useEffect, useState } from "react";
 import { BiPhoneIncoming } from "react-icons/bi";
 
@@ -27,6 +27,7 @@ interface agentsProps {
 const AllAgents = () => {
     const [ agents, setAgents ] = useState<agentsProps[] | null>(null);
     const { fetchAgents } = useFetchAgents();
+    const { deleteAgent } = useDeleteAgent();
 
     useEffect(() => {
         const getAgents = async () => {
@@ -40,6 +41,16 @@ const AllAgents = () => {
     
         getAgents();
     }, [fetchAgents]);
+
+    const handleDelete = async (agentId: string) => {
+        try {
+            await deleteAgent(agentId);
+            const updatedAgents = await fetchAgents();
+            setAgents(updatedAgents.result);
+        } catch (error: any) {
+            console.error("Failed to delete company:", error.message);
+        }
+    };
 
     console.log(agents);
     return (
@@ -64,7 +75,7 @@ const AllAgents = () => {
                 ) :
                 agents.length === 0 ? (
                     <div className="w-full h-[300px] flex justify-center items-center">
-                        <h3>No available address data.</h3>
+                        <h3>No registered Agent.</h3>
                     </div>
                 ) : (
                     <Table>
@@ -85,9 +96,9 @@ const AllAgents = () => {
                                 key={agent.id}
                                 // onClick={() => navigate(`verification-batch/${company.id}`)}
                             >
-                                <TableCell className="font-medium uppercase flex items-center gap-1">
+                                <TableCell className="text-xs font-medium uppercase flex items-center gap-1">
                                     <div 
-                                    className={`w-fit p-1 text-white rounded-md bg-purple-600`}
+                                    className={`w-6 h-6 grid place-items-center text-white rounded-md bg-purple-600`}
                                     >
                                         {agent.agentName.slice(0, 2)}
                                     </div>
@@ -103,7 +114,7 @@ const AllAgents = () => {
                                     className="cursor-pointer text-destructive text-xs px-4 flex items-center gap-1"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        // handleDelete(company.id);
+                                        handleDelete(agent.id);
                                     }}
                                     >
                                         <TrashIcon /> 
