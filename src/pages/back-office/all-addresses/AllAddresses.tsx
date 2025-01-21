@@ -10,7 +10,7 @@ import {
 import Pagination from "../components/pagination";
 import { Badge } from "@/components/ui/badge";
 import loader from "@/assets/loader.svg";
-import { HomeIcon, MixerVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
+import { HomeIcon, MixerVerticalIcon } from "@radix-ui/react-icons";
 import { useFetchAddresses } from "@/hooks/backOffice";
 import { useEffect, useState } from "react";
 
