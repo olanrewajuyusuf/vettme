@@ -3,10 +3,10 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import React, { SetStateAction } from "react";
 import toast from "react-hot-toast";
 
-export const useFetchCompany = () => {
+export const useFetchCompany = (id: string) => {
   const fetchCompany = async () => {
     try {
-      const res = await axiosInstance.get("/company");
+      const res = await axiosInstance.get(`/company/${id}`);
       return await res.data;
     } catch (error) {
       throw new Error("Cannot get company info");

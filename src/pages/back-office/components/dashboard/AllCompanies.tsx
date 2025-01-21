@@ -41,7 +41,7 @@ interface companyProps {
       const getCompanyInfo = async () => {
         try {
           const data = await fetchCompany();
-            console.log(data)
+            // console.log(data)
           setCompanyInfo(data.result.companies);
         } catch (error) {
           console.error("Failed to fetch company info:", error);
@@ -71,9 +71,8 @@ interface companyProps {
       } catch (error: any) {
           console.error("Failed to delete company:", error.message);
       }
-  };
+    };
 
-    console.log(companyInfo);
     return (
       <>
         <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
@@ -101,7 +100,7 @@ interface companyProps {
             </div>
 
           {companyInfo === null ? (
-            <div className="w-full h-[500px] flex items-center justify-center">
+            <div className="w-full h-[300px] flex items-center justify-center">
               <img src={loader} alt="" className="w-10" />
             </div>
           ) :

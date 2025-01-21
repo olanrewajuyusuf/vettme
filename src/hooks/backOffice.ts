@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { baseUrl } from "@/api/baseUrl";
 import { useCallback } from "react";
 
+// getting all companies
 export const useFetchCompany = () => {
     const fetchCompany = useCallback(async () => {
     try {
@@ -28,6 +29,7 @@ export const useFetchCompany = () => {
   return { fetchCompany };
 };
 
+// Activate a companies
 export const useActivateCompany = () => {
     const activateCompany = useCallback(
       async (
@@ -66,6 +68,7 @@ export const useActivateCompany = () => {
     return { activateCompany };
 };
 
+// Delete a companies
 export const useDeleteCompany = () => {
   const deleteCompany = useCallback(
     async (id: string) => {
@@ -97,8 +100,9 @@ export const useDeleteCompany = () => {
   return { deleteCompany };
 };
 
+// getting verification batches
 export const useFetchVerificationBatches = (id: string | undefined) => {
-  const FetchVerificationBatches = useCallback(async () => {
+  const fetchVerificationBatches = useCallback(async () => {
   try {
     const token = localStorage.getItem("adminToken");
 
@@ -118,8 +122,60 @@ export const useFetchVerificationBatches = (id: string | undefined) => {
     toast.error(error?.response?.data?.message || "Cannot fetch verification batches");
     throw new Error(error?.response?.data?.message || "Cannot fetch verification batches");
   }
+}, [id]);
+return { fetchVerificationBatches };
+};
+
+// Getting all addresses
+export const useFetchAddresses = () => {
+  const fetchAddresses = useCallback(async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/address`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("Addresses fetched successfully");
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching addresses:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch addresses");
+    throw new Error(error?.response?.data?.message || "Cannot fetch addresses");
+  }
 }, []);
-return { FetchVerificationBatches };
+return { fetchAddresses };
+};
+
+// Getting all field agents
+export const useFetchAgents = () => {
+  const fetchAgents = useCallback(async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/field-agent`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("Field agents fetched successfully");
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching field agents:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch field agents");
+    throw new Error(error?.response?.data?.message || "Cannot fetch field agents");
+  }
+}, []);
+return { fetchAgents };
 };
 
 
