@@ -39,7 +39,7 @@ export const RegisterAgent = async (
   const toastId = toast.loading("Registering agent...", { id: "agentToast" });
 
   await axios
-    .post(`${baseUrl}/address-verification`, data)
+    .post('https://vettme-pro.onrender.com/api/pro/field-agent/', data)
     .then((res) => {
       toast.success(res?.data?.message || "Registered Successfully", {
         id: toastId,
@@ -50,6 +50,39 @@ export const RegisterAgent = async (
     .catch((err) => {
       console.error("Error response:", err.response);
       toast.error(err?.response?.data?.message || "Unable to register", {
+        id: toastId,
+      });
+    })
+    .finally(() => setIsLoading(false));
+};
+
+//agent signIn
+export const Login = async (
+  data: any,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  navigate: NavigateFunction
+) => {
+  setIsLoading(true);
+  const toastId = toast.loading("Signing in...", { id: "authToast" });
+
+  await axios
+    .post('https://vettme-pro.onrender.com/api/pro/field-agent/login', data)
+    .then((res) => {
+      toast.success(res?.data?.message || "Sign in successful", {
+        id: toastId,
+      });
+
+      navigate("/address-verification/personnelslist");
+
+      // Save company id and token to local storage
+      // const token = res.data.token;
+      const fieldAgentId = res.data.data.id;
+
+      // localStorage.setItem("token", token);
+      localStorage.setItem("fieldAgentId", fieldAgentId);
+    })
+    .catch((err) => {
+      toast.error(err?.response?.data?.message || "Unable to sign in", {
         id: toastId,
       });
     })

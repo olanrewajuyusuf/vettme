@@ -11,13 +11,17 @@ import Spinner from "@/components/Spinner";
 const Form = () => {
     const [activeTab, setActiveTab] = useState<1 | 2 | 3 | 4 | 5>(1);
     const [creationModalActive, setCreationModalActive] = useState(false);
+    const [createdForm, setCreatedForm] = useState<any | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const companyId = localStorage.getItem("companyId")
     const [formData, setFormData] = useState<{
-        [key: string]: string | boolean | number;
+        [key: string]: string | boolean | number ;
     }>({
         title: "",
         verificationType: "",
         max: 0,
+        status: "PENDING",
+        companyId: `${companyId}`
     });
 
     // Handle changes for inputs and checkboxes
@@ -30,29 +34,52 @@ const Form = () => {
     //     }));
     // };
 
+    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    //     const { name, value, type } = e.target;
+    
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value,
+    //     }));
+    // };    
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
     
         setFormData((prevData) => ({
             ...prevData,
-            [name]: type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value,
+            [name]: type === "checkbox" && e.target instanceof HTMLInputElement
+                ? e.target.checked
+                : type === "number" && e.target instanceof HTMLInputElement
+                ? value === "" // Allow the field to be temporarily empty
+                    ? "" 
+                    : parseFloat(value) // Parse only if it's not empty
+                : value,
         }));
-    };    
+    };
+    
+
 
     // Handle form submission
     const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const companyId = "ghfshjfs6547764";
-        const newFormData = {...formData, companyId};
-        console.log(newFormData);
-        
-
-        CreateForm(formData, setCreationModalActive,  setIsLoading);
-    };
+        const newFormData = { ...formData };
+        console.log("Payload before sending: ", newFormData);
+      
+        const createdForm = await CreateForm(newFormData, setCreationModalActive, setIsLoading);
+      
+        if (createdForm) {
+          console.log("Created form:", createdForm);
+            setCreatedForm(createdForm)
+        } else {
+          console.error("Form creation failed or no data returned.");
+        }
+      };
+      
 
     return (
         <>
-            {creationModalActive && <FormCreation isOpen={creationModalActive} />}
+            {creationModalActive && createdForm && <FormCreation isOpen={creationModalActive} createdForm={createdForm} />}
             <div className="mb-[30px]">
                 <h2>Create Verification Form</h2>
                 <p className="text-sm">
@@ -86,10 +113,10 @@ const Form = () => {
                                 required
                             >
                                 <option value="">Choose Verification Type</option>
-                                <option value="personnelVerification">Personnel Verification</option>
-                                <option value="loanVerification">Loan Verification</option>
-                                <option value="criminalVerification">Criminal Record Verification</option>
-                                <option value="other">Other Verification</option>
+                                <option value="PERSONNEL">Personnel Verification</option>
+                                <option value="LOAN">Loan Verification</option>
+                                <option value="CRIMINALRECORD">Criminal Record Verification</option>
+                                {/* <option value="other">Other Verification</option> */}
                             </select>
                         </label>
                         <div className=" basis-full">

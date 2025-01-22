@@ -14,6 +14,7 @@ import AgentFormIndex from "@/pages/agent-form";
 
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
+import SupportFirst from "@/pages/user/support/SupportFirst";
 // import VerificationBatches from "@/pages/back-office/dashboard/verification-batch/verificationBatches";
 // import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
@@ -35,7 +36,7 @@ const Wallet = lazy(() => import("@/pages/user/wallet/Wallet"));
 const Notification = lazy(
   () => import("@/pages/user/notification/Notification")
 );
-const Support = lazy(() => import("@/pages/user/support/Support"));
+// const Support = lazy(() => import("@/pages/user/support/Support"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
 // const NewVerification = lazy(() => import("@/pages/user/new/NewVerification"));
@@ -129,7 +130,7 @@ export const routes = [
       },
       {
         path: "support",
-        element: <Support />,
+        element: <SupportFirst />,
       },
       {
         path: "account",

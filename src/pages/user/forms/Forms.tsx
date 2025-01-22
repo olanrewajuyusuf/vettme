@@ -4,27 +4,221 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { createFormResponse } from "@/api/form";
+import Spinner from "@/components/Spinner";
+
+interface FormData {
+  formId: string;
+  responses: {
+    [key: string]: string | number 
+  }
+}
+
+interface Field {
+  id: string;
+  label: string;
+}
+
+interface Field2 {
+  id: string;
+  label: string;
+}
+
+interface Field3 {
+  id: string;
+  label: string;
+}
+
+interface Field4 {
+  id: string;
+  label: string;
+}
+
+interface Field5 {
+  id: string;
+  label: string;
+}
 
 export default function Forms() {
   const [modalOpen, setModalOpen] = useState(false);
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const token = localStorage.getItem("token")
+  const [isLoading, setIsLoading] = useState(false)
+  const [formInfo, setFormInfo] = useState({
+    title: ""
+  })
+  const url = window.location.href.split("/")[4];
+  const [visibleFields, setVisibleFields] = useState<string[]>([]);
+  const [createdResponse, setCreatedResponse] = useState<any | null>(null);
+  const [formData, setFormData] = useState<FormData>({
+    formId: `${url}`,
+    responses: {}
+  })
 
-    setModalOpen(true);
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value,} = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      responses: {
+        ...prevData.responses,
+        [name]: value,
+      }
+    }))
+  }
+
+  // Handle response submission
+  const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newFormData = { ...formData };
+    console.log("Payload before sending: ", newFormData);
+
+    const createdResponse = await createFormResponse(newFormData, setIsLoading)
+
+    if (createdResponse){
+      console.log("Created Form Response:", createdResponse);
+      setCreatedResponse(createdResponse)
+      setModalOpen(true);
+    } else {
+      console.error("Response creaton failed or no data returned.")
+    }
+  }
+
+  useEffect(() => {
+    // Fetch the form visibility data from the backend
+    axios
+      .get(
+        `https://vettme-pro.onrender.com/api/pro/verification/form/${url}`,
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`, // Add the token here
+          },
+        }
+      ) // Adjust the URL to your API endpoint
+      .then((response) => {
+        // Extract keys from the backend response where the value is true
+        const data = response.data.data
+        setFormInfo(data);
+        const visibleFieldKeys = Object.keys(data.fields).filter(
+          (key) => response.data.data.fields[key] === true
+        );
+        setVisibleFields(visibleFieldKeys); // Set the visible fields in state
+      })
+      .catch((error) => {
+        console.error("Error fetching visibility data:", error);
+      });
+  }, [url]);
+
+  const personalInfoFields: Field[] = [
+    { id: "piFullname", label: "Full Name" },
+    { id: "piDateOfBirth", label: "Date of Birth" },
+    { id: "piGender", label: "Gender" },
+    { id: "piNationality", label: "Nationality" },
+    { id: "piAddress", label: "Address" },
+    { id: "piState", label: "State" },
+    { id: "piLGA", label: "LGA" },
+    { id: "piCountry", label: "Country" },
+    { id: "piPhoneNumber", label: "Phone Number" },
+    { id: "piEmailAddress", label: "Email Address" },
+    { id: "piBvn", label: "BVN" },
+    {
+      id: "piNationalIdentificationNumber",
+      label: "National Identification Number (NIN)",
+    },
+    { id: "piMaritalStatus", label: "Marital Status" },
+    { id: "piNextofKinName", label: "Next of Kin Name" },
+    { id: "piNextofKinRelationship", label: "Next of Kin Relationship" },
+    { id: "piNextofKinPhoneNumber", label: "Next of Kin Phone Number" },
+  ];
+
+  const guarantorInfoFields: Field2[] = [
+    { id: "giFullName", label: "Full Name" },
+    { id: "giRelationshiptoPersonnel", label: "Relationship to Personnel" },
+    { id: "giOccupation", label: "Occupation" },
+    { id: "giPhoneNumber", label: "Phone Number" },
+    { id: "giAddress", label: "Address" },
+    { id: "giLGA", label: "LGA" },
+    { id: "giState", label: "State" },
+    { id: "giCountry", label: "Country" },
+    { id: "giEmailAddress", label: "Email Address" },
+    { id: "giYearsKnown", label: "Years Known" },
+    {
+      id: "giNationalIdentificationNumber",
+      label: "National Identification Number (NIN)",
+    },
+  ];
+
+  const academicInfoFields: Field3[] = [
+    {id: 'aiHighestQualification', label: 'Highest Qualification'},
+    {id: 'aiNameofInstitution', label: 'Name of Institution'},
+    {id: 'aiYearofGraduation', label: 'Year of Graduation'},
+    {id: 'aiDegreeOrCertificationUpload', label: 'Degree Or Certification Upload'},
+    {id: 'aiProfessionalCertifications', label: 'Professional Certifications'},
+];
+
+const professionalInfoFields: Field4[] =  [
+  {id: 'priCurrentJob', label: 'Current Job'},
+  {id: 'priOrganizationName', label: 'Organization Name'},
+  {id: 'priEmploymentStartDate', label: 'Employment Start Date'},
+  {id: 'priEmploymentType', label: 'Employment Type'},
+  {id: 'priJobResponsibility', label: 'Job Responsibility'},
+  {id: 'priProfessionalSkills', label: 'Professional Skills'},
+  {id: 'priLinkedInProfile', label: 'LinkedIn Profile'},
+  {id: 'priProfessionalReferenceName', label: 'Professional Reference Name'},
+  {id: 'priProfessionalReferencePhoneNumber', label: 'Professional Reference Phone Number'},
+  {id: 'priCurrentSalary', label: 'Current Salary'},
+  {id: 'priExpectedSalaryRange', label: 'Expected Salary Range'},
+];
+
+const mentalHealthFields: Field5[] = [
+  {id: 'mhaCurrentMentalHealthCondition', label: 'Current Mental Health Condition'},
+  {id: 'mhaHistoryofMentalHealthConditions', label: 'History of Mental Health Conditions'},
+  {id: 'mhaAreYouCurrentlyUnderAnyMedicationOrTreatment', label: 'Are you currently under any Medication or Treatment'},
+  {id: 'mhaHaveYouHadAnyPreviousPsychiatricConsultations', label: 'Have you had any previous Psychiatric Consultations'},
+  {id: 'mhaHaveYouExperiencedAnyMajorTraumaInThePastYear', label: 'Have you experienced any major trauma in the past Year'},
+  {id: 'mhaEmotionalWellbeing', label: 'Emotional Wellbeing'},
+];
+
+  // Filter personalInfoFields based on visibleFields
+  const filteredFields = personalInfoFields.filter((field) =>
+    visibleFields.includes(field.id)
+  );
+
+  const filteredFields2 = guarantorInfoFields.filter((field) =>
+    visibleFields.includes(field.id)
+  );
+
+  const filteredFields3 = academicInfoFields.filter((field) =>
+    visibleFields.includes(field.id)
+  )
+
+  const filteredFields4 = professionalInfoFields.filter((field) =>
+    visibleFields.includes(field.id)
+  )
+
+  const filteredFields5 = mentalHealthFields.filter((field) =>
+    visibleFields.includes(field.id)
+  )
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   setModalOpen(true);
+  // };
   return (
     <>
-      <form
+      <form 
         className="max-w-screen-sm mx-auto px-[4vw] my-6"
-        onSubmit={handleSubmit}
+        onSubmit={handleSetup}
       >
         <div className="w-full mb-6">
           <img src={images.logo} alt="Vettme" className="h-8" />
         </div>
         <div className="w-full bg-white rounded-2xl border-[1px] border-stroke-clr">
           <div className="p-4 border-b-[1px] border-stroke-clr">
-            <h2>Employee Identity Verification Form</h2>
+            <h2>{formInfo.title}</h2>
             <p className="py-2">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -37,199 +231,77 @@ export default function Forms() {
             <Tabs defaultValue="personal" className="w-full">
               <div className="overflow-x-scroll">
                 <TabsList className="min-w-full rounded-none border-b-[1px] border-stroke-clr overflow-hidden">
+                  {filteredFields.length !==0 &&
                   <TabsTrigger value="personal" className="w-full">
                     Personal Information
-                  </TabsTrigger>
+                  </TabsTrigger>}
+
                   <TabsTrigger value="guarantor" className="w-full">
                     Guarantor's Information
                   </TabsTrigger>
+
+                  {filteredFields3.length !== 0 &&
                   <TabsTrigger value="academic" className="w-full">
                     Academic Information
                   </TabsTrigger>
+                  }
+
+                  {filteredFields4.length !== 0 &&
                   <TabsTrigger value="professional" className="w-full">
                     Professional Information
                   </TabsTrigger>
+                  }
+
+                  {filteredFields5.length !== 0 &&
                   <TabsTrigger value="mental" className="w-full">
                     Mental Assessment
                   </TabsTrigger>
+                  }
                 </TabsList>
               </div>
 
               <div className="p-3 pb-0">
-                <TabsContent value="personal">
-                  <label htmlFor="full_name" className="block mb-4">
-                    <p>Full Name</p>
-                    <Input
-                      type="text"
-                      id="full_name"
-                      placeholder="e.g. John Doe"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="email" className="block mb-4">
-                    <p>Email Address</p>
-                    <Input
-                      type="email"
-                      id="email"
-                      placeholder="e.g. johndoe@mail.com"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="phone" className="block mb-4">
-                    <p>Phone Number</p>
-                    <Input
-                      type="text"
-                      inputMode="tel"
-                      id="phone"
-                      placeholder="e.g. 09011223344"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="address" className="block mb-4">
-                    <p>Residential Address</p>
-                    <Input
-                      type="text"
-                      id="address"
-                      placeholder="e.g. somewhere street, Lagos, Nigeria"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="nin" className="block mb-4">
-                    <p>National Identification Number (NIN)</p>
-                    <Input
-                      type="text"
-                      inputMode="numeric"
-                      id="nin"
-                      placeholder="e.g. John Doe"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="gender" className="block mb-4">
-                    <p>Gender</p>
-                    <select
-                      name="gender"
-                      id="gender"
-                      className="btn w-full bg-transparent"
-                      required
-                    >
-                      <option value="" selected={true} disabled>
-                        Select an option
-                      </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="none">I prefer not to share</option>
-                    </select>
-                  </label>
-                  <label htmlFor="nationality" className="block mb-4">
-                    <p>Nationality</p>
-                    <Input
-                      type="text"
-                      id="nationality"
-                      placeholder="e.g. John Doe"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="next_of_kin_name" className="block mb-4">
-                    <p>Next of Kin Name</p>
-                    <Input
-                      type="text"
-                      id="next_of_kin_name"
-                      placeholder="e.g. John Doe"
-                      required
-                    />
-                  </label>
-                  <label
-                    htmlFor="next_of_kin_relationship"
-                    className="block mb-4"
-                  >
-                    <p>Next of Kin Relationship</p>
-                    <Input
-                      type="text"
-                      id="next_of_kin_relationship"
-                      placeholder="e.g. John Doe"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="next_of_kin_phone" className="block mb-4">
-                    <p>Next of Kin Phone Number</p>
-                    <Input
-                      type="text"
-                      id="next_of_kin_phone"
-                      placeholder="e.g. John Doe"
-                      required
-                    />
-                  </label>
+                <TabsContent value="personal" >
+                  {filteredFields.map((field) => (
+                    <label htmlFor={field.id} key={field.id} className="block mb-4">
+                      <p>{field.label}</p>
+                      <Input
+                        type="text"
+                        id={field.id}
+                        name={field.id}
+                        value={formData.responses[field.id] || ""}
+                        // value={formData.responses[field.id] || "string" || typeof formData.responses[field.id] === "number"
+                        //   ? formData.responses[field.id]
+                        //   : ""
+                        // }
+                        onChange={handleChange}
+                        placeholder={`Enter your ${field.label.toLocaleLowerCase()}`}
+                        required
+                      />
+                    </label>
+                  ))}
                 </TabsContent>
 
                 <TabsContent value="guarantor">
-                  <label htmlFor="guarantor_full_name" className="block mb-4">
-                    <p>Guarantor's Full Name</p>
-                    <Input
-                      type="text"
-                      id="guarantor_full_name"
-                      placeholder="e.g. John Doe"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="guarantor_email" className="block mb-4">
-                    <p>Guarantor's Email Address</p>
-                    <Input
-                      type="email"
-                      id="guarantor_email"
-                      placeholder="e.g. johndoe@mail.com"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="guarantor_phone" className="block mb-4">
-                    <p>Guarantor's Phone Number</p>
-                    <Input
-                      type="text"
-                      inputMode="tel"
-                      id="guarantor_phone"
-                      placeholder="e.g. 09011223344"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="guarantor_address" className="block mb-4">
-                    <p>Guarantor's Residential Address</p>
-                    <Input
-                      type="text"
-                      id="guarantor_address"
-                      placeholder="e.g. somewhere street, Lagos, Nigeria"
-                      required
-                    />
-                  </label>
-                  <label
-                    htmlFor="guarantor_relationship"
-                    className="block mb-4"
-                  >
-                    <p>Relationship with Guarantor</p>
-                    <Input
-                      type="text"
-                      id="guarantor_relationship"
-                      placeholder="e.g. Sister"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="guarantor_occupation" className="block mb-4">
-                    <p>Guarantor's Occupation</p>
-                    <Input
-                      type="text"
-                      id="guarantor_occupation"
-                      placeholder="e.g. Trader"
-                      required
-                    />
-                  </label>
-                  <label htmlFor="nin" className="block mb-4">
-                    <p>Guarantor's National Identification Number (NIN)</p>
-                    <Input
-                      type="text"
-                      inputMode="numeric"
-                      id="nin"
-                      placeholder="e.g. 12345678901"
-                      required
-                    />
-                  </label>
+                  {filteredFields2.map((field) => (
+                    <label htmlFor={field.id} key={field.id} className="block mb-4" >
+                      <p>{field.label}</p>
+                      <Input
+                        type="text"
+                        id={field.id}
+                        name={field.id}
+                        value={formData.responses[field.id] || ""}
+                        // value={formData.responses[field.id] || "string" || typeof formData.responses[field.id] === "number"
+                        //   ? formData.responses[field.id]
+                        //   : ""
+
+                        // }
+                        onChange={handleChange}
+                        placeholder={`Enter your ${field.label.toLocaleLowerCase()}`}
+                        required
+                      />
+                    </label>
+                  ))}
                 </TabsContent>
 
                 <TabsContent value="academic">
@@ -270,38 +342,6 @@ export default function Forms() {
                       id="institution_name"
                       placeholder="e.g. University of Lagos"
                       required
-                    />
-                  </label>
-
-                  <label htmlFor="graduation_year" className="block mb-4">
-                    <p>Year of Graduation</p>
-                    <input
-                      type="month"
-                      placeholder="e.g. John Doe"
-                      className="w-full btn"
-                      required
-                    />
-                  </label>
-
-                  <label
-                    htmlFor="professional_certification"
-                    className="block mb-4"
-                  >
-                    <p>Professional Certifications (if any)</p>
-                    <Input
-                      type="text"
-                      id="professional_certification"
-                      placeholder="e.g. Cybersecurity"
-                    />
-                  </label>
-
-                  <label htmlFor="certificate_upload" className="block mb-4">
-                    <p>Upload Degree / Certificate</p>
-                    <Input
-                      type="file"
-                      accept=".pdf, image/*"
-                      id="certificate_upload"
-                      placeholder="e.g. Cybersecurity"
                     />
                   </label>
                 </TabsContent>
@@ -521,10 +561,11 @@ export default function Forms() {
           </label>
         </div>
         <Button type="submit" className="red-gradient mt-3">
-          Submit Data for Verification
+          {isLoading ? <Spinner /> : "Submit Data for Verification"}
         </Button>
       </form>
       {<UserFormSumitted isOpen={modalOpen} />}
     </>
   );
 }
+
