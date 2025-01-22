@@ -15,6 +15,7 @@ import AgentFormIndex from "@/pages/agent-form";
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
 import SupportFirst from "@/pages/user/support/SupportFirst";
+// import VerificationBatches from "@/pages/back-office/dashboard/verification-batch/verificationBatches";
 // import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
@@ -35,7 +36,7 @@ const Wallet = lazy(() => import("@/pages/user/wallet/Wallet"));
 const Notification = lazy(
   () => import("@/pages/user/notification/Notification")
 );
-const Support = lazy(() => import("@/pages/user/support/Support"));
+// const Support = lazy(() => import("@/pages/user/support/Support"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
 // const NewVerification = lazy(() => import("@/pages/user/new/NewVerification"));
@@ -44,11 +45,13 @@ const FormSetup = lazy(() => import("@/pages/user/setup/Form"));
 const Forms = lazy(() => import("@/pages/user/forms/Forms"));
 
 const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Dashboard"));
+const VerificationBatches  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/verificationBatches"));
 const VerificationInfo  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationsBatch"));
 const PersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/personnel/Personnel"));
 const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-personnel/EditPersonnelInfo"));
 const AllAgents = lazy(() => import("@/pages/back-office/all-agents/AllAgents"));
 const AllAddresses = lazy(() => import("@/pages/back-office/all-addresses/AllAddresses"));
+const AdminLoginPage = lazy(() => import("@/pages/back-office/auth/AdminLoginPage"));
 
 const AddressVerification = lazy(() => import("@/pages/address-verification/Address"));
 const PersonnelsList = lazy(() => import("@/pages/address-verification/PersonnelsList"));
@@ -169,6 +172,20 @@ export const routes = [
     ),
   },
 
+  // {
+  //   path: "auth/back-office/login",
+  //   element: (
+  //     <Suspense fallback={<Skeleton />}>
+  //       <AdminLoginPage />
+  //     </Suspense>
+  //   ),
+  // },
+
+  {
+    path: "auth/back-office/login",
+    element: (<AdminLoginPage />),
+  },
+
   {
     path: "/back-office",
     element: (
@@ -180,6 +197,10 @@ export const routes = [
       {
         path: "",
         element: <BackOfficeDashboard/>,
+      },
+      {
+        path: "/back-office/verification-batch/:id",
+        element: <VerificationBatches />,
       },
       {
         path: "/back-office/verification/:verification_id",

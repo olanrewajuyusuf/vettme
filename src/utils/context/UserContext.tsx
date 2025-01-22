@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useMemo } from "react";
 import { Navigate } from "react-router-dom";
-import { useFetchCompany } from "@/hooks/company";
 import Loader from "@/components/Loader";
+import { useFetchCompany } from "@/hooks/company";
 
 interface UserContextType {
   company: {
@@ -30,7 +30,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
 
   if (!companyId || !token) return <Navigate to="/auth/login" />;
 
-  const { isLoading, data: company } = useFetchCompany();
+  const { isLoading, data: company } = useFetchCompany(companyId);
 
   useEffect(() => {
     if (!token) {
