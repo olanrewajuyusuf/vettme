@@ -2,24 +2,53 @@ import { axiosInstance } from "@/api/axiosConfig";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import React, { SetStateAction } from "react";
 import toast from "react-hot-toast";
+import { baseUrl } from "@/api/baseUrl";
+import axios from "axios";
+import { useCallback } from "react";
 
-export const useFetchCompany = (id: string) => {
-  const fetchCompany = async () => {
-    try {
-      const res = await axiosInstance.get(`/company/${id}`);
-      return await res.data;
-    } catch (error) {
-      throw new Error("Cannot get company info");
+
+export const useFetchCompany = () => {
+  const fetchCompany = useCallback(async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("companyId");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
     }
-  };
 
-  return useQuery({
-    queryKey: ["Company"],
-    queryFn: fetchCompany,
-    select: (data) => data.company,
-    staleTime: 1000 * 60 * 10,
-  });
+    const res = await axios.get(`${baseUrl}/company/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    toast.success("Company info fetched successfully");
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching company info:", error);
+    toast.error(error?.response?.data?.message || "Cannot get company info");
+    throw new Error(error?.response?.data?.message || "Cannot get company info");
+  }
+}, []);
+return { fetchCompany };
 };
+// export const useFetchCompany = (id: string) => {
+//   const fetchCompany = async () => {
+//     try {
+//       const res = await axiosInstance.get(`/company/${id}`);
+//       return await res.data;
+//     } catch (error) {
+//       throw new Error("Cannot get company info");
+//     }
+//   };
+
+//   return useQuery({
+//     queryKey: ["Company"],
+//     queryFn: fetchCompany,
+//     select: (data) => data.company,
+//     staleTime: 1000 * 60 * 10,
+//   });
+// };
 
 export const updateCompany = async (
   data: {},
