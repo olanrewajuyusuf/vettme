@@ -14,13 +14,7 @@ import AgentFormIndex from "@/pages/agent-form";
 
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
-<<<<<<< HEAD
 import UserProvider from "./context/UserProvider";
-// import VerificationBatches from "@/pages/back-office/dashboard/verification-batch/VerificationBatches";
-=======
-import SupportFirst from "@/pages/user/support/SupportFirst";
->>>>>>> fd86caf75f1d2a518e55a68e1cedabc995d84398
-// import VerificationBatches from "@/pages/back-office/dashboard/verification-batch/verificationBatches";
 // import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
@@ -42,6 +36,7 @@ const Notification = lazy(
   () => import("@/pages/user/notification/Notification")
 );
 // const Support = lazy(() => import("@/pages/user/support/Support"));
+const SupportFirst = lazy(() => import("@/pages/user/support/SupportFirst"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
 // const NewVerification = lazy(() => import("@/pages/user/new/NewVerification"));
@@ -113,9 +108,9 @@ export const routes = [
     path: "/",
     element: (
       <UserProvider>
-      <DashboardLayout>
-        <AppIndex />
-      </DashboardLayout>
+        <DashboardLayout>
+          <AppIndex />
+        </DashboardLayout>
       </UserProvider>
     ),
     children: [
