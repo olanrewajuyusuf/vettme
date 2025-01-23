@@ -13,12 +13,15 @@ import { useToast } from "@/hooks/use-toast";
 
 interface DialogModal {
   isOpen: boolean;
+  createdForm: any
 }
 
-const url = window.location.hostname + "/forms/1234";
 
-export default function FormCreation({ isOpen }: DialogModal) {
+export default function FormCreation({ isOpen, createdForm }: DialogModal) {
   const { toast } = useToast();
+
+  const url = window.location.hostname + `:5173/forms/${createdForm.data.id}`;
+
   const handleCopy = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(url).then(() => {

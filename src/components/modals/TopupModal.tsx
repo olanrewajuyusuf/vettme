@@ -8,12 +8,35 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
+import axios from "axios";
 
 interface DialogModal {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function TopupModal({ isOpen, setIsOpen }: DialogModal) {
+  const [amount, setAmount] = useState("")
+  const token = localStorage.getItem("token")
+
+  const topUp = async(e: React.FormEvent) => {
+    e.preventDefault()
+    try{
+      const {data} = await axios.post("https://vettme-pro.onrender.com/api/pro/payment/create", {
+        amount
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(data);
+      window.location.href = `${data.data.authorization_url}`
+
+    } catch(err){
+      alert("Payment couldn't go through")
+    }
+  }
+
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
@@ -27,21 +50,26 @@ export default function TopupModal({ isOpen, setIsOpen }: DialogModal) {
           <AlertDialogTitle>Topup your wallet</AlertDialogTitle>
           <AlertDialogDescription>
             Enter how much you'll like to topup your wallet with
-            <div className="flex w-full items-center relative gap-2">
+            </AlertDialogDescription>
+            </AlertDialogHeader>
+            <form className="flex w-full items-center relative gap-2" onSubmit={topUp}>
+              
               <span className="pointer-events-none absolute left-2 text-gray-300">
                 NGN |
               </span>
               <Input
-                type="text"
+                type="number"
                 placeholder="e.g. 3000"
                 className="w-full pl-14"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
               />
-              <Button type="button" className="red-gradient">
+              <Button type="submit" className="red-gradient" >
                 Topup Wallet
               </Button>
-            </div>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+
+            </form>
+            
       </AlertDialogContent>
     </AlertDialog>
   );

@@ -2,52 +2,57 @@ import images from "@/assets/Images";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
-import { useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Support() {
-  const messages = [
-    {
-      type: 1,
-      text: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet",
-      time: "Monday, Oct 12, 2024 | 12:00 AM",
-    },
-    {
-      type: 2,
-      text: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour",
-      time: "Monday, Oct 12, 2024 | 12:00 AM",
-    },
-    {
-      type: 2,
-      text: "Contrary to popular belief",
-      time: "Monday, Oct 12, 2024 | 12:00 AM",
-    },
-    {
-      type: 1,
-      text: "The standard chunk",
-      time: "Monday, Oct 12, 2024 | 12:00 AM",
-    },
-    {
-      type: 1,
-      text: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet",
-      time: "Monday, Oct 12, 2024 | 12:00 AM",
-    },
-    {
-      type: 2,
-      text: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour",
-      time: "Monday, Oct 12, 2024 | 12:00 AM",
-    },
-    {
-      type: 2,
-      text: "Contrary to popular belief",
-      time: "Monday, Oct 12, 2024 | 12:00 AM",
-    },
-    {
-      type: 1,
-      text: "The standard chunk",
-      time: "Monday, Oct 12, 2024 | 12:00 AM",
-    },
-  ];
+interface SupportProps {
+  conversationId: {
+    id: string;
+  };
+}
+
+interface Message{
+  type: 1,
+  id: "",
+  conversation: "",
+  sender: "",
+  text: ""
+}
+
+
+const Support: React.FC<SupportProps> = ({conversationId}) => {
+
+  const [message, setMessage] = useState<Message[]>([])
+  const conversationIdString = conversationId.id;
+  const companyId = localStorage.getItem("companyId")
+  const [text, setText] = useState("")
+
+  useEffect(() => {
+    const getMessages = async() => {
+      try{
+        const res = await axios.get(`https://vettme-pro.onrender.com/api/pro/message/${conversationIdString}`)
+        setMessage(res.data.data);
+        console.log(res.data.data);
+      } catch(err){
+        console.error(err)
+      }
+    }
+    getMessages()
+  }, [conversationId])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try{
+      const {data} = await axios.post("https://vettme-pro.onrender.com/api/pro/message", {
+          conversationId: conversationIdString,
+          sender: companyId,
+          text,
+      })
+      console.log(data);
+      setText("")
+    } catch(err){}
+  }
 
   const scrollToLastMessage = () => {
     const messagesBox = document.getElementById("messages-box");
@@ -57,7 +62,10 @@ export default function Support() {
 
   useEffect(() => {
     scrollToLastMessage();
-  }, [messages]);
+  }, [message]);
+
+
+
   return (
     <>
       <div className="mb-[30px]">
@@ -87,11 +95,11 @@ export default function Support() {
             id="messages-box"
             className="w-full flex flex-col gap-3 p-3 h-[400px] overflow-y-scroll scroll-smooth"
           >
-            {messages.map((message, idx) => (
+            {message.map((message, id) => (
               <div
-                key={idx}
+                key={id}
                 className={`p-2 max-w-[45%] rounded-lg relative ${
-                  message.type === 1
+                  message.sender !== `${companyId}`
                     ? "bg-yellow-100 self-start sent-mssg"
                     : "bg-purple-100 self-end received-mssg"
                 }`}
@@ -99,21 +107,26 @@ export default function Support() {
                 <p className="text-xs">{message.text}</p>
                 <hr className="my-1 bg-white border-white" />
                 <p className="text-[8px] text-right font-medium opacity-50">
-                  {message.time}
+                  {/* {message.time} */}
+                  time
                 </p>
               </div>
             ))}
           </div>
-          <div className="w-full flex gap-3 bg-gray-200 p-3">
-            <Input
-              type="text"
-              className="w-full font-normal"
-              placeholder="Type your message here..."
-            />
-            <Button className="w-10 h-10 aspect-square rounded-full flex items-center justify-center p-1 bg-yellow-500 hover:bg-yellow-600">
-              <PaperPlaneIcon className="-rotate-[30deg] text-base-clr" />
-            </Button>
-          </div>
+          <form  onSubmit={handleSubmit}>
+            <label className="w-full flex gap-3 bg-gray-200 p-3">
+              <Input
+                type="text"
+                className="w-full font-normal"
+                placeholder="Type your message here..."
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+              />
+              <Button type="submit" className="w-10 h-10 aspect-square rounded-full flex items-center justify-center p-1 bg-yellow-500 hover:bg-yellow-600">
+                <PaperPlaneIcon className="-rotate-[30deg] text-base-clr" />
+              </Button>
+            </label>
+          </form>
         </div>
 
         <div className="basis-1/3 flex flex-col gap-6">
@@ -150,3 +163,6 @@ export default function Support() {
     </>
   );
 }
+
+
+export default Support;

@@ -1,7 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import { baseUrl } from "@/api/baseUrl";
 import { useCallback } from "react";
+import { baseUrl } from "@/api/baseUrl";
 
 // getting all companies
 export const useFetchCompany = () => {
