@@ -25,24 +25,6 @@ const Form = () => {
     });
 
     // Handle changes for inputs and checkboxes
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    //     const { name, value, type, checked } = e.target;
-
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: type === "checkbox" ? checked : value,
-    //     }));
-    // };
-
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    //     const { name, value, type } = e.target;
-    
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: type === "checkbox" && e.target instanceof HTMLInputElement ? e.target.checked : value,
-    //     }));
-    // };    
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
     
@@ -58,8 +40,6 @@ const Form = () => {
         }));
     };
     
-
-
     // Handle form submission
     const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -74,8 +54,7 @@ const Form = () => {
         } else {
           console.error("Form creation failed or no data returned.");
         }
-      };
-      
+      };  
 
     return (
         <>
