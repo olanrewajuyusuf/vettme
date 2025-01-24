@@ -45,7 +45,7 @@ const FormSetup = lazy(() => import("@/pages/user/setup/Form"));
 const Forms = lazy(() => import("@/pages/user/forms/Forms"));
 
 const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Dashboard"));
-// const VerificationBatches  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationBatches"));
+const Batches  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/Batches"));
 const VerificationInfo  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationsBatch"));
 const PersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/personnel/Personnel"));
 const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-personnel/EditPersonnelInfo"));
@@ -200,10 +200,10 @@ export const routes = [
         path: "",
         element: <BackOfficeDashboard/>,
       },
-      // {
-      //   path: "/back-office/verification-batch/:id",
-      //   element: <VerificationBatches />,
-      // },
+      {
+        path: "/back-office/verification-batch/:id",
+        element: <Batches />,
+      },
       {
         path: "/back-office/verification/:verification_id",
         element: <VerificationInfo />,
