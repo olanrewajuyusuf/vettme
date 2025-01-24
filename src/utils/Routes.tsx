@@ -15,7 +15,6 @@ import AgentFormIndex from "@/pages/agent-form";
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
 import UserProvider from "./context/UserProvider";
-import VerificationBatches from "@/pages/back-office/dashboard/verification-batch/VerificationBatches";
 // import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
@@ -201,10 +200,10 @@ export const routes = [
         path: "",
         element: <BackOfficeDashboard/>,
       },
-      {
-        path: "/back-office/verification-batch/:id",
-        element: <VerificationBatches />,
-      },
+      // {
+      //   path: "/back-office/verification-batch/:id",
+      //   element: <VerificationBatches />,
+      // },
       {
         path: "/back-office/verification/:verification_id",
         element: <VerificationInfo />,
