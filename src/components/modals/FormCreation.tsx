@@ -20,7 +20,7 @@ interface DialogModal {
 export default function FormCreation({ isOpen, createdForm }: DialogModal) {
   const { toast } = useToast();
 
-  const url = window.location.hostname + `:5173/forms/${createdForm.data.id}`;
+  const url = window.location.hostname + `/forms/${createdForm.data.id}`;
 
   const handleCopy = () => {
     if (navigator.clipboard) {

@@ -84,6 +84,10 @@ export default function DashboardLayout({ children }: LayoutProps) {
                 <hr className="h-7 w-[1px] bg-stroke-clr" />
                 <p className="font-medium">User: <span className="text-blue-400">{company?.companyName}</span></p>
             </div>
+            <div className="border-[1px] border-blue-400 rounded-md h-7 flex items-center overflow-hidden">
+              <span className="text-blue-400 px-3">Balance</span>
+              <span className="bg-blue-400 text-white px-3 h-full flex items-center font-bold">{company?.balance.toFixed(2)}</span>
+            </div>
             <div className="flex items-center justify-end gap-2">
                 <p>Company ID</p>
                 <hr className="h-7 w-[1px] bg-stroke-clr" />

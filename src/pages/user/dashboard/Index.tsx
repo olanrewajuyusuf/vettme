@@ -22,7 +22,7 @@ export default function AppIndex() {
       console.log(tokenExpiry, currentTime);
       console.log(tokenExpiry - currentTime);
 
-      if (currentTime > tokenExpiry) {
+      if (companyId && (currentTime > tokenExpiry) ) {
         console.log("Token Expired");
         navigate("/auth/login");
       }

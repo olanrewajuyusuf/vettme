@@ -1,23 +1,53 @@
 import DashboardChart from "@/components/DashboardChart";
+import { useFetchCardData } from "@/hooks/company";
 import { FileMinusIcon } from "@radix-ui/react-icons";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+interface CardProps {
+  verified: number,
+  inprogress: number,
+  pending: number,
+  failed: number,
+}
+
 export default function Dashboard() {
+  const [cardData, setCardData] = useState<CardProps | null>(null);
+  const { fetchCardData } = useFetchCardData();
+
+  useEffect(() => {
+    const getCardData = async () => {
+      try {
+        const data = await fetchCardData();
+          setCardData(data.data);
+      } catch (error) {
+        console.error("Failed to fetch card data:", error);
+      }
+    };
+
+    getCardData();
+  }, [fetchCardData]);  
+
   const cards = [
     {
-      title: "Verifications Initiated",
-      qty: "43,206",
+      title: "Successful Verifications",
+      qty: cardData?.verified,
       bg: 1,
     },
     {
-      title: "Successful Initiated",
-      qty: "21,200",
+      title: "Pending Verifications",
+      qty: cardData?.pending,
       bg: 2,
     },
     {
-      title: "Failed Verifications",
-      qty: "3,320",
+      title: "Ongoing Verifications",
+      qty: cardData?.inprogress,
       bg: 3,
+    },
+    {
+      title: "Failed Verifications",
+      qty: cardData?.failed,
+      bg: 4,
     },
   ];
 
@@ -61,7 +91,7 @@ export default function Dashboard() {
 
   return (
     <div className="">
-      <div className="grid grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-2 gap-6 mb-6">
         {cards.map((card, idx) => (
           <div
             key={idx}
@@ -71,9 +101,11 @@ export default function Dashboard() {
               <span
                 className={`min-w-10 min-h-10 rounded-full flex items-center justify-center text-white ${
                   card.bg === 1
-                    ? "bg-[#BE6AF2]"
-                    : card.bg === 2
                     ? "bg-[#006400]"
+                    : card.bg === 2
+                    ? "bg-[#e2a32e]"
+                    : card.bg === 3
+                    ? "bg-[#BE6AF2]"
                     : "bg-[#992929]"
                 }`}
               >

@@ -32,6 +32,67 @@ export const useFetchCompany = () => {
 }, []);
 return { fetchCompany };
 };
+
+// Getting Card data
+export const useFetchCardData = () => {
+  const fetchCardData = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const companyId = localStorage.getItem("companyId");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      if (!companyId) {
+        throw new Error("Company ID is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification-response/status/${companyId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching card data:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get card data");
+    }
+  }, []);
+
+  return { fetchCardData };
+};
+
+// Getting Transaction history
+export const useFetchPayment = () => {
+  const fetchPayment = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/payment`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching transaction history:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get transaction history");
+    }
+  }, []);
+
+  return { fetchPayment };
+};
 // export const useFetchCompany = (id: string) => {
 //   const fetchCompany = async () => {
 //     try {

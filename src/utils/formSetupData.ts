@@ -18,7 +18,7 @@ const personalInfoFields = [
 ];
 
 const guarantorInfoFields = [
-    {id: 'giFullname', label: 'Full Name'},
+    {id: 'giFullName', label: 'Full Name'},
     {id: 'giRelationshiptoPersonnel', label: 'Relationship to Personnel'},
     {id: 'giOccupation', label: 'Occupation'},
     {id: 'giPhoneNumber', label: 'Phone Number'},
