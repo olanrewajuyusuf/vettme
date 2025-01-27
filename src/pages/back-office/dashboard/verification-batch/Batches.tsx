@@ -14,6 +14,7 @@ import {
   import { useEffect, useState } from "react";
   import { Input } from "@/components/ui/input";
   import { SearchCodeIcon } from "lucide-react";
+import moment from "moment";
   
   interface batchesProps {
     id: string,
@@ -51,7 +52,7 @@ import {
             <p>This is where you get all batches being process by this company</p>
         </div>
         <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
-            <div className="w-full p-5 grid grid-cols-3 border-b-[1px] border-stroke-clr">
+            <div className="w-full p-5 flex justify-between items-center border-b-[1px] border-stroke-clr">
                   <div className="flex items-center gap-3">
                       <p>Filter by: </p>
                       <select name="" id="" className="btn px-3">
@@ -94,16 +95,21 @@ import {
             <TableBody>
               {getBatches.map((batch: batchesProps) => (
                 <TableRow key={batch.id} onClick={() => navigate(`verification/${batch.id}`)}>
-                  <TableCell className="font-medium">{batch.title}</TableCell>
+                  <TableCell className=" font-medium uppercase flex items-center gap-2">
+                    <div className={`w-6 h-6 grid place-items-center text-white rounded-sm bg-purple-600`}>
+                        {batch.title.slice(0, 2)}
+                    </div>
+                    <span>{batch.title}</span>
+                  </TableCell>
                   <TableCell>{batch.max}</TableCell>
                   <TableCell>
                     <Badge
                       className={`pointer-events-none ${
-                        batch.status === "completed"
+                        batch.status === "COMPLETED"
                           ? "bg-green-400"
-                          : batch.status === "pending"
+                          : batch.status === "PENDING"
                           ? "border-yellow-500 border-[1px] text-yellow-500 bg-transparent"
-                          : batch.status === "failed"
+                          : batch.status === "FAILED"
                           ? "bg-red-500"
                           : "bg-orange-400"
                       }`}
@@ -112,7 +118,7 @@ import {
                     </Badge>
                   </TableCell>
                   <TableCell>{batch.verificationType}</TableCell>
-                  <TableCell>{batch.createdAt}</TableCell>
+                  <TableCell>{moment(batch.createdAt).format("MMM DD, YYYY")}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

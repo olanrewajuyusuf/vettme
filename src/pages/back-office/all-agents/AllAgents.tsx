@@ -6,7 +6,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Pagination from "../components/pagination";
 import loader from "@/assets/loader.svg";
 import { TrashIcon } from "@radix-ui/react-icons";
@@ -28,6 +28,7 @@ const AllAgents = () => {
     const [ agents, setAgents ] = useState<agentsProps[] | null>(null);
     const { fetchAgents } = useFetchAgents();
     const { deleteAgent } = useDeleteAgent();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getAgents = async () => {
@@ -35,7 +36,7 @@ const AllAgents = () => {
             const data = await fetchAgents();
             setAgents(data.result);
           } catch (error) {
-            console.error("Failed to fetch company info:", error);
+            console.error("Failed to fetch Field Agents:", error);
           }
         };
     
@@ -52,7 +53,6 @@ const AllAgents = () => {
         }
     };
 
-    console.log(agents);
     return (
         <div>
             <h1 className="font-normal">All Registered Agents</h1>
@@ -94,7 +94,7 @@ const AllAgents = () => {
                             {agents.map((agent: agentsProps) => (
                             <TableRow
                                 key={agent.id}
-                                // onClick={() => navigate(`verification-batch/${company.id}`)}
+                                onClick={() => navigate(`agent-info/${agent.id}`)}
                             >
                                 <TableCell className="text-xs font-medium uppercase flex items-center gap-1">
                                     <div 

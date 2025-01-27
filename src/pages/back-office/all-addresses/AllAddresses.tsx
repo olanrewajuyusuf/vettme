@@ -33,7 +33,9 @@ const AllAddresses = () => {
         const getAddresses = async () => {
           try {
             const data = await fetchAddresses();
-            setAddresses(data.result);
+            console.log(data);
+            
+            setAddresses(data.data);
           } catch (error) {
             console.error("Failed to fetch company info:", error);
           }
@@ -41,6 +43,9 @@ const AllAddresses = () => {
     
         getAddresses();
     }, [fetchAddresses]);
+
+    console.log(addresses);
+    
 
     return (
         <div>
@@ -63,7 +68,7 @@ const AllAddresses = () => {
                         <img src={loader} alt="" className="w-10" />
                     </div>
                 ) :
-                addresses.length === 0 ? (
+                addresses?.length === 0 ? (
                     <div className="w-full h-[300px] flex justify-center items-center">
                         <h3>No available address data.</h3>
                     </div>
@@ -81,7 +86,7 @@ const AllAddresses = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {addresses.map((address: addressesProps) => (
+                            {addresses?.map((address: addressesProps) => (
                             <TableRow
                                 key={address.id}
                                 // onClick={() => navigate(`verification-batch/${company.id}`)}

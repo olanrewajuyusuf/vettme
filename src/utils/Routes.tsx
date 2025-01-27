@@ -50,6 +50,7 @@ const VerificationInfo  = lazy(() => import("@/pages/back-office/dashboard/verif
 const PersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/personnel/Personnel"));
 const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-personnel/EditPersonnelInfo"));
 const AllAgents = lazy(() => import("@/pages/back-office/all-agents/AllAgents"));
+const AgentInfo = lazy(() => import("@/pages/back-office/all-agents/AgentInfo"));
 const AllAddresses = lazy(() => import("@/pages/back-office/all-addresses/AllAddresses"));
 const AdminLoginPage = lazy(() => import("@/pages/back-office/auth/AdminLoginPage"));
 
@@ -219,6 +220,10 @@ export const routes = [
       {
         path: "all-agents",
         element: <AllAgents />,
+      },
+      {
+        path: "all-agents/agent-info/:id",
+        element: <AgentInfo />,
       },
     ]
   },
