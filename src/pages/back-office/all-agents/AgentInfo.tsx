@@ -78,35 +78,41 @@ import { Button } from "@/components/ui/button";
   
     return (
       <>
-        <div className="bg-white p-5 rounded-lg">
-          <Table>
-            <TableBody className="h-8">
-              <TableRow>
-                <TableCell className="border-r-[1px] border-gray-200 bg-gray-100">
-                  <span className="text-blue-500 font-bold">Name:</span> {agent?.agentName}
-                </TableCell>
-                <TableCell>
-                  <span className="text-blue-500 font-bold">Address:</span> {agent?.address}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="border-r-[1px] border-gray-200">
-                  <span className="text-blue-500 font-bold">Email:</span> {agent?.email}
-                </TableCell>
-                <TableCell className="bg-gray-100">
-                  <span className="text-blue-500 font-bold">State:</span> {agent?.state}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="border-r-[1px] border-gray-200 bg-gray-100">
-                  <span className="text-blue-500 font-bold">Access Code:</span> {agent?.accessCode}
-                </TableCell>
-                <TableCell>
-                  <span className="text-blue-500 font-bold">LGA:</span> {agent?.lga}
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+        <div className="grid grid-cols-2 gap-5">
+            <div className="">
+                <h1>Assign Address(es) to Agent: <span className="text-blue-400">{agent?.agentName}</span></h1>
+                <p className="mt-5">All Addresses are being filtered based on Agent's State and pending status of the Address.</p>
+            </div>
+            <div className="bg-white p-5 rounded-lg">
+            <Table>
+                <TableBody className="h-8">
+                <TableRow>
+                    <TableCell className="border-r-[1px] border-gray-200">
+                    <span className="text-blue-500 font-bold">Name:</span> {agent?.agentName}
+                    </TableCell>
+                    <TableCell>
+                    <span className="text-blue-500 font-bold">Address:</span> {agent?.address}
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell className="border-r-[1px] border-gray-200">
+                    <span className="text-blue-500 font-bold">Email:</span> {agent?.email}
+                    </TableCell>
+                    <TableCell className="">
+                    <span className="text-blue-500 font-bold">State:</span> {agent?.state}
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell className="border-r-[1px] border-gray-200">
+                    <span className="text-blue-500 font-bold">Access Code:</span> {agent?.accessCode}
+                    </TableCell>
+                    <TableCell>
+                    <span className="text-blue-500 font-bold">LGA:</span> {agent?.lga}
+                    </TableCell>
+                </TableRow>
+                </TableBody>
+            </Table>
+            </div>
         </div>
   
         <div className="grid grid-cols-2 gap-5 mt-5">

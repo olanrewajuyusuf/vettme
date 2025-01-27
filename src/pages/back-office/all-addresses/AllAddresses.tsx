@@ -114,11 +114,11 @@ const AllAddresses = () => {
                                 <TableCell>
                                     <Badge
                                         className={`pointer-events-none ${
-                                        address.status === "verified"
+                                        address.status === "VERIFIED"
                                             ? "bg-green-400"
-                                            : address.status === "pending"
+                                            : address.status === "PENDING"
                                             ? "border-yellow-500 border-[1px] text-yellow-500 bg-transparent"
-                                            : address.status === "failed"
+                                            : address.status === "FAILED"
                                             ? "bg-red-500"
                                             : "bg-orange-400"
                                         }`}
