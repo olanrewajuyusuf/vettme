@@ -2,7 +2,7 @@ import DeleteVerification from "@/components/modals/DeleteVerification";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { CopyIcon, TrashIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,27 +11,79 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useNavigate, useParams } from "react-router-dom";
-import { personnels } from "@/utils/data";
+import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { useFetchBatchesResponse, useFetchBatchesResponseCards } from "@/hooks/company";
+import moment from "moment";
+
+interface ResponseProps {
+  id: string,
+  status: string,
+  submittedAt: string,
+  responses: {
+    piFullName: string,
+    piEmailAddress: string,
+  },
+}
+
+interface CardsProps {
+  max: number,
+  status: string,
+  endDate: string,
+}
 
 export default function Verification() {
-  const navigate = useNavigate();
-  const { verification_id } = useParams();
-  const id = parseInt(verification_id!);
+  const { id } = useParams();
   const { toast } = useToast();
+  const [ batchesResponse, setBatchesResponse ] = useState<ResponseProps[] | null>(null);
+  const [ cards, setCards ] = useState<CardsProps | null>(null);
+  const { fetchBatchesResponse } = useFetchBatchesResponse();
+  const { fetchBatchesResponseCards } = useFetchBatchesResponseCards();
+  // const navigate = useNavigate();
+
+  useEffect(() => {
+    const getResponse = async () => {
+      try {
+        const data = await fetchBatchesResponse(id as string);
+        setBatchesResponse(data.data);
+      } catch (error) {
+        console.error("Failed to get batches response:", error);
+      }
+    };
+
+    getResponse();
+
+    const getResponseCards = async () => {
+      try {
+        const data = await fetchBatchesResponseCards(id as string);
+        setCards(data.data);
+        console.log(data);
+        
+      } catch (error) {
+        console.error("Failed to get batches response:", error);
+      }
+    };
+
+    getResponseCards();
+}, [fetchBatchesResponse, id, fetchBatchesResponseCards]);
+
   const headers = [
     {
       title: "Status",
-      text: "In Progress",
+      text: cards?.status === 'PENDING' ?
+        'Pending':
+        cards?.status === "COMPLETED" ?
+        'Successful':
+        cards?.status === "FAILED" ?
+        'Failed': 'In Progress',
     },
     {
       title: "No of Personnel",
-      text: "28",
+      text: cards?.max,
     },
     {
       title: "Completion Date",
-      text: "22/02/2024",
+      text: moment(cards?.endDate).format("MMM DD, YYYY"),
     },
     {
       title: "Completion",
@@ -40,7 +92,6 @@ export default function Verification() {
   ];
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const data = personnels[id - 1];
   return (
     <>
       {deleteModalOpen && (
@@ -95,38 +146,38 @@ export default function Verification() {
             <TableRow>
               <TableHead></TableHead>
               <TableHead>Personnel Name</TableHead>
-              <TableHead>Position</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Nationality</TableHead>
               <TableHead>Date Submitted</TableHead>
               <TableHead>Status</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.data.map((item, idx) => (
+            {batchesResponse?.map((item: any) => (
               <TableRow
-                key={idx}
-                onClick={() =>
-                  navigate(`personnel/${idx + 1}`, { state: item })
-                }
+                key={item.id}
+                // onClick={() =>
+                //   navigate(`personnel/${idx + 1}`, { state: item })
+                // }
               >
                 <TableCell>
                   <span className="w-7 h-7 flex items-center justify-center bg-gray-400 font-medium rounded-lg text-xs">
-                    {`${item.name.split("")[0].toUpperCase()}${item.name
-                      .split("")[1]
-                      .toUpperCase()}`}
+                    {item.responses.piFullname.slice(0, 2).toUpperCase()}
                   </span>
                 </TableCell>
-                <TableCell className="font-medium">{item.name}</TableCell>
-                <TableCell>{item.position}</TableCell>
-                <TableCell>{item.date}</TableCell>
+                <TableCell className="font-medium">{item.responses.piFullname}</TableCell>
+                <TableCell>{item.responses.piEmailAddress}</TableCell>
+                <TableCell>{item.responses.piNationality}</TableCell>
+                <TableCell>{moment(item.submittedAt).format("MMM DD, YYYY")}</TableCell>
                 <TableCell>
                   <Badge
                     className={`pointer-events-none ${
-                      item.status === "verified"
+                      item.status === "VERIFIED"
                         ? "bg-green-400"
-                        : item.status === "pending"
+                        : item.status === "PENDING"
                         ? "border-yellow-500 border-[1px] text-yellow-500 bg-transparent"
-                        : item.status === "failed"
+                        : item.status === "FAILED"
                         ? "bg-red-500"
                         : "bg-orange-400"
                     }`}

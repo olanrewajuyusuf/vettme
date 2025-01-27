@@ -5,12 +5,12 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-  } from "@/components/ui/table";
-  import loader from "@/assets/loader.svg";
-  import { useFetchAddresses, useFetchAgents } from "@/hooks/backOffice";
-  import { useEffect, useState } from "react";
-  import { useParams } from "react-router-dom";
-  import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
+} from "@/components/ui/table";
+import loader from "@/assets/loader.svg";
+import { useFetchAddresses, useFetchAgents } from "@/hooks/backOffice";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
   
   interface AgentProps {
@@ -80,7 +80,13 @@ import { Button } from "@/components/ui/button";
       <>
         <div className="grid grid-cols-2 gap-5">
             <div className="">
-                <h1>Assign Address(es) to Agent: <span className="text-blue-400">{agent?.agentName}</span></h1>
+                <h1 className="text-2xl">Assign Address(es) to Agent: 
+                    <span 
+                    className="text-sm text-white bg-blue-400 px-3 py-2 ml-2 rounded-full"
+                    >
+                        {agent?.agentName}
+                    </span>
+                </h1>
                 <p className="mt-5">All Addresses are being filtered based on Agent's State and pending status of the Address.</p>
             </div>
             <div className="bg-white p-5 rounded-lg">

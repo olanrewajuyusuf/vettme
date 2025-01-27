@@ -93,6 +93,91 @@ export const useFetchPayment = () => {
 
   return { fetchPayment };
 };
+
+// Getting Verification Batches
+export const useFetchBatches = () => {
+  const fetchBatches = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const companyId = localStorage.getItem("companyId");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification/${companyId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Verification Batches:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Verification Batches");
+    }
+  }, []);
+
+  return { fetchBatches };
+};
+
+// Getting Verification Batches responses
+export const useFetchBatchesResponse = () => {
+  const fetchBatchesResponse = useCallback(async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification-response/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Verification response:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Verification response");
+    }
+  }, []);
+
+  return { fetchBatchesResponse };
+};
+
+// Getting Verification Batches responses cards
+export const useFetchBatchesResponseCards = () => {
+  const fetchBatchesResponseCards = useCallback(async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification/form/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Verification response cards:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Verification response cards");
+    }
+  }, []);
+
+  return { fetchBatchesResponseCards };
+};
 // export const useFetchCompany = (id: string) => {
 //   const fetchCompany = async () => {
 //     try {

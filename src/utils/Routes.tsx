@@ -140,7 +140,7 @@ export const routes = [
         element: <Account />,
       },
       {
-        path: "verifications/:verification_id",
+        path: "verifications/:id",
         element: <Verification />,
       },
       {
