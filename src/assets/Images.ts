@@ -9,6 +9,7 @@ import phone from "@/assets/images/phone.png";
 import email from "@/assets/images/email.png";
 import sad from "@/assets/images/sad.png";
 import verify from "@/assets/images/verify.png";
+import key from "@/assets/images/key.png";
 
 const images = {
   authImg,
@@ -21,7 +22,8 @@ const images = {
   phone,
   email,
   sad,
-  verify
+  verify,
+  key
 };
 
 export default images;

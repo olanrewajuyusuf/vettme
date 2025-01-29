@@ -1,20 +1,16 @@
 import images from "@/assets/Images";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 
 export default function EmailVerified() {
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1>You're good to go!</h1>
+      <h1>Activation process...</h1>
       <div className="mt-10 w-[300px] flex items-center justify-center flex-col text-center">
-        <img src={images.thumb} alt="Email" className="w-[150px]" />
+        <img src={images.key} alt="Email" className="w-[150px]" />
         <p className="mt-4">
-          Your account creation process is complete and your account has been
-          activated successfully. Please login with your credentials
+          Your email has been verified successfully. 
+          Kindly wait for the activation email within 24 hours while your 
+          Company's Compliance being verify by our back office.
         </p>
-        <Link to="/auth/login" className="mt-6">
-          <Button className="red-gradient">Login</Button>
-        </Link>
       </div>
     </div>
   );

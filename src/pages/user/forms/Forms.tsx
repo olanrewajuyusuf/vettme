@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { createFormResponse } from "@/api/form";
 import Spinner from "@/components/Spinner";
+import { baseUrl } from "@/api/baseUrl";
 
 interface FormData {
   formId: string;
@@ -50,7 +51,7 @@ export default function Forms() {
   })
   const url = window.location.href.split("/")[4];
   const [visibleFields, setVisibleFields] = useState<string[]>([]);
-  const [createdResponse, setCreatedResponse] = useState<any | null>(null);
+  // const [createdResponse, setCreatedResponse] = useState<any | null>(null);
   const [formData, setFormData] = useState<FormData>({
     formId: `${url}`,
     responses: {}
@@ -78,7 +79,7 @@ export default function Forms() {
 
     if (createdResponse){
       console.log("Created Form Response:", createdResponse);
-      setCreatedResponse(createdResponse)
+      // setCreatedResponse(createdResponse)
       setModalOpen(true);
     } else {
       console.error("Response creaton failed or no data returned.")
@@ -89,7 +90,7 @@ export default function Forms() {
     // Fetch the form visibility data from the backend
     axios
       .get(
-        `https://vettme-pro.onrender.com/api/pro/verification/form/${url}`,
+        `${baseUrl}/verification/form/${url}`,
         {
           headers: {
             Authorization:
@@ -109,7 +110,7 @@ export default function Forms() {
       .catch((error) => {
         console.error("Error fetching visibility data:", error);
       });
-  }, [url]);
+  }, [url, token]);
 
   const personalInfoFields: Field[] = [
     { id: "piFullname", label: "Full Name" },

@@ -1,9 +1,32 @@
 import Skeleton from "@/components/Skeleton";
-import { Suspense } from "react";
-import { Outlet } from "react-router-dom";
+import { Suspense, useEffect } from "react";
+import { useNavigate, Outlet } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 export default function BackOfficeIndex() {
-  // const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const adminToken = sessionStorage.getItem("adminToken");    
+
+    if (!adminToken) {
+      navigate("/auth/back-office/login");
+      return;
+    }
+
+    try {
+      const decodedToken: { exp: number } = jwtDecode(adminToken);
+      const tokenExpiry = decodedToken.exp;
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (currentTime > tokenExpiry) {
+        navigate("/auth/back-office/login");
+      }
+    } catch (error) {
+      console.error("Invalid token:", error);
+      navigate("/auth/back-office/login");
+    }
+  }, [navigate]);
 
   return (
     <Suspense
@@ -15,9 +38,5 @@ export default function BackOfficeIndex() {
     >
       <Outlet />
     </Suspense>
-  ) 
-  // : (
-  //   <Navigate to="/auth/back-office/login" />
-  // );
+  );
 }
-

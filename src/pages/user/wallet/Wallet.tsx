@@ -9,99 +9,79 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import loader from "@/assets/loader.svg";
+import { useFetchPayment } from "@/hooks/company";
+import { useUser } from "@/utils/context/useUser";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const transactions = [
-  {
-    type: "Account Deposit",
-    amount: "N38,365",
-    date: "23/05/2023 09:00 PM",
-    status: 2,
-  },
-  {
-    type: "Account Deposit",
-    amount: "N38,365",
-    date: "23/05/2023 09:00 PM",
-    status: 1,
-  },
-  {
-    type: "Account Deposit",
-    amount: "N38,365",
-    date: "23/05/2023 09:00 PM",
-    status: 3,
-  },
-  {
-    type: "Account Deposit",
-    amount: "N38,365",
-    date: "23/05/2023 09:00 PM",
-    status: 3,
-  },
-  {
-    type: "Account Deposit",
-    amount: "N38,365",
-    date: "23/05/2023 09:00 PM",
-    status: 1,
-  },
-  {
-    type: "Account Deposit",
-    amount: "N38,365",
-    date: "23/05/2023 09:00 PM",
-    status: 1,
-  },
-  {
-    type: "Account Deposit",
-    amount: "N38,365",
-    date: "23/05/2023 09:00 PM",
-    status: 2,
-  },
-];
+// const metrics = [
+//   {
+//     month: "January",
+//     amount: "N38,365",
+//   },
+//   {
+//     month: "February",
+//     amount: "N38,365",
+//   },
 
-const metrics = [
-  {
-    month: "January",
-    amount: "N38,365",
-  },
-  {
-    month: "February",
-    amount: "N38,365",
-  },
+//   {
+//     month: "March",
+//     amount: "N38,365",
+//   },
+//   {
+//     month: "April",
+//     amount: "N38,365",
+//   },
 
-  {
-    month: "March",
-    amount: "N38,365",
-  },
-  {
-    month: "April",
-    amount: "N38,365",
-  },
+//   {
+//     month: "May",
+//     amount: "N38,365",
+//   },
+//   {
+//     month: "June",
+//     amount: "N38,365",
+//   },
 
-  {
-    month: "May",
-    amount: "N38,365",
-  },
-  {
-    month: "June",
-    amount: "N38,365",
-  },
+//   {
+//     month: "July",
+//     amount: "N38,365",
+//   },
+// ];
 
-  {
-    month: "July",
-    amount: "N38,365",
-  },
-];
+interface PaymentProps {
+  type: string,
+  amount: number,
+  date: string,
+  status: number,
+}
 
 export default function Wallet() {
-
-
+  const [payments, setPayments] = useState<PaymentProps[] | []>([]);
+  const { fetchPayment } = useFetchPayment();
+  const { company } = useUser();
   const [topupModalOpen, setTopupModalOpen] = useState(false);
+
+  useEffect(()=> {
+    const getPayment = async () => {
+      try {
+        const data = await fetchPayment();
+          setPayments(data.transactions);
+      } catch (error) {
+        console.error("Failed to fetch transaction history:", error);
+      }
+    };
+
+    getPayment();
+  }, [fetchPayment])
+
   return (
     <>
       {<TopupModal isOpen={topupModalOpen} setIsOpen={setTopupModalOpen} />}
       <div className="w-full mb-6 rounded-xl wallet py-4 px-6 flex justify-between items-center text-white">
         <div>
           <p className="text-sm">Available Balance</p>
-          <h1>38,920</h1>
+          <h1>{company?.balance.toFixed(2)}</h1>
         </div>
         <Button
           className="bg-white text-base-clr hover:bg-gray-100"
@@ -120,6 +100,16 @@ export default function Wallet() {
             </div>
           </div>
 
+          {payments === null ? (
+              <div className="w-full h-[500px] flex items-center justify-center">
+                <img src={loader} alt="" className="w-10" />
+              </div>
+          ) :
+          payments.length === 0 ? (
+              <div className="w-full h-[300px] flex justify-center items-center">
+                  <h3>No Transaction history.</h3>
+              </div>
+          ) : (
           <Table>
             <TableHeader className="bg-stroke-clr">
               <TableRow>
@@ -130,7 +120,7 @@ export default function Wallet() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {transactions.map((item, idx) => (
+              {payments.map((item, idx) => (
                 <TableRow key={idx}>
                   <TableCell>{item.type}</TableCell>
                   <TableCell>{item.amount}</TableCell>
@@ -155,7 +145,7 @@ export default function Wallet() {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </Table>)}
         </div>
         <div className="basis-1/3 bg-white border-[1px] border-stroke-clr rounded-xl">
           <div className="p-4 flex items-center justify-between">
@@ -166,7 +156,11 @@ export default function Wallet() {
             </div>
           </div>
 
-          <Table>
+          <div className="w-full h-[300px] flex justify-center items-center">
+                  <h3>No Metric data.</h3>
+              </div>
+
+          {/* <Table>
             <TableHeader className="bg-stroke-clr">
               <TableRow>
                 <TableHead>Month</TableHead>
@@ -181,7 +175,7 @@ export default function Wallet() {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </Table> */}
         </div>
       </div>
     </>

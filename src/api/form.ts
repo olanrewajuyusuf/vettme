@@ -1,7 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-// import { baseUrl } from "./baseUrl";
-import { SetStateAction } from "react";
+import { baseUrl } from "./baseUrl";
+// import { SetStateAction } from "react";
 // import { headers } from "@/lib/placeholderData";
 
 // Sign in
@@ -58,7 +58,7 @@ export const CreateForm = async (
 
   try {
     const res = await axios.post(
-      "https://vettme-pro.onrender.com/api/pro/verification/create-form",
+      `${baseUrl}/verification/create-form`,
       data,
       {
         headers: {
@@ -68,7 +68,7 @@ export const CreateForm = async (
       }
     );
 
-    console.log("Server Response:", res); // Log entire response
+    console.log("Server Response:", res);
     console.log("Response Data:", res.data); // Log only data
 
     if (res.data) {
@@ -92,7 +92,7 @@ export const CreateForm = async (
       console.error("Response status:", error.response.status);
     }
 
-    return null; // Return null on error
+    return null;
   } finally {
     setIsLoading(false);
   }
@@ -110,7 +110,7 @@ export const createFormResponse = async (
 
   try {
     const res = await axios.post(
-      "https://vettme-pro.onrender.com/api/pro/verification-response/",
+      `${baseUrl}/verification-response`,
       data,
       {
         headers: {
