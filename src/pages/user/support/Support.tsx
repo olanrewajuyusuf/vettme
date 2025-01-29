@@ -81,7 +81,7 @@ const Support = () => {
     if (socket) {
       socket.emit("addUser", companyId);
       socket.on("getUsers", (users: any[]) => {
-        // console.log(users);
+        console.log(users);
       });
     }
   }, [socket, companyId]);

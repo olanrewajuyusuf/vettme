@@ -4,9 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 export default function AppIndex() {
-  const navigate = useNavigate();
-  console.log('AppIndex');
-  
+  const navigate = useNavigate();  
 
   useEffect(() => {
     const token = localStorage.getItem("token");

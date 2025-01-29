@@ -8,7 +8,7 @@ import {
   ReaderIcon,
   // SpeakerModerateIcon,
 } from "@radix-ui/react-icons";
-import path from "path";
+// import path from "path";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
