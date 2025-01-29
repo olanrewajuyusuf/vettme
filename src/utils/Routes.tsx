@@ -15,7 +15,6 @@ import AgentFormIndex from "@/pages/agent-form";
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
 import UserProvider from "./context/UserProvider";
-import VerificationsBatch from "@/pages/back-office/dashboard/verification-batch/VerificationsBatch";
 // import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
@@ -47,7 +46,8 @@ const Forms = lazy(() => import("@/pages/user/forms/Forms"));
 
 const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Dashboard"));
 const Batches  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/Batches"));
-const VerificationInfo  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationsBatch"));
+const VerificationsBatch  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationsBatch"));
+// import VerificationsBatch from "@/pages/back-office/dashboard/verification-batch/VerificationsBatch";
 const PersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/personnel/Personnel"));
 const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-personnel/EditPersonnelInfo"));
 const AllAgents = lazy(() => import("@/pages/back-office/all-agents/AllAgents"));
