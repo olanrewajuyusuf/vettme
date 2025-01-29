@@ -8,6 +8,7 @@ import {
   ReaderIcon,
   // SpeakerModerateIcon,
 } from "@radix-ui/react-icons";
+import path from "path";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -35,6 +36,11 @@ const navLinks = [
     title: "Guarantor Form",
     icon: <ChatBubbleIcon />,
   },
+  {
+    path: "/back-office/all-chats",
+    title: "Support",
+    icon: <ReaderIcon />
+  }
 ];
 
 export default function DashboardLayout({ children }: LayoutProps) {

@@ -1,23 +1,47 @@
 import images from "@/assets/Images";
-import { personnelsInfo } from "@/lib/placeholderData";
+// import { personnelsInfo } from "@/lib/placeholderData";
 import { useNavigate, useParams } from "react-router-dom";
 import { PiRecordFill } from "react-icons/pi";
 import { getGeolocation } from "@/lib/geolocation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Location } from "@/lib/geolocation";
 import { useVideoContext } from "@/hooks/useVideoContext";
 import { VerifiedAddress } from "@/api/address";
 import Spinner from "@/components/Spinner";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import axios from "axios";
+
+interface Address {
+  id: string,
+  address: string,
+  country: string,
+  lga: string,
+  state: string,
+  personnelName: string,
+  personnelId: string
+}
 
 const AddressVettForm = () => {
-  const [userLocation, setUserLocation] = useState<Location | null>(null);
+  // const [userLocation, setUserLocation] = useState<Location | null>(null);
+  const [address, setAddress] = useState<Address | null>(null);
   const { video, setVideo } = useVideoContext();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  
+
   const { personnel_id } = useParams();
-  const info = personnelsInfo.find(x => x.id === personnel_id);
+  // const info = personnelsInfo.find(x => x.id === personnel_id);
+
+  useEffect(() => {
+    const getAddresses = async () => {
+      try{
+        const res = await axios.get(`https://vettme-pro.onrender.com/api/pro/address/${personnel_id}`)
+        setAddress(res.data.data)
+      }catch(err){
+        console.error(err)
+      }
+    }
+    getAddresses()
+  }, [])
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -33,26 +57,82 @@ const AddressVettForm = () => {
     }
   };
   
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   const personnelName = `${address?.personnelName}`
+  //   const addressId = `${address?.id}`
+  //   const fieldAgentId = localStorage.getItem("fieldAgentId")
+
+  //   getGeolocation(
+  //     async (location, accuracy) => {
+  //       console.log('Latitude:', location.lat, 'Longitude:', location.lon, 'Accuracy:', accuracy);
+  //       setUserLocation(location);
+  //     },
+  //     (errorMessage) => {
+  //       alert(`Error: ${errorMessage}`);
+  //     }
+  //   );
+
+    
+  //   const initialLocation: Location[] = JSON.parse(localStorage.getItem('savedLocations') || '[]');
+
+  //   const form = e.target as HTMLFormElement;
+  //   const data = Object.fromEntries(new FormData(form));
+  //   const newData = {...data, personnelName, addressId, fieldAgentId, initialLocation, finalLocation: userLocation, video}
+
+  //   console.log(newData);
+  //   VerifiedAddress(newData, setIsLoading, navigate);
+  // }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    getGeolocation(
-      async (location, accuracy) => {
-        console.log('Latitude:', location.lat, 'Longitude:', location.lon, 'Accuracy:', accuracy);
-        setUserLocation(location);
-      },
-      (errorMessage) => {
-        alert(`Error: ${errorMessage}`);
-      }
-    );
-    const initialLocation: Location[] = JSON.parse(localStorage.getItem('savedLocations') || '[]');
-
-    const form = e.target as HTMLFormElement;
-    const data = Object.fromEntries(new FormData(form));
-    const newData = {...data, initialLocation, finalLocation: userLocation, video}
-
-    console.log(newData);
-    VerifiedAddress(newData, setIsLoading, navigate);
-  }
+  
+    const personnel = `${address?.personnelName}`;
+    const addressId = `${address?.id}`;
+    const fieldAgentId = localStorage.getItem("fieldAgentId");
+  
+    // Call getGeolocation and wait for the result before proceeding with form submission
+    const location = await new Promise<Location | null>((resolve, reject) => {
+      getGeolocation(
+        (location, accuracy) => {
+          console.log('Latitude:', location.lat, 'Longitude:', location.lon, 'Accuracy:', accuracy);
+          resolve(location);
+        },
+        (errorMessage) => {
+          alert(`Error: ${errorMessage}`);
+          reject(new Error(errorMessage));
+        }
+      );
+    });
+  
+    // If geolocation was successful, proceed with creating the form data
+    if (location) {
+      const initialLocation: Location[] = JSON.parse(localStorage.getItem('savedLocations') || '[]');
+      
+      const form = e.target as HTMLFormElement;
+      const data = Object.fromEntries(new FormData(form));
+      
+      // Creating newData after ensuring userLocation is set
+      const newData = {
+        ...data,
+        personnel,
+        addressId,
+        fieldAgentId,
+        initialLocation,
+        finalLocation: location,  // Using the fetched location
+        video
+      };
+  
+      console.log(newData);
+  
+      // Proceed with calling VerifiedAddress after all data is ready
+      VerifiedAddress(newData, setIsLoading, navigate);
+    } else {
+      console.error('Geolocation failed');
+    }
+  };
+  
   return (
     <div className="min-h-[100svh] py-10">
         <form onSubmit={handleSubmit} className="address w-[90%] max-w-[500px] rounded-2xl mx-auto border-[1px] border-destructive overflow-hidden">
@@ -65,9 +145,9 @@ const AddressVettForm = () => {
             <h3 className="text-xl font-light mb-5 pl-5 pt-5 pb-2 shadow-sm shadow-gray-200 text-white border-b-[1px] border-gray-200">Kindly provide required informations!</h3>
             <div className="p-5 text-slate-100">
                 <p>Personnel's Name:</p>
-                <div className="pb-2 pl-2 mb-5 mt-2 font-light border-b-[1px] border-l-[1px] text-slate-300">{info?.name}</div>
+                <div className="pb-2 pl-2 mb-5 mt-2 font-light border-b-[1px] border-l-[1px] text-slate-300">{address?.personnelName}</div>
                 <p>Address:</p>
-                <div className="pb-2 pl-2 mt-2 font-light border-b-[1px] border-l-[1px] py-2 text-slate-300">{info?.Address}</div>
+                <div className="pb-2 pl-2 mt-2 font-light border-b-[1px] border-l-[1px] py-2 text-slate-300">{address?.address}, {address?.lga}, {address?.state}, {address?.country}</div>
             </div>
             <div className="px-5">
                 <label htmlFor="landmark" className="text-white text-[14px]">Landmark</label>
