@@ -7,7 +7,7 @@ import { baseUrl } from "@/api/baseUrl";
 export const useFetchCompany = () => {
     const fetchCompany = useCallback(async () => {
     try {
-      const token = localStorage.getItem("adminToken");
+      const token = sessionStorage.getItem("adminToken");
 
       if (!token) {
         throw new Error("Authentication token is missing");
@@ -18,7 +18,6 @@ export const useFetchCompany = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      toast.success("Company info fetched successfully");
       return res.data;
     } catch (error: any) {
       console.error("Error fetching company info:", error);
@@ -36,7 +35,7 @@ export const useActivateCompany = () => {
         data: any,
     ) => {
         try {
-          const token = localStorage.getItem("adminToken");
+          const token = sessionStorage.getItem("adminToken");
   
           if (!token) {
             throw new Error("Authentication token is missing");
@@ -73,7 +72,7 @@ export const useDeleteCompany = () => {
   const deleteCompany = useCallback(
     async (id: string) => {
       try {
-        const token = localStorage.getItem("adminToken");
+        const token = sessionStorage.getItem("adminToken");
 
         if (!token) {
           throw new Error("Authentication token is missing");
@@ -104,7 +103,7 @@ export const useDeleteCompany = () => {
 export const useFetchVerificationBatches = (id: string | undefined) => {
   const fetchVerificationBatches = useCallback(async () => {
   try {
-    const token = localStorage.getItem("adminToken");
+    const token = sessionStorage.getItem("adminToken");
 
     if (!token) {
       throw new Error("Authentication token is missing");
@@ -115,7 +114,6 @@ export const useFetchVerificationBatches = (id: string | undefined) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    toast.success("Verification Batches fetched successfully");
     return res.data;
   } catch (error: any) {
     console.error("Error fetching company info:", error);
@@ -130,7 +128,7 @@ return { fetchVerificationBatches };
 export const useFetchAddresses = () => {
   const fetchAddresses = useCallback(async () => {
   try {
-    const token = localStorage.getItem("adminToken");
+    const token = sessionStorage.getItem("adminToken");
 
     if (!token) {
       throw new Error("Authentication token is missing");
@@ -141,7 +139,6 @@ export const useFetchAddresses = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    toast.success("Addresses fetched successfully");
     return res.data;
   } catch (error: any) {
     console.error("Error fetching addresses:", error);
@@ -156,7 +153,7 @@ return { fetchAddresses };
 export const useFetchAgents = () => {
   const fetchAgents = useCallback(async () => {
   try {
-    const token = localStorage.getItem("adminToken");
+    const token = sessionStorage.getItem("adminToken");
 
     if (!token) {
       throw new Error("Authentication token is missing");
@@ -167,7 +164,6 @@ export const useFetchAgents = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    toast.success("Field agents fetched successfully");
     return res.data;
   } catch (error: any) {
     console.error("Error fetching field agents:", error);
@@ -183,7 +179,7 @@ export const useDeleteAgent = () => {
   const deleteAgent = useCallback(
     async (id: string) => {
       try {
-        const token = localStorage.getItem("adminToken");
+        const token = sessionStorage.getItem("adminToken");
 
         if (!token) {
           throw new Error("Authentication token is missing");
@@ -208,6 +204,95 @@ export const useDeleteAgent = () => {
   );
   return { deleteAgent };
 }
+
+// Assign addresses to agents
+export const useAssignAddress = () => {
+  const assignAddress = useCallback(
+    async (
+      data: any,
+  ) => {
+      try {
+        const token = sessionStorage.getItem("adminToken");
+
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const res = await axios.put(
+          `${baseUrl}/field-agent/assign-agent`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        toast.success("Address(es) assigned successfully");
+        return res.data;
+      } catch (error: any) {
+        console.error("Error activating company:", error);
+        toast.error(
+          error?.response?.data?.message || "Cannot assign address"
+        );
+        throw new Error(
+          error?.response?.data?.message || "Cannot assign address"
+        );
+      }
+    },[] 
+  );
+  return { assignAddress };
+};
+
+// Getting all assigned addresses
+export const useFetchAssignedAddress = () => {
+  const fetchAssignedAddress = useCallback(async (id: string) => {
+  try {
+    const token = sessionStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/address/assigned/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching assigned addresses:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch assigned addresses");
+    throw new Error(error?.response?.data?.message || "Cannot fetch assigned addresses");
+  }
+}, []);
+return { fetchAssignedAddress };
+};
+
+// Getting all assigned addresses
+export const useFetchCardsData = () => {
+  const fetchCardsData = useCallback(async () => {
+  try {
+    const token = sessionStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/verification/count-all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching cards data:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch cards data");
+    throw new Error(error?.response?.data?.message || "Cannot fetch cards data");
+  }
+}, []);
+return { fetchCardsData };
+};
 
 
 // import { axiosInstance } from "@/api/axiosConfig";

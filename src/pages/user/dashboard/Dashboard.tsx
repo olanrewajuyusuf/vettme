@@ -91,7 +91,7 @@ export default function Dashboard() {
 
   return (
     <div className="">
-      <div className="grid grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-4 gap-6 mb-6">
         {cards.map((card, idx) => (
           <div
             key={idx}

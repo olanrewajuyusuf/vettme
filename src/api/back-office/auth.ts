@@ -24,7 +24,7 @@ export const AdminLogin = async (
       // Save token to local storage
       const token = res.data.token;
 
-      localStorage.setItem("adminToken", token);
+      sessionStorage.setItem("adminToken", token);
     })
     .catch((err) => {
       toast.error(err?.response?.data?.message || "Unable to log in", {

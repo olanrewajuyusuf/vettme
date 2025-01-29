@@ -35,7 +35,6 @@ import moment from "moment";
       const getBatchesInfo = async () => {
         try {
           const data = await fetchVerificationBatches();
-            console.log(data)
             setGetBatches(data.data);
         } catch (error) {
           console.error("Failed to fetch company info:", error);
@@ -94,7 +93,10 @@ import moment from "moment";
             </TableHeader>
             <TableBody>
               {getBatches.map((batch: batchesProps) => (
-                <TableRow key={batch.id} onClick={() => navigate(`verification/${batch.id}`)}>
+                <TableRow
+                 key={batch.id} 
+                 onClick={() => navigate(`personnels/${batch.id}`)}
+                 >
                   <TableCell className=" font-medium uppercase flex items-center gap-2">
                     <div className={`w-6 h-6 grid place-items-center text-white rounded-sm bg-purple-600`}>
                         {batch.title.slice(0, 2)}

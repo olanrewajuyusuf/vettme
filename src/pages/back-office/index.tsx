@@ -7,15 +7,15 @@ export default function BackOfficeIndex() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
+    const adminToken = sessionStorage.getItem("adminToken");    
 
-    if (!token) {
+    if (!adminToken) {
       navigate("/auth/back-office/login");
       return;
     }
 
     try {
-      const decodedToken: { exp: number } = jwtDecode(token);
+      const decodedToken: { exp: number } = jwtDecode(adminToken);
       const tokenExpiry = decodedToken.exp;
       const currentTime = Math.floor(Date.now() / 1000);
 

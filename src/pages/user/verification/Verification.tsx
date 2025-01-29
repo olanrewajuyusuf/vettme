@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/table";
 import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import loader from "@/assets/loader.svg";
+import { Input } from "@/components/ui/input";
 import { useFetchBatchesResponse, useFetchBatchesResponseCards } from "@/hooks/company";
 import moment from "moment";
 
@@ -57,8 +59,6 @@ export default function Verification() {
       try {
         const data = await fetchBatchesResponseCards(id as string);
         setCards(data.data);
-        console.log(data);
-        
       } catch (error) {
         console.error("Failed to get batches response:", error);
       }
@@ -141,6 +141,33 @@ export default function Verification() {
       </div>
 
       <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden">
+        <div className="w-full py-4 flex justify-between items-center border-b-[1px] border-stroke-clr px-5">
+          <div className="flex items-center gap-3">
+            <p>Filter by: </p>
+            <select name="" id="" className="btn px-3">
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
+          <Input
+            type="text"
+            placeholder="Search by verification title"
+            className="max-w-sm"
+          />
+        </div>
+
+        {batchesResponse === null ? (
+          <div className="w-full h-[300px] flex items-center justify-center">
+            <img src={loader} alt="" className="w-10" />
+          </div>
+        ) :
+        batchesResponse?.length === 0 ? (
+          <div className="w-full h-[300px] flex justify-center items-center">
+            <h3>No Verification Batch available.</h3>
+          </div>
+        ) : (
         <Table>
           <TableHeader className="bg-stroke-clr">
             <TableRow>
@@ -191,7 +218,7 @@ export default function Verification() {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </Table>)}
       </div>
     </>
   );

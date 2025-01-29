@@ -32,9 +32,7 @@ const AllAddresses = () => {
     useEffect(() => {
         const getAddresses = async () => {
           try {
-            const data = await fetchAddresses();
-            console.log(data);
-            
+            const data = await fetchAddresses();            
             setAddresses(data.data);
           } catch (error) {
             console.error("Failed to fetch company info:", error);
@@ -42,10 +40,7 @@ const AllAddresses = () => {
         };
     
         getAddresses();
-    }, [fetchAddresses]);
-
-    console.log(addresses);
-    
+    }, [fetchAddresses]);    
 
     return (
         <div>

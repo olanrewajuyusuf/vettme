@@ -49,7 +49,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (currentTime > tokenExpiry) {
-        navigate("/auth/back-office/login");
+        navigate("/auth/login");
         return;
       }
     } catch (error) {

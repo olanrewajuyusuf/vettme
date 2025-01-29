@@ -1,26 +1,29 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { personnelsData } from "@/lib/placeholderData";
-import { useNavigate, useParams } from "react-router-dom";
-import { TrashIcon } from "@radix-ui/react-icons";
-import { Badge } from "@/components/ui/badge";
-import Pagination from "../pagination";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
+// import { personnelsData } from "@/lib/placeholderData";
+// import { useNavigate, useParams } from "react-router-dom";
+// import { TrashIcon } from "@radix-ui/react-icons";
+// import { Badge } from "@/components/ui/badge";
+// import Pagination from "../pagination";
 
 const PersonnelsLog = () => {
-  const navigate = useNavigate();
-  const { verification_id } = useParams();
-  const id = parseInt(verification_id!);
+  // const navigate = useNavigate();
+  // const { verification_id } = useParams();
+  // const id = parseInt(verification_id!);
   
-  const data = personnelsData[id - 1];
+  // const data = personnelsData[id - 1];
   return (
     <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden">
-        <Table>
+      <div className="w-full h-[300px] flex justify-center items-center">
+        <h3>No Personnels data.</h3>
+      </div>
+        {/* <Table>
           <TableHeader className="bg-stroke-clr">
             <TableRow>
               <TableHead></TableHead>
@@ -71,7 +74,7 @@ const PersonnelsLog = () => {
             ))}
           </TableBody>
         </Table>
-        <Pagination />
+        <Pagination /> */}
     </div>
   )
 }
