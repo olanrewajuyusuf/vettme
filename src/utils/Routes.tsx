@@ -37,8 +37,8 @@ const Wallet = lazy(() => import("@/pages/user/wallet/Wallet"));
 const Notification = lazy(
   () => import("@/pages/user/notification/Notification")
 );
-// const Support = lazy(() => import("@/pages/user/support/Support"));
-const SupportFirst = lazy(() => import("@/pages/user/support/SupportFirst"));
+const Support = lazy(() => import("@/pages/user/support/Support"));
+// const SupportFirst = lazy(() => import("@/pages/user/support/SupportFirst"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
 // const NewVerification = lazy(() => import("@/pages/user/new/NewVerification"));
@@ -222,7 +222,8 @@ export const routes = [
       {
         path: "all-chats/:companyId",
         element: <SupportAdmin />
-      }
+      },
+      {
         path: "all-agents/agent-info/:id",
         element: <AgentInfo />,
       },
