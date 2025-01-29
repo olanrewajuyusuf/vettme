@@ -13,7 +13,7 @@ export const VerifiedAddress = async (
   const toastId = toast.loading("Verifying...", { id: "verifyToast" });
 
   await axios
-    .post(`${baseUrl}/address-verification`, data)
+    .post('https://vettme-pro.onrender.com/api/pro/address-verification', data)
     .then((res) => {
       toast.success(res?.data?.message || "Data submited", {
         id: toastId,

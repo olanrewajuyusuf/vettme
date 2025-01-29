@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment"
@@ -24,10 +24,11 @@ interface ArrivalMessage {
   createdAt: string;
 }
 
-const Support = () => {
+const SupportAdmin = () => {
+	const adminId = localStorage.getItem("adminId")
+	// const adminToken = localStorage.getItem("adminToken")
   const [conversationId, setConversationId] = useState();
-  const companyId = localStorage.getItem("companyId");
-  const adminId = "5386a5a7-17d5-49c4-8e84-fe751d007a14";
+  const {companyId} = useParams()
   const [messages, setMessages] = useState<Message[]>([]);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [text, setText] = useState("");
@@ -39,10 +40,10 @@ const Support = () => {
     const getConversation = async () => {
       try {
         const res = await axios.get(
-          `https://vettme-pro.onrender.com/api/pro/conversation/find/${companyId}/${adminId}`
+          `https://vettme-pro.onrender.com/api/pro/conversation/find/${adminId}/${companyId}`
         );
         setConversationId(res.data.data.id);
-        // console.log(res.data.data.id);
+        console.log(res.data.data.id);
       } catch (err) {
         console.error(err);
       }
@@ -79,12 +80,12 @@ const Support = () => {
 
   useEffect(() => {
     if (socket) {
-      socket.emit("addUser", companyId);
+      socket.emit("addUser", adminId);
       socket.on("getUsers", (users: any[]) => {
-        // console.log(users);
+        console.log(users);
       });
     }
-  }, [socket, companyId]);
+  }, [socket, adminId]);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -109,8 +110,8 @@ const Support = () => {
 
     if (socket) {
       socket.emit("SendMessage", {
-        senderId: companyId,
-        receiverId: adminId,
+        senderId: adminId,
+        receiverId: companyId,
         text,
       });
     }
@@ -120,13 +121,13 @@ const Support = () => {
         "https://vettme-pro.onrender.com/api/pro/message",
         {
           conversationId: conversationId,
-          sender: companyId,
+          sender: adminId,
           text,
         }
       );
       setMessages((prev) => [
         ...prev,
-        { ...data.data, sender: companyId, id: uuidv4() },
+        { ...data.data, sender: adminId, id: uuidv4() },
       ]);
       setText("");
     } catch (err) {
@@ -178,7 +179,7 @@ const Support = () => {
               <div
                 key={message.id}
                 className={`p-2 max-w-[45%] rounded-lg relative ${
-                  message.sender !== companyId
+                  message.sender !== adminId
                     ? "bg-yellow-100 self-start sent-mssg"
                     : "bg-purple-100 self-end received-mssg"
                 }`}
@@ -245,4 +246,4 @@ const Support = () => {
   );
 };
 
-export default Support;
+export default SupportAdmin;

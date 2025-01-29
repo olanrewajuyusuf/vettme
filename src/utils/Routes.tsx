@@ -14,6 +14,8 @@ import AgentFormIndex from "@/pages/agent-form";
 
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
+import AllChats from "@/pages/back-office/all-chats/AllChats";
+import SupportAdmin from "@/pages/back-office/support/SupportAdmin";
 import UserProvider from "./context/UserProvider";
 // import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
@@ -134,7 +136,7 @@ export const routes = [
       },
       {
         path: "support",
-        element: <SupportFirst />,
+        element: <Support />,
       },
       {
         path: "account",
@@ -214,6 +216,13 @@ export const routes = [
         element: <AllAgents />,
       },
       {
+        path: "all-chats",
+        element: <AllChats />
+      },
+      {
+        path: "all-chats/:companyId",
+        element: <SupportAdmin />
+      }
         path: "all-agents/agent-info/:id",
         element: <AgentInfo />,
       },
