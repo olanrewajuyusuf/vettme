@@ -19,7 +19,7 @@ export const VerifiedAddress = async (
         id: toastId,
       });
 
-      navigate("/address-verification");
+      navigate("/address-verification/personnelslist");
     })
     .catch((err) => {
       console.error("Error response:", err.response);

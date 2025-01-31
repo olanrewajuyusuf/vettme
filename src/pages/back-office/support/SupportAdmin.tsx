@@ -25,7 +25,7 @@ interface ArrivalMessage {
 }
 
 const SupportAdmin = () => {
-	const adminId = localStorage.getItem("adminId")
+	const adminId = sessionStorage.getItem("adminId")
 	// const adminToken = localStorage.getItem("adminToken")
   const [conversationId, setConversationId] = useState();
   const {companyId} = useParams()

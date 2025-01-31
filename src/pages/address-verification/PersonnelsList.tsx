@@ -1,9 +1,10 @@
-import { personnelsInfo } from "@/lib/placeholderData";
 import { getGeolocation } from "@/lib/geolocation";
 import { useNavigate } from "react-router-dom";
 import Nav from "../back-office/components/nav";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useFetchAgents } from "@/hooks/backOffice";
+import { baseUrl } from "@/api/baseUrl";
 
 interface Address {
   id: string,
@@ -15,24 +16,43 @@ interface Address {
   personnelId: string
 }
 
+interface Agent {
+  agentName: string
+}
+
 const PersonnelsList = () => {
   const navigate = useNavigate();
   const [addresses, setAddresses] = useState<Address[]>([])
+  const [agent, setAgent] = useState<Agent | null>(null)
+  const {fetchAgents} = useFetchAgents();
   const fieldAgentId = localStorage.getItem("fieldAgentId");
 
   useEffect(() => {
     const getAddresses = async () => {
       try {
         const res = await axios.get(
-          `https://vettme-pro.onrender.com/api/pro/address/assigned/${fieldAgentId}`
+          `${baseUrl}/address/assigned/${fieldAgentId}`
         );
         setAddresses(res.data.data)
       } catch (err) {
         console.error(err);
       }
     };
+
+    const getAgent = async () => {
+      try {
+        const res = await axios.get(
+          `${baseUrl}/field-agent/${fieldAgentId}`
+        );
+        setAgent(res.data.data)
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getAgent()
     getAddresses()
-  }, []);
+  }, [fieldAgentId, fetchAgents]);  
 
   const handleClick = (id: string): void => {
     getGeolocation(
@@ -56,9 +76,10 @@ const PersonnelsList = () => {
 
     navigate(`address-form/${id}`);
   };
+  
   return (
     <>
-      <Nav />
+      <Nav title={agent?.agentName}/>
       <div className=" flow-root md:px-10 px-3">
         <h1 className="text-xl md:text-2xl font-light mb-3 md:mb-5">
           List of Personnels to verify
@@ -66,7 +87,7 @@ const PersonnelsList = () => {
         <div className="inline-block min-w-full align-middle">
           <div className="rounded-lg bg-white p-2 md:pt-0 mb-10">
             <div className="md:hidden">
-              {personnelsInfo?.map((info) => (
+              {addresses?.map((info) => (
                 <div
                   key={info.id}
                   className="mb-2 w-full rounded-md bg-gray-50 px-2 py-4"
@@ -75,9 +96,9 @@ const PersonnelsList = () => {
                     <div>
                       <div className="mb-2 flex items-center">
                         <div className="rounded-full w-8 h-8 bg-white text-green-400 mr-1 grid place-items-center">
-                          {info.name.slice(0, 1)}
+                          {info.personnelName.slice(0, 1)}
                         </div>
-                        <p>{info.name}</p>
+                        <p>{info.personnelName}</p>
                       </div>
                     </div>
                     <button
@@ -88,7 +109,7 @@ const PersonnelsList = () => {
                     </button>
                   </div>
                   <div className="pt-4">
-                    <p className="text-gray-500">{info.Address}</p>
+                    <p className="text-gray-500">{info.address}, {info.lga}, {info.state}, {info.country}</p>
                   </div>
                 </div>
               ))}

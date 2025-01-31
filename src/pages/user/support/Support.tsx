@@ -48,7 +48,7 @@ const Support = () => {
       }
     };
     getConversation();
-  }, []);
+  }, [companyId]);
 
   useEffect(() => {
     const newSocket = io("https://vettme-pro.onrender.com");
@@ -214,9 +214,8 @@ const Support = () => {
           <div className="w-full bg-white p-4 border-[1px] border-stroke-clr rounded-xl">
             <h3 className="font-semibold">Call for Help</h3>
             <p className="my-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud
+              Need assistance? Contact our support team for quick 
+              help with any issues or questions. We're here to assist you!
             </p>
             <div className="flex items-center gap-3 text-green-600">
               <img src={images.phone} alt="Phone" className="w-5" />
@@ -228,9 +227,7 @@ const Support = () => {
           <div className="w-full bg-white p-4 border-[1px] border-stroke-clr rounded-xl">
             <h3 className="font-semibold">Send a Mail</h3>
             <p className="my-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud
+              Need assistance? Send us an email at for quick support. We're here to help!
             </p>
             <div className="flex items-center gap-3 text-green-600">
               <img src={images.email} alt="Mail" className="w-5" />

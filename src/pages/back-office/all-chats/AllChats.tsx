@@ -1,3 +1,4 @@
+import { baseUrl } from '@/api/baseUrl';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,24 +9,26 @@ interface Company {
 }
 
 function AllChats() {
-  const adminToken = localStorage.getItem('adminToken');
+  const adminToken = sessionStorage.getItem('adminToken');
+  const adminId = sessionStorage.getItem('adminId');
   const [companies, setCompanies] = useState<Company[]>([]);
 
   useEffect(() => {
     const getAllCompanies = async () => {
       try {
-        const res = await axios.get('https://vettme-pro.onrender.com/api/pro/company', {
+        const res = await axios.get(`${baseUrl}/company`, {
           headers: {
             Authorization: `Bearer ${adminToken}`,
           },
         });
-        setCompanies(res.data.result.companies);
+        const companies = res.data.result.companies.filter((company: any)=> company.id !== adminId)        
+        setCompanies(companies);
       } catch (err) {
         console.error(err);
       }
     };
     getAllCompanies();
-  }, []);
+  }, [adminToken, adminId]);
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-5 md:px-20">

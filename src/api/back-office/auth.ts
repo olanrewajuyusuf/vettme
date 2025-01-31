@@ -20,11 +20,13 @@ export const AdminLogin = async (
       });
 
       navigate("/back-office");
-
+      
       // Save token to local storage
       const token = res.data.token;
+      const id = res.data.company.id;
 
       sessionStorage.setItem("adminToken", token);
+      sessionStorage.setItem("adminId", id);
     })
     .catch((err) => {
       toast.error(err?.response?.data?.message || "Unable to log in", {

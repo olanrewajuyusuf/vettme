@@ -22,7 +22,6 @@ export const useFetchCompany = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    toast.success("Company info fetched successfully");
     return res.data;
   } catch (error: any) {
     console.error("Error fetching company info:", error);

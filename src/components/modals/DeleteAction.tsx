@@ -14,7 +14,7 @@ import {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   }
   
-  export default function DeleteCompany({ isOpen, setIsOpen }: DialogModal) {
+  export default function DeleteAction({ isOpen, setIsOpen }: DialogModal) {
     return (
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>

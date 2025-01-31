@@ -106,18 +106,10 @@ export const createFormResponse = async (
   setIsLoading(true);
   const toastId = toast.loading("Verifying...", { id: "verifyToast"})
 
-  const token = localStorage.getItem("token")
-
   try {
     const res = await axios.post(
       `${baseUrl}/verification-response`,
-      data,
-      {
-        headers: {
-          Authorization:
-            `Bearer ${token}`
-        }
-      }
+      data
     )
 
     console.log("Server response", res);

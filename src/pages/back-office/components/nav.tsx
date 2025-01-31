@@ -1,18 +1,16 @@
 import images from "@/assets/Images";
 
-const Nav = () => {
+const Nav = ({title}: {title: string | undefined}) => {
   return (
     <div className="w-full bg-white h-[70px] flex justify-between items-center px-0 md:px-5 mb-5 border-b-[1px] border-stroke-clr">
         <img src={images.logo} alt="Vettme" className="h-8 pl-5" />
 
-        <div className="flex items-center px-[30px] gap-4">
-            <span className="w-[40px] h-[40px] rounded-full aspect-square overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt=""
-              />
-            </span>
-            <p className="font-medium">Hi, John Doe</p>
+        <div className="w-full bg-white h-[70px] flex items-center justify-end px-[30px] gap-2 border-b-[1px] border-stroke-clr">
+              <span className="w-[40px] h-[40px] rounded-full grid place-items-center text-white border-[1px] bg-blue-400">
+                {title?.slice(0, 2).toUpperCase()}
+              </span>
+              <hr className="h-7 w-[1px] bg-stroke-clr" />
+              <p className="font-medium">Agent: <span className="text-blue-400">{title}</span></p>
         </div>
     </div>
   )

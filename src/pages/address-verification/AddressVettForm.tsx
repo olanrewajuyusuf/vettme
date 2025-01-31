@@ -10,6 +10,7 @@ import { VerifiedAddress } from "@/api/address";
 import Spinner from "@/components/Spinner";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import axios from "axios";
+import { baseUrl } from "@/api/baseUrl";
 
 interface Address {
   id: string,
@@ -29,19 +30,18 @@ const AddressVettForm = () => {
   const navigate = useNavigate();
 
   const { personnel_id } = useParams();
-  // const info = personnelsInfo.find(x => x.id === personnel_id);
 
   useEffect(() => {
     const getAddresses = async () => {
       try{
-        const res = await axios.get(`https://vettme-pro.onrender.com/api/pro/address/${personnel_id}`)
+        const res = await axios.get(`${baseUrl}/address/${personnel_id}`)
         setAddress(res.data.data)
       }catch(err){
         console.error(err)
       }
     }
     getAddresses()
-  }, [])
+  }, [personnel_id])
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -190,6 +190,7 @@ const AddressVettForm = () => {
                 </div>
 
                  <button type="submit"
+                  disabled={!video}
                   className="w-full flex items-center justify-center bg-destructive py-4 mt-2 rounded-xl text-white font-bold hover:bg-red-700"
                  >
                   {isLoading ? <Spinner /> : "Submit"}

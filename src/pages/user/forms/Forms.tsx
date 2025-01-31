@@ -203,11 +203,6 @@ const mentalHealthFields: Field5[] = [
     visibleFields.includes(field.id)
   )
 
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   setModalOpen(true);
-  // };
   return (
     <>
       <form 
@@ -219,12 +214,11 @@ const mentalHealthFields: Field5[] = [
         </div>
         <div className="w-full bg-white rounded-2xl border-[1px] border-stroke-clr">
           <div className="p-4 border-b-[1px] border-stroke-clr">
-            <h2>{formInfo.title}</h2>
+            <h2>{formInfo.title}</h2> 
             <p className="py-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              Please complete this form to provide accurate 
+              and up-to-date information for verification purposes. 
+              Ensure all details are filled in correctly before submission.
             </p>
           </div>
 

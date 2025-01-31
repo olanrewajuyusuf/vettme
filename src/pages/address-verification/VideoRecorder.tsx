@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from "react-hot-toast";
 import { PiRecordFill } from "react-icons/pi";
 import { FaPlayCircle, FaStopCircle, FaPause } from "react-icons/fa";
 import { FcSwitchCamera } from "react-icons/fc";
@@ -92,6 +93,9 @@ const VideoRecorder: React.FC = () => {
           if (videoURL) {
             setVideo(videoURL); // Save the Cloudinary URL in the context
             console.log("Video URL saved in context:", videoURL);
+            toast.success("Video is saved");
+          } else {
+            toast.error("Cannot save Video");
           }
         } catch (error) {
           console.error("Error uploading video to Cloudinary:", error);
