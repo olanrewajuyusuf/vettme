@@ -10,7 +10,7 @@ const Nav = ({title}: {title: string | undefined}) => {
                 {title?.slice(0, 2).toUpperCase()}
               </span>
               <hr className="h-7 w-[1px] bg-stroke-clr" />
-              <p className="font-medium">Agent: <span className="text-blue-400">{title}</span></p>
+              <p className="font-medium">User: <span className="text-blue-400">{title}</span></p>
         </div>
     </div>
   )

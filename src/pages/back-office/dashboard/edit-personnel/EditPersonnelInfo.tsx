@@ -8,7 +8,7 @@ import Nav from "../../components/nav";
 const EditPersonnelInfo = () => {
   return (
     <div>
-      <Nav />
+      <Nav title='Admin' />
       <div className="max-w-[775px] mx-auto px-5">
           <div>
               <h2>Christy Blabber</h2>
