@@ -117,3 +117,14 @@ export function NavSkeleton() {
         </div>
     )
 }
+
+export function VerificationSkeleton() {
+    return (
+        <div className="w-full bg-white h-[70px] flex items-center justify-between px-[30px] border-b-[1px]">
+            <Skeleton className="w-40 h-5" />
+            <Skeleton className="w-40 h-5" />
+            <Skeleton className="w-40 h-5" />
+            <Skeleton className="w-40 h-5" />
+        </div>
+    )
+}

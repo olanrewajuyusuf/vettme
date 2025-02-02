@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/table";
 import { ClipboardIcon, TrashIcon } from "@radix-ui/react-icons"; //, TrashIcon useNavigate
 import { Input } from "@/components/ui/input";
-import loader from "@/assets/loader.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFetchBatches } from "@/hooks/company";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
+import { VerificationSkeleton } from "@/components/SkeletonUi";
 
 interface BatchesProps {
   id: string,
@@ -26,8 +26,12 @@ interface BatchesProps {
 
 export default function Verifications() {
   const [ batches, setBatches ] = useState<BatchesProps[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { fetchBatches } = useFetchBatches();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filter = searchParams.get("filter") || "all";
 
   useEffect(() => {
     const getBatches = async () => {
@@ -36,11 +40,44 @@ export default function Verifications() {
         setBatches(data.data);
       } catch (error) {
         console.error("Failed to fetch Verification batches:", error);
+        setError("Failed to fetch Verification batches");
+      } finally {
+        setLoading(false);
       }
     };
 
     getBatches();
-}, [fetchBatches]);
+  }, [fetchBatches]);
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedFilter = event.target.value;
+    setSearchParams({ filter: selectedFilter });
+  };
+
+  const filteredBatches = batches
+    ? filter === "pending"
+      ? batches.filter((batch) => batch.status === "PENDING")
+      : filter === "failed"
+      ? batches.filter((batch) => batch.status === "FAILED")
+      : filter === "completed"
+      ? batches.filter((batch) => batch.status === "COMPLETED")
+      : filter === "in_progress"
+      ? batches.filter((batch) => batch.status === "INPROGRESS")
+      : batches
+    : null;
+
+  const noBatchesMessage =
+    filteredBatches && filteredBatches.length === 0
+      ? filter === "completed"
+        ? "You have no completed verification batch."
+        : filter === "pending"
+        ? "You have no pending verification batch."
+        : filter === "in_progress"
+        ? "You have no ungoing verification batch."
+        : filter === "failed"
+        ? "You have no failed verification batch."
+        : "No Verification Batch available."
+      : null;
 
   return (
     <>
@@ -56,11 +93,18 @@ export default function Verifications() {
         </Link>
       </div>
 
-      <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
+      <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr overflow-hidden">
         <div className="w-full py-4 flex justify-between items-center border-b-[1px] border-stroke-clr px-5">
           <div className="flex items-center gap-3">
             <p>Filter by: </p>
-            <select name="" id="" className="btn px-3">
+            <select
+              name="filter"
+              id="filter"
+              className="btn px-3"
+              value={filter}
+              onChange={handleFilterChange}
+            >
+              <option value="all">All</option>
               <option value="pending">Pending</option>
               <option value="in_progress">In Progress</option>
               <option value="completed">Completed</option>
@@ -74,16 +118,24 @@ export default function Verifications() {
           />
         </div>
 
-        {batches === null ? (
-          <div className="w-full h-[300px] flex items-center justify-center">
-            <img src={loader} alt="" className="w-10" />
+        {loading && (
+          <div className="flex flex-col gap-3">
+            <VerificationSkeleton />
+            <VerificationSkeleton />
+            <VerificationSkeleton />
           </div>
-        ) :
-        batches?.length === 0 ? (
+        )}
+        {error && (
           <div className="w-full h-[300px] flex justify-center items-center">
-            <h3>No Verification Batch available.</h3>
+            <h3>{error}</h3>
           </div>
-        ) : (
+        )}
+        {noBatchesMessage && (
+          <div className="w-full h-[300px] flex justify-center items-center">
+            <h3>{noBatchesMessage}</h3>
+          </div>
+        )}
+        {filteredBatches && filteredBatches.length > 0 && (
         <Table>
           <TableHeader className="bg-stroke-clr">
             <TableRow>
@@ -95,7 +147,7 @@ export default function Verifications() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {batches?.map((item) => (
+            {filteredBatches?.map((item) => (
               <TableRow 
                 key={item.id} 
                 onClick={() => navigate(item.id)}

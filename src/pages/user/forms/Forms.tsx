@@ -89,15 +89,8 @@ export default function Forms() {
   useEffect(() => {
     // Fetch the form visibility data from the backend
     axios
-      .get(
-        `${baseUrl}/verification/form/${url}`,
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`, // Add the token here
-          },
-        }
-      ) // Adjust the URL to your API endpoint
+      .get(`${baseUrl}/verification/form/${url}`) 
+      // Adjust the URL to your API endpoint
       .then((response) => {
         // Extract keys from the backend response where the value is true
         const data = response.data.data

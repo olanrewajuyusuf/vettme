@@ -11,12 +11,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import loader from "@/assets/loader.svg";
 import { Input } from "@/components/ui/input";
 import { useFetchBatchesResponse, useFetchBatchesResponseCards } from "@/hooks/company";
 import moment from "moment";
+import { VerificationSkeleton } from "@/components/SkeletonUi";
 
 interface ResponseProps {
   id: string,
@@ -29,6 +29,7 @@ interface ResponseProps {
 }
 
 interface CardsProps {
+  title: string,
   max: number,
   status: string,
   endDate: string,
@@ -41,6 +42,10 @@ export default function Verification() {
   const [ cards, setCards ] = useState<CardsProps | null>(null);
   const { fetchBatchesResponse } = useFetchBatchesResponse();
   const { fetchBatchesResponseCards } = useFetchBatchesResponseCards();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+    const filter = searchParams.get("filter") || "all";
   // const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,6 +55,9 @@ export default function Verification() {
         setBatchesResponse(data.data);
       } catch (error) {
         console.error("Failed to get batches response:", error);
+        setError("Failed to fetch Verification batches");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -66,6 +74,40 @@ export default function Verification() {
 
     getResponseCards();
 }, [fetchBatchesResponse, id, fetchBatchesResponseCards]);
+
+console.log(cards);
+console.log(batchesResponse);
+
+
+const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const selectedFilter = event.target.value;
+  setSearchParams({ filter: selectedFilter });
+};
+
+const filteredBatches = batchesResponse
+    ? filter === "pending"
+      ? batchesResponse.filter((batch) => batch.status === "PENDING")
+      : filter === "failed"
+      ? batchesResponse.filter((batch) => batch.status === "FAILED")
+      : filter === "completed"
+      ? batchesResponse.filter((batch) => batch.status === "COMPLETED")
+      : filter === "in_progress"
+      ? batchesResponse.filter((batch) => batch.status === "INPROGRESS")
+      : batchesResponse
+    : null;
+
+  const noBatchesMessage =
+    filteredBatches && filteredBatches.length === 0
+      ? filter === "completed"
+        ? "You have no completed verification personnel."
+        : filter === "pending"
+        ? "You have no pending verification personnel."
+        : filter === "in_progress"
+        ? "You have no ungoing verification personnel."
+        : filter === "failed"
+        ? "You have no failed verification personnel."
+        : "No Verification Batch available."
+      : null;
 
   const headers = [
     {
@@ -103,8 +145,8 @@ export default function Verification() {
 
       <div className="mb-[30px] flex justify-between items-center">
         <div>
-          <h2>Spytrac Telematics</h2>
-          <p className="text-sm">Date Created: 23/01/2024 at 07:23 PM</p>
+          <h2>{cards?.title}</h2>
+          <p className="text-sm">Date Created: {moment(cards?.endDate).calendar()}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -144,7 +186,14 @@ export default function Verification() {
         <div className="w-full py-4 flex justify-between items-center border-b-[1px] border-stroke-clr px-5">
           <div className="flex items-center gap-3">
             <p>Filter by: </p>
-            <select name="" id="" className="btn px-3">
+            <select
+              name="filter"
+              id="filter"
+              className="btn px-3"
+              value={filter}
+              onChange={handleFilterChange}
+            >
+              <option value="all">All</option>
               <option value="pending">Pending</option>
               <option value="in_progress">In Progress</option>
               <option value="completed">Completed</option>
@@ -158,16 +207,24 @@ export default function Verification() {
           />
         </div>
 
-        {batchesResponse === null ? (
-          <div className="w-full h-[300px] flex items-center justify-center">
-            <img src={loader} alt="" className="w-10" />
+        {loading && (
+          <div className="flex flex-col gap-3">
+            <VerificationSkeleton />
+            <VerificationSkeleton />
+            <VerificationSkeleton />
           </div>
-        ) :
-        batchesResponse?.length === 0 ? (
+        )}
+        {error && (
           <div className="w-full h-[300px] flex justify-center items-center">
-            <h3>No Verification Batch available.</h3>
+            <h3>{error}</h3>
           </div>
-        ) : (
+        )}
+        {noBatchesMessage && (
+          <div className="w-full h-[300px] flex justify-center items-center">
+            <h3>{noBatchesMessage}</h3>
+          </div>
+        )}
+        {filteredBatches && filteredBatches.length > 0 && (
         <Table>
           <TableHeader className="bg-stroke-clr">
             <TableRow>
@@ -181,7 +238,7 @@ export default function Verification() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {batchesResponse?.map((item: any) => (
+            {filteredBatches?.map((item: any) => (
               <TableRow
                 key={item.id}
                 // onClick={() =>
