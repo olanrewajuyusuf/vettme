@@ -177,6 +177,94 @@ export const useFetchBatchesResponseCards = () => {
 
   return { fetchBatchesResponseCards };
 };
+
+// Getting Notifications
+export const useFetchNotifications= () => {
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const companyId = localStorage.getItem("companyId");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/notifications/${companyId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Notifications:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Notifications");
+    }
+  }, []);
+
+  return { fetchNotifications };
+};
+
+// Activate a companies
+export const useReadNote = () => {
+  const ReadNote = useCallback(async (notificationId: string) => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const res = await axios.put(
+          `${baseUrl}/notifications`,
+          {notificationId},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        toast.success("Notification read!")
+        return res.data;
+      } catch (error: any) {
+        console.error("Error activating company:", error);
+        throw new Error(error?.response?.data?.message || "Cannot activate company");
+      }
+    },[] 
+  );
+  return { ReadNote };
+};
+
+// Getting Chart data
+export const useFetchChart= () => {
+  const fetchChart = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const companyId = localStorage.getItem("companyId");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification/month/${companyId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Chart data:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Chart data");
+    }
+  }, []);
+  return {fetchChart};
+};
 // export const useFetchCompany = (id: string) => {
 //   const fetchCompany = async () => {
 //     try {

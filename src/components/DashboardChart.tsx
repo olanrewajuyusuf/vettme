@@ -6,6 +6,8 @@ import {
   ChartTooltipContent,
   
 } from "@/components/ui/chart";
+import { useEffect } from "react";
+import { useFetchChart } from "@/hooks/company";
 export const description = "An area chart with gradient fill";
 const chartData = [
   { month: "January", desktop: 186, mobile: 80, total: 266 },
@@ -37,6 +39,20 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function DashboardChart() {
+  const {fetchChart} = useFetchChart();
+
+  useEffect(()=> {
+    const getCardData = async () => {
+      try {
+        const data = await fetchChart();
+          console.log(data);
+          
+      } catch (error) {
+        console.error("Failed to fetch card data:", error);
+      }
+    };
+    getCardData();
+  }, [fetchChart])
   return (
     <ChartContainer config={chartConfig} className="h-full w-full">
       <AreaChart

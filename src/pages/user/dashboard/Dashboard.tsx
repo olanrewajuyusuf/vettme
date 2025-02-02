@@ -1,8 +1,10 @@
 import DashboardChart from "@/components/DashboardChart";
-import { useFetchCardData } from "@/hooks/company";
+import { CardSkeleton, RecentSkeleton } from "@/components/SkeletonUi";
+import { useFetchCardData, useFetchNotifications, useReadNote } from "@/hooks/company";
+import { formatTimeAgo } from "@/lib/formatter";
 import { FileMinusIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface CardProps {
   verified: number,
@@ -11,9 +13,23 @@ interface CardProps {
   failed: number,
 }
 
+interface Notifications {
+  id: string,
+  title: string,
+  details: string,
+  createdAt: string,
+  read: boolean,
+}
+
 export default function Dashboard() {
   const [cardData, setCardData] = useState<CardProps | null>(null);
+  const [notifications, setNotifications] = useState<Notifications[] | null>(null);
+  const { fetchNotifications } = useFetchNotifications();
   const { fetchCardData } = useFetchCardData();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { ReadNote } = useReadNote();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getCardData = async () => {
@@ -22,11 +38,51 @@ export default function Dashboard() {
           setCardData(data.data);
       } catch (error) {
         console.error("Failed to fetch card data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
+    const getNotifications = async () => {
+      try {
+        const data = await fetchNotifications();
+        setNotifications(data.data);
+      } catch (error) {
+        console.error("Failed to fetch Notification:", error);
+        setError("Failed to fetch notifications");
+      } finally {
+        setLoading(false);
+      }
+    };
+    getNotifications();
     getCardData();
-  }, [fetchCardData]);  
+  }, [fetchCardData, fetchNotifications]);
+
+  const handleClick = (id: string) => {
+    const ReadNotification = async () => {
+      try {
+        await ReadNote(id);
+        const data = await fetchNotifications();
+        setNotifications(data.data);
+      } catch (error) {
+        console.error("Failed to read:", error);
+      }
+    };
+    ReadNotification();
+    navigate(`/notifications/${id}`);
+  };
+
+  // Sort notifications by `createdAt` in descending order (most recent first)
+  const sortedNotifications = notifications
+    ? [...notifications].sort((a, b) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      })
+    : null;
+
+  // Get the 5 most recent notifications (or fewer if there are less than 5)
+  const recentNotifications = sortedNotifications
+    ? sortedNotifications.slice(0, 5)
+    : null;
 
   const cards = [
     {
@@ -51,48 +107,18 @@ export default function Dashboard() {
     },
   ];
 
-  const notifications = [
-    {
-      type: 1,
-      title: "Neque porro quisquam est qui dolorem ipsum",
-      content:
-        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-      date: "2 hours ago",
-    },
-    {
-      type: 1,
-      title: "Neque porro quisquam est qui dolorem ipsum",
-      content:
-        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-      date: "2 hours ago",
-    },
-    {
-      type: 2,
-      title: "Neque porro quisquam est qui dolorem ipsum",
-      content:
-        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-      date: "2 hours ago",
-    },
-    {
-      type: 3,
-      title: "Neque porro quisquam est qui dolorem ipsum",
-      content:
-        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-      date: "2 hours ago",
-    },
-    {
-      type: 2,
-      title: "Neque porro quisquam est qui dolorem ipsum",
-      content:
-        "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-      date: "2 hours ago",
-    },
-  ];
-
   return (
     <div className="">
       <div className="grid grid-cols-4 gap-6 mb-6">
-        {cards.map((card, idx) => (
+      {loading && (
+        <>
+        <CardSkeleton />
+        <CardSkeleton />
+        <CardSkeleton />
+        <CardSkeleton />
+        </>
+      )}
+        {!loading && cards.map((card, idx) => (
           <div
             key={idx}
             className="w-full p-4 rounded-xl border-[1px] border-stroke-clr bg-white"
@@ -130,30 +156,45 @@ export default function Dashboard() {
           </Link>
         </div>
 
-        {notifications.map((item, idx) => (
+        {loading && (<RecentSkeleton />)}
+        {error && <div>{error}</div>}
+
+        {recentNotifications?.map((item, idx) => (
           <div
             key={idx}
+            onClick={() => handleClick(item.id)}
             className="w-full mt-4  bg-white rounded-xl border-stroke-clr border-[1px] p-4 hover:bg-gray-50"
           >
             <div className="flex items-center gap-2">
               <div
-                className={`w-10 h-10 aspect-square rounded-full flex items-center justify-center text-sm ${
-                  item.type === 1
-                    ? "bg-purple-400"
-                    : item.type === 2
-                    ? "bg-orange-300"
-                    : "bg-green-600"
-                }`}
-              >
-                NT
+                  className={`w-10 h-10 aspect-square rounded-full flex items-center justify-center text-sm ${
+                    idx % 2 === 0
+                      ? "bg-purple-400"
+                      : idx % 2 === 1
+                      ? "bg-orange-300"
+                      : "bg-green-600"
+                  }`}
+                >
+                  {item.title.slice(0, 2).toUpperCase()}
               </div>
               <div className="w-full flex justify-between items-center gap-4">
                 <div className="w-full">
                   <h3 className="font-medium">{item.title}</h3>
-                  <p className="text-xs">{item.content}</p>
+                  <p className="text-xs">
+                    {item.details.length > 50 ? item.details.slice(0, 50) + "..." : item.details}
+                  </p>
                 </div>
               </div>
-              <small className="text-xs min-w-max ">{item.date}</small>
+              <div className="flex flex-col gap-3">
+                  <small className="text-xs min-w-max">{formatTimeAgo(item.createdAt)}</small>
+                  <small
+                    className={`text-xs ${
+                      item.read ? "text-blue-500" : "text-destructive"
+                    } min-w-max font-bold`}
+                  >
+                    {item.read ? "Read" : "Unread"}
+                  </small>
+                </div>
             </div>
           </div>
         ))}

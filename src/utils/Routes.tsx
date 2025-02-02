@@ -34,9 +34,8 @@ const Verification = lazy(
   () => import("@/pages/user/verification/Verification")
 );
 const Wallet = lazy(() => import("@/pages/user/wallet/Wallet"));
-const Notification = lazy(
-  () => import("@/pages/user/notification/Notification")
-);
+const Notification = lazy(() => import("@/pages/user/notification/Notification"));
+const NotificationDetail = lazy(() => import("@/pages/user/notification/NotificationDetails"));
 const Support = lazy(() => import("@/pages/user/support/Support"));
 // const SupportFirst = lazy(() => import("@/pages/user/support/SupportFirst"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
@@ -133,6 +132,10 @@ export const routes = [
       {
         path: "notifications",
         element: <Notification />,
+      },
+      {
+        path: "notifications/:id",
+        element: <NotificationDetail />,
       },
       {
         path: "support",
