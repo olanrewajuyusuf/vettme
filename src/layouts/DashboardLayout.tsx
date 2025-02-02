@@ -112,7 +112,7 @@ export default function DashboardLayout({ children }: LayoutProps) {
               <div className="relative">
                 <IoMdNotificationsOutline className="text-3xl"/>
                 {(length === null || length > 0) && <div 
-                className="absolute -top-1 right-0 w-4 h-4 bg-destructive rounded-full text-white grid place-items-center text-xs font-bold"
+                className="absolute top-0 -right-1 w-4 h-4 bg-destructive rounded-full text-white grid place-items-center text-xs font-bold"
                 >
                 {length}
                 </div>}

@@ -1,3 +1,12 @@
+// Format time in MM:SS format
+export const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds
+    .toString()
+    .padStart(2, '0')}`;
+};
+
 export function formatTimeAgo(timestamp: string | number | undefined): string {
     if (!timestamp) {
       return "Invalid date";
@@ -36,4 +45,4 @@ export function formatTimeAgo(timestamp: string | number | undefined): string {
     } else {
       return `${diffInSeconds} second${diffInSeconds !== 1 ? "s" : ""} ago`;
     }
-  }
+}
