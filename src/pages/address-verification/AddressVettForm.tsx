@@ -56,34 +56,6 @@ const AddressVettForm = () => {
       }
     }
   };
-  
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   const personnelName = `${address?.personnelName}`
-  //   const addressId = `${address?.id}`
-  //   const fieldAgentId = localStorage.getItem("fieldAgentId")
-
-  //   getGeolocation(
-  //     async (location, accuracy) => {
-  //       console.log('Latitude:', location.lat, 'Longitude:', location.lon, 'Accuracy:', accuracy);
-  //       setUserLocation(location);
-  //     },
-  //     (errorMessage) => {
-  //       alert(`Error: ${errorMessage}`);
-  //     }
-  //   );
-
-    
-  //   const initialLocation: Location[] = JSON.parse(localStorage.getItem('savedLocations') || '[]');
-
-  //   const form = e.target as HTMLFormElement;
-  //   const data = Object.fromEntries(new FormData(form));
-  //   const newData = {...data, personnelName, addressId, fieldAgentId, initialLocation, finalLocation: userLocation, video}
-
-  //   console.log(newData);
-  //   VerifiedAddress(newData, setIsLoading, navigate);
-  // }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

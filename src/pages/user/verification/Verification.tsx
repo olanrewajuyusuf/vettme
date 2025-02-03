@@ -76,8 +76,6 @@ export default function Verification() {
 }, [fetchBatchesResponse, id, fetchBatchesResponseCards]);
 
 console.log(cards);
-console.log(batchesResponse);
-
 
 const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
   const selectedFilter = event.target.value;

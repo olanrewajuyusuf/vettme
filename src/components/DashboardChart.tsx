@@ -53,6 +53,7 @@ export default function DashboardChart() {
     };
     getCardData();
   }, [fetchChart])
+  
   return (
     <ChartContainer config={chartConfig} className="h-full w-full">
       <AreaChart
