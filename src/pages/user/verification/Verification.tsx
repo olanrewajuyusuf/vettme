@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useFetchBatchesResponse, useFetchBatchesResponseCards } from "@/hooks/company";
@@ -46,7 +46,7 @@ export default function Verification() {
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
     const filter = searchParams.get("filter") || "all";
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getResponse = async () => {
@@ -239,9 +239,9 @@ const filteredBatches = batchesResponse
             {filteredBatches?.map((item: any) => (
               <TableRow
                 key={item.id}
-                // onClick={() =>
-                //   navigate(`personnel/${idx + 1}`, { state: item })
-                // }
+                onClick={() =>
+                  navigate(`personnel/${item.id}`, { state: item })
+                }
               >
                 <TableCell>
                   <span className="w-7 h-7 flex items-center justify-center bg-gray-400 font-medium rounded-lg text-xs">

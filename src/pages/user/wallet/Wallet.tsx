@@ -14,6 +14,7 @@ import { useFetchPayment } from "@/hooks/company";
 import { useUser } from "@/utils/context/useUser";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 // const metrics = [
 //   {
@@ -52,8 +53,8 @@ import { useEffect, useState } from "react";
 interface PaymentProps {
   type: string,
   amount: number,
-  date: string,
-  status: number,
+  createdAt: string;
+  status: string,
 }
 
 export default function Wallet() {
@@ -124,20 +125,20 @@ export default function Wallet() {
                 <TableRow key={idx}>
                   <TableCell>{item.type}</TableCell>
                   <TableCell>{item.amount}</TableCell>
-                  <TableCell>{item.date}</TableCell>
+                  <TableCell>{moment(item.createdAt).format("MMMM Do YYYY, h:mm A")}</TableCell>
                   <TableCell>
                     <Badge
                       className={`pointer-events-none ${
-                        item.status === 1
+                        item.status === "success"
                           ? "bg-green-600"
-                          : item.status === 2
+                          : item.status === "pending"
                           ? "border-yellow-500 border-[1px] text-yellow-500 bg-white"
                           : "bg-red-500"
                       }`}
                     >
-                      {item.status === 1
-                        ? "Successful"
-                        : item.status === 2
+                      {item.status === "success"
+                        ? "successful"
+                        : item.status === "pending"
                         ? "Pending"
                         : "Failed"}
                     </Badge>

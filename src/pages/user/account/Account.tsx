@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
+
 export default function Account() {
+
   const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
   };
   return (
+    <>
     <form onSubmit={handleUpdate}>
       <div className="mb-[30px]">
         <h2>Account</h2>
@@ -25,14 +30,20 @@ export default function Account() {
           placeholder="e.g. somewehere street, Lagos Nigeria"
         />
       </label>
-      <label className="block w-full mb-4">
+      {/* <label className="block w-full mb-4">
         <p>Application Username</p>
         <Input type="text" placeholder="John Doe" />
-      </label>
+      </label> */}
       <label className="block w-full mb-4">
         <p>Choose new Avatar</p>
         <Input type="file" accept="image/*" className="cursor-pointer" />
       </label>
+      <Button type="submit" className="red-gradient mb-2">
+          Save Changes
+      </Button>
+      </form>
+     
+     <form>
       <hr className="mb-6" />
       <h2 className="font-semibold mb-6">Update Password</h2>
       <label className="block w-full mb-4">
@@ -59,5 +70,6 @@ export default function Account() {
         </Button>
       </div>
     </form>
+    </>
   );
 }
