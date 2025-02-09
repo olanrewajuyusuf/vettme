@@ -393,7 +393,7 @@ const Form = () => {
   // Function to update cost dynamically
   const updateCost = (updatedFields: string[]) => {
     let cost = 0;
-    let newSelectedGroups: { [key: string]: number } = {};
+    const newSelectedGroups: { [key: string]: number } = {};
 
     // Loop through each group and apply cost only once if at least one field is selected
     Object.entries(fieldGroups).forEach(([groupName, group]) => {
@@ -437,24 +437,6 @@ const Form = () => {
   };
 
   // Handle form submission
-//   const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     const newFormData = { ...formData };
-//     console.log("Payload before sending: ", newFormData);
-
-//     const createdForm = await CreateForm(
-//       newFormData,
-//       setCreationModalActive,
-//       setIsLoading
-//     );
-
-//     if (createdForm) {
-//       console.log("Created form:", createdForm);
-//       setCreatedForm(createdForm);
-//     } else {
-//       console.error("Form creation failed or no data returned.");
-//     }
-//   };
 const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -492,38 +474,23 @@ const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
       </div>
       <div className="flex items-start gap-4">
         <form onSubmit={handleSetup} className="basis-2/3">
-          <div className="w-full py-5 px-7 rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px] flex flex-wrap gap-6">
-            <label htmlFor="title" className="block w-[55%]">
-              <p className="text-[16px] font-medium">Form Title</p>
-              <Input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title as string}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label htmlFor="verificationType" className="w-[41.1%]">
-              <p className="text-[16px]">Verification Type</p>
-              <select
-                id="verificationType"
-                name="verificationType"
-                className="btn px-2 w-full"
-                value={formData.verificationType as string}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Choose Verification Type</option>
-                <option value="PERSONNEL">Professional Verification</option>
-                <option value="LOAN">Loan Verification</option>
-                <option value="CRIMINALRECORD">
-                  Logistics Driver Verification
-                </option>
-              </select>
-            </label>
-            <div className=" basis-full">
-              <label htmlFor="max" className="block">
+          <div className="w-full py-5 px-7 rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px]">
+            <div className="mb-6">
+              <label htmlFor="title">
+                <p className="text-[16px] font-medium">Form Title</p>
+                <Input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title as string}
+                  onChange={handleChange}
+                  className="w-full"
+                  required
+                />
+              </label>
+            </div>
+            <div className="w-full flex items-center gap-6">
+              <label htmlFor="max" className="block w-full">
                 <p className="text-[16px] font-medium">
                   Number of expected Personnel
                 </p>
@@ -531,10 +498,30 @@ const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
                   type="number"
                   id="max"
                   name="max"
+                  min='0'
                   value={formData.max as number}
                   onChange={handleChange}
+                  className="w-full"
                   required
                 />
+              </label>
+              <label htmlFor="verificationType" className="w-full">
+                <p className="text-[16px]">Verification Type</p>
+                <select
+                  id="verificationType"
+                  name="verificationType"
+                  className="btn px-2 w-full"
+                  value={formData.verificationType as string}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Choose Verification Type</option>
+                  <option value="PERSONNEL">Professional Verification</option>
+                  <option value="LOAN">Loan Verification</option>
+                  <option value="CRIMINALRECORD">
+                    Logistics Driver Verification
+                  </option>
+                </select>
               </label>
             </div>
           </div>

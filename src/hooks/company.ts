@@ -265,6 +265,59 @@ export const useFetchChart= () => {
   }, []);
   return {fetchChart};
 };
+
+// Getting Chart data
+export const useFetchFinding = () => {
+  const fetchFinding = useCallback(async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification-finding/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Finding:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Finding");
+    }
+  }, []);
+  return {fetchFinding};
+};
+
+export const useFetchVerdict = () => {
+  const fetchVerdict = useCallback(async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification-result/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Verdict:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Verdict");
+    }
+  }, []);
+  return {fetchVerdict};
+};
 // export const useFetchCompany = (id: string) => {
 //   const fetchCompany = async () => {
 //     try {

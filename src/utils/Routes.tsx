@@ -150,7 +150,7 @@ export const routes = [
         element: <Verification />,
       },
       {
-        path: "verifications/:verification_id/personnel/:personnel_id",
+        path: "verifications/:verification_id/personnel-info/:personnel_id",
         element: <Personnel />,
       },
       {
