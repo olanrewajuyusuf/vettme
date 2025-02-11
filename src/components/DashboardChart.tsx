@@ -6,23 +6,12 @@ import {
   ChartTooltipContent,
   
 } from "@/components/ui/chart";
-import { useEffect } from "react";
-import { useFetchChart } from "@/hooks/company";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { baseUrl } from "@/api/baseUrl";
 export const description = "An area chart with gradient fill";
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80, total: 266 },
-  { month: "February", desktop: 305, mobile: 200, total: 505 },
-  { month: "March", desktop: 237, mobile: 120, total: 357 },
-  { month: "April", desktop: 73, mobile: 190, total: 263 },
-  { month: "May", desktop: 209, mobile: 130, total: 339 },
-  { month: "June", desktop: 214, mobile: 140, total: 254 },
-  { month: "July", desktop: 0, mobile: 0, total: 0 },
-  { month: "August", desktop: 0, mobile: 0, total: 0 },
-  { month: "September", desktop: 0, mobile: 0, total: 0 },
-  { month: "October", desktop: 0, mobile: 0, total: 0 },
-  { month: "November", desktop: 0, mobile: 0, total: 0 },
-  { month: "December", desktop: 0, mobile: 0, total: 0 },
-];
+
+
 const chartConfig = {
   desktop: {
     label: "Successful Verifications",
@@ -36,23 +25,28 @@ const chartConfig = {
     label: "Total Verifications",
     color: "var(--sroke-clr)",
   },
+  pending: {
+    label: "Pending Verifications",
+    color: "var(--sroke-clr)",
+  },
 } satisfies ChartConfig;
 
 export default function DashboardChart() {
-  const {fetchChart} = useFetchChart();
+  const companyId = localStorage.getItem("companyId")
+  const [chartData, setChartData] = useState()
 
-  useEffect(()=> {
-    const getCardData = async () => {
-      try {
-        const data = await fetchChart();
-          console.log(data);
-          
-      } catch (error) {
-        console.error("Failed to fetch card data:", error);
+  useEffect(() => {
+    const getChartData = async() => {
+      try{
+        const res = await axios.get(`${baseUrl}/verification/month/${companyId}`)
+        console.log(res)
+        setChartData(res.data.data)
+      } catch(err){
+        console.error(err);
       }
-    };
-    getCardData();
-  }, [fetchChart])
+    }
+    getChartData()
+  }, [companyId])
   
   return (
     <ChartContainer config={chartConfig} className="h-full w-full">
@@ -97,6 +91,13 @@ export default function DashboardChart() {
           fill="var(--color-mobile)"
           fillOpacity={0.4}
           stroke="var(--color-mobile)"
+        />
+        <Area
+          dataKey="pending"
+          type="linear"
+          fill="var(--color-pending)"
+          fillOpacity={0.4}
+          stroke="var(--color-pending)"
         />
       </AreaChart>
     </ChartContainer>
