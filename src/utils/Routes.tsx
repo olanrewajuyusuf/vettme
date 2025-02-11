@@ -17,6 +17,7 @@ import { VideoProvider } from "./context/VideoContext";
 import AllChats from "@/pages/back-office/all-chats/AllChats";
 import SupportAdmin from "@/pages/back-office/support/SupportAdmin";
 import UserProvider from "./context/UserProvider";
+
 // import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
@@ -37,11 +38,8 @@ const Wallet = lazy(() => import("@/pages/user/wallet/Wallet"));
 const Notification = lazy(() => import("@/pages/user/notification/Notification"));
 const NotificationDetail = lazy(() => import("@/pages/user/notification/NotificationDetails"));
 const Support = lazy(() => import("@/pages/user/support/Support"));
-// const SupportFirst = lazy(() => import("@/pages/user/support/SupportFirst"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
-// const NewVerification = lazy(() => import("@/pages/user/new/NewVerification"));
-// const Upload = lazy(() => import("@/pages/user/upload/Upload"));
 const FormSetup = lazy(() => import("@/pages/user/setup/Form"));
 const Forms = lazy(() => import("@/pages/user/forms/Forms"));
 
@@ -54,6 +52,7 @@ const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-
 const AllAgents = lazy(() => import("@/pages/back-office/all-agents/AllAgents"));
 const AgentInfo = lazy(() => import("@/pages/back-office/all-agents/AgentInfo"));
 const AllAddresses = lazy(() => import("@/pages/back-office/all-addresses/AllAddresses"));
+const AddressDetail = lazy(() => import("@/pages/back-office/all-addresses/AddressDetail"));
 const AdminLoginPage = lazy(() => import("@/pages/back-office/auth/AdminLoginPage"));
 
 const AddressVerification = lazy(() => import("@/pages/address-verification/Address"));
@@ -157,18 +156,6 @@ export const routes = [
         path: "verifications/new",
         element: <FormSetup />,
       },
-      // {
-      //   path: "verifications/new/upload",
-      //   element: <Upload />,
-      // },
-      // {
-      //   path: "verifications/new/form",
-      //   element: <FormSetup />,
-      // },
-      // {
-      //   path: "verifications/new/:type/setup",
-      //   element: <FormSetup />,
-      // },
     ],
   },
 
@@ -213,6 +200,10 @@ export const routes = [
       {
         path: "all-addresses",
         element: <AllAddresses />,
+      },
+      {
+        path: "all-addresses/address-detail/:id",
+        element: <AddressDetail />,
       },
       {
         path: "all-agents",

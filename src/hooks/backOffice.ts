@@ -149,6 +149,31 @@ export const useFetchAddresses = () => {
 return { fetchAddresses };
 };
 
+// Getting all addresses
+export const useFetchAddress = () => {
+  const fetchAddress = useCallback(async (id: string) => {
+  try {
+    const token = sessionStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/address-verification/address/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching addresses:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch address");
+    throw new Error(error?.response?.data?.message || "Cannot fetch address");
+  }
+  }, []);
+  return { fetchAddress };
+};
+
 // Getting all field agents
 export const useFetchAgents = () => {
   const fetchAgents = useCallback(async () => {

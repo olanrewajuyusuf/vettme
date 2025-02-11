@@ -100,7 +100,7 @@ const filteredBatches = batchesResponse
         : filter === "pending"
         ? "You have no pending verification personnel."
         : filter === "in_progress"
-        ? "You have no ungoing verification personnel."
+        ? "You have no Ongoing verification personnel."
         : filter === "failed"
         ? "You have no failed verification personnel."
         : "No Verification Batch available."
