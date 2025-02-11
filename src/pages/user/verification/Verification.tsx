@@ -33,6 +33,7 @@ interface CardsProps {
   max: number,
   status: string,
   endDate: string,
+  createdAt: string,
 }
 
 export default function Verification() {
@@ -45,7 +46,7 @@ export default function Verification() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-    const filter = searchParams.get("filter") || "all";
+  const filter = searchParams.get("filter") || "all";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,8 +76,6 @@ export default function Verification() {
     getResponseCards();
 }, [fetchBatchesResponse, id, fetchBatchesResponseCards]);
 
-console.log(cards);
-
 const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
   const selectedFilter = event.target.value;
   setSearchParams({ filter: selectedFilter });
@@ -101,7 +100,7 @@ const filteredBatches = batchesResponse
         : filter === "pending"
         ? "You have no pending verification personnel."
         : filter === "in_progress"
-        ? "You have no ungoing verification personnel."
+        ? "You have no Ongoing verification personnel."
         : filter === "failed"
         ? "You have no failed verification personnel."
         : "No Verification Batch available."
@@ -144,7 +143,7 @@ const filteredBatches = batchesResponse
       <div className="mb-[30px] flex justify-between items-center">
         <div>
           <h2>{cards?.title}</h2>
-          <p className="text-sm">Date Created: {moment(cards?.endDate).calendar()}</p>
+          <p className="text-sm">Date Created: {moment(cards?.createdAt).calendar()}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -240,7 +239,7 @@ const filteredBatches = batchesResponse
               <TableRow
                 key={item.id}
                 onClick={() =>
-                  navigate(`personnel/${item.id}`, { state: item })
+                  navigate(`personnel-info/${item.id}`, { state: item })
                 }
               >
                 <TableCell>

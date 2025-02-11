@@ -1,13 +1,13 @@
 import DeleteVerification from "@/components/modals/DeleteVerification";
 import { Button } from "@/components/ui/button";
-import { TrashIcon } from "@radix-ui/react-icons";
+// import { TrashIcon } from "@radix-ui/react-icons";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -18,45 +18,44 @@ import {
 } from "@/components/ui/table";
 import { useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-
-const data = [
-  {
-    data: "Full Name",
-    claim: "Christian Oliver Parker",
-    finding: "Christian Oliver Parker",
-    verdict: "correct",
-  },
-  {
-    data: "Date Of Birth",
-    claim: "23rd of January, 1986",
-    finding: "23rd of January, 1986",
-    verdict: "correct",
-  },
-  {
-    data: "Nationality",
-    claim: "Nigerian",
-    finding: "Nigerian",
-    verdict: "correct",
-  },
-  {
-    data: "State of Origin",
-    claim: "ogun",
-    finding: "ogun",
-    verdict: "correct",
-  },
-  {
-    data: "Residential Address",
-    claim: "1234, Somewhere street, Some Avenue",
-    finding: "1234, A different somewhere street, Another Avenue",
-    verdict: "incorrect",
-  },
-];
+import moment from "moment";
+import { useFetchFinding, useFetchVerdict } from "@/hooks/company";
+import { getFilteredObjects } from "@/lib/filteredObjects";
+import { academicInput, guarantorInput, personalInput, professionalInput } from "@/utils/field";
+import { mentalHealthFields } from "@/utils/formSetupData";
 
 export default function Personnel() {
   const location = useLocation();
   const { state } = location;
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [findings, setFindings] = useState<"" | any>("");
+  const [verdicts, setVerdicts] = useState<"" | any>("");
+  const { fetchFinding } = useFetchFinding();
+  const { fetchVerdict } = useFetchVerdict();
 
+  useEffect(() => {
+      const getFinding = async () => {
+        try {
+          const data = await fetchFinding(state.id);
+          setFindings(data);
+        } catch (error) {
+          console.error("Failed to get Finding:", error);
+        }
+      };
+
+      const getVerdict = async () => {
+        try {
+          const data = await fetchVerdict(state.id);
+          setVerdicts(data.results);
+        } catch (error) {
+          console.error("Failed to get Verdict:", error);
+        }
+      };
+  
+      getFinding();
+      getVerdict();
+  }, [fetchFinding, state.id, fetchVerdict]);
+  
   const headers = [
     {
       title: "Status",
@@ -79,15 +78,13 @@ export default function Personnel() {
       text: "7/41",
     },
   ];
-
-  const tabs = [
-    "Personal Information",
-    "Guarantor's Information",
-    "Academic Information",
-    "Professional Information",
-    "Mental Assessment Information",
-  ];
-
+  
+  const personalInformation = getFilteredObjects(state.responses, findings, personalInput, "pi", verdicts);
+  const guarantorInformation = getFilteredObjects(state.responses, findings, guarantorInput, "gi", verdicts);
+  const academicInformation = getFilteredObjects(state.responses, findings, academicInput, "ai", verdicts);
+  const professionalInformation = getFilteredObjects(state.responses, findings, professionalInput, "pri", verdicts);
+  const mentalInformation = getFilteredObjects(state.responses, findings, mentalHealthFields, "mhi", verdicts);
+  
   return (
     <>
       {
@@ -99,17 +96,17 @@ export default function Personnel() {
 
       <div className="mb-[30px] flex justify-between items-center">
         <div>
-          <h2>{state.name}</h2>
-          <p className="text-sm">Date Created: {state.date}</p>
+          <h2>{state.responses.piFullname}</h2>
+          <p className="text-sm">Date Created: {moment(state.submittedAt).calendar()}</p>
         </div>
 
-        <Button
+        {/* <Button
           variant="outline"
           className="gap-2 border-red-clr text-red-clr hover:text-red-clr hover:bg-red-50"
           onClick={() => setDeleteModalOpen(true)}
         >
           <TrashIcon /> Delete
-        </Button>
+        </Button> */}
       </div>
 
       <div className="w-full bg-white rounded-xl flex items-center justify-between overflow-hidden border-[1px] border-stroke-clr mb-6">
@@ -125,14 +122,11 @@ export default function Personnel() {
       </div>
 
       <Accordion type="single" collapsible>
-        {tabs.map((tab, idx) => (
-          <div
-            key={idx}
-            className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]"
-          >
-            <AccordionItem value={"item-" + (idx + 1)}>
+        {personalInformation.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">{tab}</p>
+                <p className="text-[16px] font-medium">Personal Information</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>
@@ -145,15 +139,15 @@ export default function Personnel() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {data.map((item, idx) => (
+                    {personalInformation.map((item, idx) => (
                       <TableRow key={idx}>
-                        <TableCell className="font-medium w-1/6">
+                          <TableCell key={idx} className="font-medium w-1/6">
                           {item.data}
                         </TableCell>
                         <TableCell className="w-2/6">{item.claim}</TableCell>
-                        <TableCell className="w-2/6">{item.finding}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge>{item.verdict}</Badge>
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -162,7 +156,159 @@ export default function Personnel() {
               </AccordionContent>
             </AccordionItem>
           </div>
-        ))}
+        )}
+      </Accordion>
+
+      <Accordion type="single" collapsible>
+        {guarantorInformation.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
+              <AccordionTrigger className="px-7">
+                <p className="text-[16px] font-medium">Guarantor's Information</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Table>
+                  <TableHeader className="bg-stroke-clr">
+                    <TableRow>
+                      <TableHead className="w-1/6">Data</TableHead>
+                      <TableHead className="w-2/6">Claim</TableHead>
+                      <TableHead className="w-2/6">Finding</TableHead>
+                      <TableHead className="w-1/6">Verdict</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {guarantorInformation.map((item, idx) => (
+                      <TableRow key={idx}>
+                          <TableCell key={idx} className="font-medium w-1/6">
+                          {item.data}
+                        </TableCell>
+                        <TableCell className="w-2/6">{item.claim}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
+                        <TableCell className="w-1/6">
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </AccordionContent>
+            </AccordionItem>
+          </div>
+        )}
+      </Accordion>
+
+      <Accordion type="single" collapsible>
+        {academicInformation.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
+              <AccordionTrigger className="px-7">
+                <p className="text-[16px] font-medium">Academic Information</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Table>
+                  <TableHeader className="bg-stroke-clr">
+                    <TableRow>
+                      <TableHead className="w-1/6">Data</TableHead>
+                      <TableHead className="w-2/6">Claim</TableHead>
+                      <TableHead className="w-2/6">Finding</TableHead>
+                      <TableHead className="w-1/6">Verdict</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {academicInformation.map((item, idx) => (
+                      <TableRow key={idx}>
+                          <TableCell key={idx} className="font-medium w-1/6">
+                          {item.data}
+                        </TableCell>
+                        <TableCell className="w-2/6">{item.claim}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
+                        <TableCell className="w-1/6">
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </AccordionContent>
+            </AccordionItem>
+          </div>
+        )}
+      </Accordion>
+
+      <Accordion type="single" collapsible>
+        {professionalInformation.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
+              <AccordionTrigger className="px-7">
+                <p className="text-[16px] font-medium">Professional Information</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Table>
+                  <TableHeader className="bg-stroke-clr">
+                    <TableRow>
+                      <TableHead className="w-1/6">Data</TableHead>
+                      <TableHead className="w-2/6">Claim</TableHead>
+                      <TableHead className="w-2/6">Finding</TableHead>
+                      <TableHead className="w-1/6">Verdict</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {professionalInformation.map((item, idx) => (
+                      <TableRow key={idx}>
+                          <TableCell key={idx} className="font-medium w-1/6">
+                          {item.data}
+                        </TableCell>
+                        <TableCell className="w-2/6">{item.claim}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
+                        <TableCell className="w-1/6">
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </AccordionContent>
+            </AccordionItem>
+          </div>
+        )}
+      </Accordion>
+
+      <Accordion type="single" collapsible>
+        {mentalInformation.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
+              <AccordionTrigger className="px-7">
+                <p className="text-[16px] font-medium">Mental Health Information</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Table>
+                  <TableHeader className="bg-stroke-clr">
+                    <TableRow>
+                      <TableHead className="w-1/6">Data</TableHead>
+                      <TableHead className="w-2/6">Claim</TableHead>
+                      <TableHead className="w-2/6">Finding</TableHead>
+                      <TableHead className="w-1/6">Verdict</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {mentalInformation.map((item, idx) => (
+                      <TableRow key={idx}>
+                          <TableCell key={idx} className="font-medium w-1/6">
+                          {item.data}
+                        </TableCell>
+                        <TableCell className="w-2/6">{item.claim}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
+                        <TableCell className="w-1/6">
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </AccordionContent>
+            </AccordionItem>
+          </div>
+        )}
       </Accordion>
 
       <div className="flex gap-3">
