@@ -9,7 +9,7 @@ export default function EmailVerified() {
         <p className="mt-4">
           Your email has been verified successfully. 
           Kindly wait for the activation email within 24 hours while your 
-          Company's Compliance being verify by our back office.
+          Company's Compliance being verified by our back office.
         </p>
       </div>
     </div>

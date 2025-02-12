@@ -26,12 +26,12 @@ const AddressVerification = () => {
     <div className="h-[100svh] grid place-content-center">
         <form onSubmit={handleSubmit} className="bg-white w-[90%] max-w-[500px] p-5 rounded-lg mx-auto ">
             <img src={images.logo} alt="Vettme" className="h-8" />
-            <div className="p-5 mt-10 bg-gray-50 rounded-lg">
+            <div className="p-5 mt-10 bg-gray-200 rounded-lg">
                 <h1 className="font-light text-xl">Kindly input your email and access code!</h1>
                 <label htmlFor="email">
                   <input 
                       type="email"
-                      placeholder="email"
+                      placeholder="Email"
                       id="email" 
                       name="email"
                       value={cred.email}
@@ -43,13 +43,13 @@ const AddressVerification = () => {
                 <label htmlFor="accessCode">
                   <input 
                       type="password"
-                      placeholder="passcode"
+                      placeholder="Access Code"
                       id="accessCode" 
                       name="accessCode"
                       value={cred.accessCode}
                       maxLength={6}
                       onChange={(e) => setCred({ ...cred, accessCode: e.target.value })}
-                      className="w-full py-2 px-3 rounded-lg my-5 shadow-sm shadow-gray-300"
+                      className="w-full py-2 px-3 rounded-lg mb-5 shadow-sm shadow-gray-300"
                   />
                 </label>
 

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useFetchAgents } from "@/hooks/backOffice";
 import { baseUrl } from "@/api/baseUrl";
+import { VerificationSkeleton } from "@/components/SkeletonUi";
 
 interface Address {
   id: string,
@@ -22,8 +23,10 @@ interface Agent {
 
 const PersonnelsList = () => {
   const navigate = useNavigate();
-  const [addresses, setAddresses] = useState<Address[]>([])
-  const [agent, setAgent] = useState<Agent | null>(null)
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [agent, setAgent] = useState<Agent | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const {fetchAgents} = useFetchAgents();
   const fieldAgentId = localStorage.getItem("fieldAgentId");
 
@@ -36,6 +39,9 @@ const PersonnelsList = () => {
         setAddresses(res.data.data)
       } catch (err) {
         console.error(err);
+        setError("No personnel data");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -87,29 +93,43 @@ const PersonnelsList = () => {
         <div className="inline-block min-w-full align-middle">
           <div className="rounded-lg bg-white p-2 md:pt-0 mb-10">
             <div className="md:hidden">
+              {loading && (
+                <div className="flex flex-col gap-3">
+                  <VerificationSkeleton />
+                  <VerificationSkeleton />
+                  <VerificationSkeleton />
+                </div>
+              )}
+              {error && (
+                <div className="w-full h-[300px] flex justify-center items-center">
+                  <h3>{error}</h3>
+                </div>
+              )}
               {addresses?.map((info) => (
                 <div
                   key={info.id}
-                  className="mb-2 w-full rounded-md bg-gray-50 px-2 py-4"
+                  className="mb-2 w-full rounded-md bg-gray-100 px-2 py-2"
                 >
-                  <div className="flex items-center justify-between border-b-2 border-white pb-4">
-                    <div>
+                  <div className="flex items-center justify-between border-b-2 border-white pb-2">
+                    <div className="w-[80%]">
                       <div className="mb-2 flex items-center">
-                        <div className="rounded-full w-8 h-8 bg-white text-green-400 mr-1 grid place-items-center">
+                        <div className="rounded-full w-6 h-6 bg-white text-blue-500 mr-1 grid place-items-center">
                           {info.personnelName.slice(0, 1)}
                         </div>
-                        <p>{info.personnelName}</p>
+                        <p className="uppercase text-blue-900">{info.personnelName}</p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleClick(info.id)}
-                      className="bg-red-300 text-white text-[12px] md:text-[16px] md:px-5 px-2 py-2 rounded-full border-[1px] border-destructive hover:bg-destructive hover:text-white"
-                    >
-                      Start Verification
-                    </button>
+                    <div className="">
+                      <button
+                        onClick={() => handleClick(info.id)}
+                        className="bg-blue-500 text-white text-xs md:text-[16px] md:px-5 md:py-2 p-2 leading-[15px] rounded-full border-[1px] border-blue-200 hover:bg-blue-800 hover:text-white"
+                      >
+                        Start Verification
+                      </button>
+                    </div>
                   </div>
-                  <div className="pt-4">
-                    <p className="text-gray-500">{info.address}, {info.lga}, {info.state}, {info.country}</p>
+                  <div className="pt-2">
+                    <p className="text-gray-400 text-xs">{info.address}, {info.lga}, {info.state}, {info.country}</p>
                   </div>
                 </div>
               ))}

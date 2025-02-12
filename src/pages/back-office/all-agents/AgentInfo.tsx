@@ -9,10 +9,10 @@ import {
 import loader from "@/assets/loader.svg";
 import { useAssignAddress, useFetchAddresses, useFetchAgents, useFetchAssignedAddress } from "@/hooks/backOffice";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { AvatarIcon, CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
+import { useNavigate, useParams } from "react-router-dom";
+import { AvatarIcon, CheckCircledIcon, CrossCircledIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
-import { Clock10Icon, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
   
   interface AgentProps {
@@ -45,6 +45,7 @@ import { Input } from "@/components/ui/input";
     const { fetchAssignedAddress } = useFetchAssignedAddress();
     const { assignAddress } = useAssignAddress();
     const { id } = useParams();
+    const navigate = useNavigate();
   
     useEffect(() => {
       const getAgents = async () => {
@@ -142,7 +143,7 @@ import { Input } from "@/components/ui/input";
                 </ul>
             </div>
             <div className="bg-white p-5 rounded-lg col-span-2 h-[420px]">
-              <h3 className="mb-5 flex items-center gap-2"><Clock10Icon className="text-purple-500"/>All assigned Address(es)</h3>
+              <h3 className="mb-5 flex items-center gap-1"><GlobeIcon className="text-purple-500"/>All assigned Address(es)</h3>
                 {assignedAddresses === null ? (
                   <div className="w-full h-[300px] flex items-center justify-center">
                     <img src={loader} alt="Loading" className="w-10" />
@@ -157,6 +158,7 @@ import { Input } from "@/components/ui/input";
                   <TableHeader className="bg-blue-700">
                     <TableRow>
                       <TableHead></TableHead>
+                      <TableHead className="text-white"></TableHead>
                       <TableHead className="text-white">Address</TableHead>
                       <TableHead className="text-white">State</TableHead>
                       <TableHead className="text-white">LGA</TableHead>
@@ -164,11 +166,13 @@ import { Input } from "@/components/ui/input";
                   </TableHeader>
                   <TableBody>
                     {assignedAddresses?.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className="flex items-center gap-1">
-                          <div className="bg-blue-500 w-7 h-7 grid place-items-center text-white rounded-full">{item.personnelName.slice(0, 1)}</div>
-                          <span>{item.personnelName}</span>
+                      <TableRow key={item.id} onClick={()=> navigate('/back-office/all-addresses/address-detail/' + item.id)}>
+                        <TableCell >
+                          <div className="bg-blue-500 w-7 h-7 grid place-items-center text-white rounded-full">
+                            {item.personnelName.slice(0, 1)}
+                          </div>
                         </TableCell>
+                        <TableCell>{item.personnelName}</TableCell>
                         <TableCell>{item.address}</TableCell>
                         <TableCell>{item.state}</TableCell>
                         <TableCell>{item.lga}</TableCell>

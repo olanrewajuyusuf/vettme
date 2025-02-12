@@ -4,6 +4,7 @@ import { TbBusStop, TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { RiFolderVideoLine } from "react-icons/ri";
 import { VscDebugBreakpointData } from "react-icons/vsc";
 import { useEffect, useState } from "react";
+import loader from "@/assets/loader.svg";
 import { useParams } from "react-router-dom";
 import { IoIosTimer } from "react-icons/io";
 import { FaLandmark } from "react-icons/fa";
@@ -35,8 +36,9 @@ const AddressDetail = () => {
     const [ address, setAddress ] = useState<addressesProps[] | null>(null);
     const [coordinates, setCoordinates] = useState<{ lat: number; lon: number } | null>(null);
     const [coordAddress, setCoordAddress] = useState<any | null>(null);
-    // const [withinThreshold, setWithinThreshold] = useState<boolean | null>(null);
     const [ findings, setFindings ] = useState<findingsProps | null>(null);
+    const [ isVideo, setIsVideo ] = useState(false);
+    const [loading, setLoading] = useState(true);
     const { fetchAddresses } = useFetchAddresses();
     const { fetchAddress } = useFetchAddress();
     const { id } = useParams();
@@ -58,6 +60,8 @@ const AddressDetail = () => {
                 setFindings(data.data);
             } catch (error) {
                 console.error("Failed to fetch company info:", error);
+            } finally {
+                setLoading(false);
             }
         };
         
@@ -87,6 +91,9 @@ const AddressDetail = () => {
         fetchCoordsAddress();
     }, [findings?.initialLocation.lat, findings?.initialLocation.lon]);  
 
+    console.log(findings);
+    
+
     return (
         <>
         <div className="grid grid-cols-3 justify-between items-start gap-5 border-b border-stroke-clr">
@@ -100,7 +107,7 @@ const AddressDetail = () => {
                     <p>Status</p>
                     <h3>{address && address[0].personnelType}</h3>
                 </div>
-                <div className="bg-pink-400 rounded-lg text-white p-3 shadow-md">
+                <div className="bg-pink-400 rounded-lg text-white p-3 mb-5 shadow-md">
                     <p>Address</p>
                     <h3>{address && address[0].address}</h3>
                 </div>
@@ -108,6 +115,16 @@ const AddressDetail = () => {
 
             <div className="col-span-2 border-l border-stroke-clr pl-5">
                 <h1 className="mb-5 border-b border-stroke-clr">Findings</h1>
+                {loading && (
+                    <div className="w-full h-[300px] flex items-center justify-center">
+                        <img src={loader} alt="Loading" className="w-10" />
+                    </div>
+                )}
+                {(!loading && !findings) && (
+                <div className="h-[300px]">
+                    <p className="text-center">No Agent's verification data or assigned</p>
+                </div>)}
+                {(!loading && findings) && (
                 <div className="grid grid-cols-2 gap-5">
                     <div>
                         <div className="bg-blue-600 rounded-lg text-white p-3 mb-3 shadow-md">
@@ -124,16 +141,26 @@ const AddressDetail = () => {
                                 <p>{findings?.busStop}</p>
                             </div>
                         </div>
-                        <div className="bg-blue-600 rounded-lg text-white p-3 mb-3 shadow-md">
+                        {!isVideo && <div className="bg-blue-600 rounded-lg text-white p-3 mb-3 shadow-md">
                             <h3 className="mb-5">Recorded video</h3>
-                            <a 
-                            href={findings?.video} 
-                            target="_blank" 
-                            // rel="noopener noreferrer"
+                            <button
+                            onClick={() => setIsVideo(true)}
                             >
                                 <span className="w-20 bg-white text-black p-2 rounded-full flex justify-center items-center gap-1">play <RiFolderVideoLine className="text-xl" /></span>
-                            </a>
-                        </div>
+                            </button>
+                        </div>}
+                        {isVideo && <div className="relative">
+                            {findings && (
+                            <video width="320" height="240" controls>
+                                <source src={findings && findings.video} type="video/mp4"/>
+                            </video>)}
+                            <button 
+                            onClick={() => setIsVideo(false)}
+                            className="absolute top-3 right-5 bg-destructive text-white px-2 rounded-full border-[1px] border-white"
+                            >
+                                close
+                            </button>
+                        </div>}
                     </div>
 
                     <div>
@@ -173,7 +200,7 @@ const AddressDetail = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>)}
             </div>
         </div>
 
@@ -187,6 +214,16 @@ const AddressDetail = () => {
                 </p>
             </div>
             <div className="border border-stroke-clr rounded-lg p-5 col-span-2">
+                {loading && (
+                    <div className="w-full h-[100px] flex items-center justify-center">
+                        <img src={loader} alt="Loading" className="w-10" />
+                    </div>
+                )}
+                {(!loading && !findings) && (
+                <div className="h-[100px]">
+                    <h3 className="text-center">No Finding...</h3>
+                </div>)}
+                {(!loading && findings) && (
                 <div className="grid grid-cols-3 gap-5">
                     <div>
                         <h3>Personnel's Claim</h3>
@@ -219,6 +256,7 @@ const AddressDetail = () => {
                         </p>
                     </div>
                 </div>
+                )}
             </div>
         </div>
         </>
