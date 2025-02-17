@@ -45,6 +45,7 @@ export default function Notification() {
         await ReadNote(id);
         const data = await fetchNotifications();
         setNotifications(data.data);
+        
       } catch (error) {
         console.error("Failed to read:", error);
       }

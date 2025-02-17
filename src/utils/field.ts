@@ -10,7 +10,6 @@ const personalInput = {
     'piPhoneNumber': 'Phone Number',
     'piEmailAddress': 'Email Address',
     'piBvn': 'BVN',
-    'piNationalIdentificationNumber': 'National Identification Number (NIN)',
     'piMaritalStatus': 'Marital Status',
     'piNextofKinName': 'Next of Kin Name',
     'piNextofKinRelationship': 'Next of Kin Relationship',
@@ -21,14 +20,56 @@ const guarantorInput = {
     'giFullName': 'Full Name',
     'giRelationshiptoPersonnel': 'Relationship to Personnel',
     'giOccupation': 'Occupation',
-    'giPhoneNumber': 'Phone Number',
     'giAddress': 'Address',
-    'giLGA': 'LGA',
     'giState': 'State',
+    'giLGA': 'LGA',
     'giCountry': 'Country',
     'giEmailAddress': 'Email Address',
+    'giPhoneNumber': 'Phone Number',
     'giYearsKnown': 'Years Known',
     'giNationalIdentificationNumber': 'National Identification Number (NIN)',
+}
+
+const guarantorInput2 = {
+    'giFullName2': 'Full Name',
+    'giRelationshiptoPersonnel2': 'Relationship to Personnel',
+    'giOccupation2': 'Occupation',
+    'giAddress2': 'Address',
+    'giCountry2': 'Country',
+    'giState2': 'State',
+    'giLGA2': 'LGA',
+    'giEmailAddress2': 'Email Address',
+    'giPhoneNumber2': 'Phone Number',
+    'giYearsKnown2': 'Years Known',
+    'giNationalIdentificationNumber2': 'National Identification Number (NIN)',
+}
+
+const guarantorInput3 = {
+    'giFullName3': 'Full Name',
+    'giRelationshiptoPersonnel3': 'Relationship to Personnel',
+    'giOccupation3': 'Occupation',
+    'giAddress3': 'Address',
+    'giCountry3': 'Country',
+    'giState3': 'State',
+    'giLGA3': 'LGA',
+    'giEmailAddress3': 'Email Address',
+    'giPhoneNumber3': 'Phone Number',
+    'giYearsKnown3': 'Years Known',
+    'giNationalIdentificationNumber3': 'National Identification Number (NIN)',
+}
+
+const guarantorInput4 = {
+    'giFullName4': 'Full Name',
+    'giRelationshiptoPersonnel4': 'Relationship to Personnel',
+    'giOccupation4': 'Occupation',
+    'giAddress4': 'Address',
+    'giCountry4': 'Country',
+    'giState4': 'State',
+    'giLGA4': 'LGA',
+    'giEmailAddress4': 'Email Address',
+    'giPhoneNumber4': 'Phone Number',
+    'giYearsKnown4': 'Years Known',
+    'giNationalIdentificationNumber4': 'National Identification Number (NIN)',
 }
 
 const academicInput = {
@@ -40,17 +81,23 @@ const academicInput = {
 };
 
 const professionalInput = {
-    'priCurrentJob': 'Current Job',
     'priOrganizationName': 'Organization Name',
+    'priOrganizationEmail': 'Organization Email',
     'priEmploymentStartDate': 'Employment Start Date',
     'priEmploymentType': 'Employment Type',
-    'priJobResponsibility': 'Job Responsibility',
     'priProfessionalSkills': 'Professional Skills',
-    'priLinkedInProfile': 'LinkedIn Profile',
     'priProfessionalReferenceName': 'Professional Reference Name',
     'priProfessionalReferencePhoneNumber': 'Professional Reference Phone Number',
-    'priCurrentSalary': 'Current Salary',
-    'priExpectedSalaryRange': 'Expected Salary Range',
+};
+
+const professionalInput2 = {
+    'priOrganizationName2': 'Organization Name',
+    'priOrganizationEmail2': 'Organization Email',
+    'priEmploymentStartDate2': 'Employment Start Date',
+    'priEmploymentType2': 'Employment Type',
+    'priProfessionalSkills2': 'Professional Skills',
+    'priProfessionalReferenceName2': 'Professional Reference Name',
+    'priProfessionalReferencePhoneNumber2': 'Professional Reference Phone Number',
 };
 
 const mentalHealthInput = {
@@ -62,4 +109,4 @@ const mentalHealthInput = {
     'mhaEmotionalWellbeing': 'Emotional Wellbeing',
 };
 
-export {personalInput, guarantorInput, academicInput, professionalInput, mentalHealthInput};
+export {personalInput, guarantorInput, guarantorInput2, guarantorInput3, guarantorInput4, academicInput, professionalInput, professionalInput2, mentalHealthInput};

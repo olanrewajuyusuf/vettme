@@ -9,45 +9,13 @@ import axios from "axios";
 import { createFormResponse } from "@/api/form";
 import Spinner from "@/components/Spinner";
 import { baseUrl } from "@/api/baseUrl";
+import { academicInfoResponse, guarantorInfoResponse, guarantorInfoResponse2, guarantorInfoResponse3, guarantorInfoResponse4, mentalHealthResponse, personalInfoResponse, professionalInfoResponse, professionalInfoResponse2 } from "@/utils/responseFields";
 
 interface FormData {
   formId: string;
   responses: {
     [key: string]: string | number;
   };
-}
-
-interface Field {
-  id: string;
-  label: string;
-  type: string;
-  options?: string[];
-}
-
-interface Field2 {
-  id: string;
-  label: string;
-  type: string;
-  options?: string[];
-}
-
-interface Field3 {
-  id: string;
-  label: string;
-  type: string;
-  options?: string[];
-}
-
-interface Field4 {
-  id: string;
-  label: string;
-  type: string;
-  options?: string[];
-}
-
-interface Field5 {
-  id: string;
-  label: string;
 }
 
 export default function Forms() {
@@ -65,18 +33,7 @@ export default function Forms() {
     responses: {},
   });
 
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value,} = e.target;
-
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     responses: {
-  //       ...prevData.responses,
-  //       [name]: value,
-  //     }
-  //   }))
-  // }
-
+  // Handle change function
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -136,194 +93,41 @@ export default function Forms() {
       });
   }, [url, token]);
 
-  const personalInfoFields: Field[] = [
-    { id: "piFullname", label: "Full Name", type: "text" },
-    { id: "piDateOfBirth", label: "Date of Birth", type: "date" },
-    {
-      id: "piGender",
-      label: "Gender",
-      type: "select",
-      options: ["Male", "Female"],
-    },
-    { id: "piNationality", label: "Nationality", type: "text" },
-    { id: "piAddress", label: "Address", type: "text" },
-    { id: "piState", label: "State", type: "text" },
-    { id: "piLGA", label: "LGA", type: "text" },
-    { id: "piCountry", label: "Country", type: "text" },
-    { id: "piPhoneNumber", label: "Phone Number", type: "text" },
-    { id: "piEmailAddress", label: "Email Address", type: "text" },
-    { id: "piBvn", label: "BVN", type: "number" },
-    {
-      id: "piNationalIdentificationNumber",
-      label: "National Identification Number (NIN)",
-      type: "number",
-    },
-    {
-      id: "piMaritalStatus",
-      label: "Marital Status",
-      type: "select",
-      options: ["Single", "Married"],
-    },
-    { id: "piNextofKinName", label: "Next of Kin Name", type: "text" },
-    {
-      id: "piNextofKinRelationship",
-      label: "Next of Kin Relationship",
-      type: "select",
-      options: [
-        "Father",
-        "Mother",
-        "Brother",
-        "Sister",
-        "Friend",
-        "Other Relative",
-        "Friend",
-      ],
-    },
-    {
-      id: "piNextofKinPhoneNumber",
-      label: "Next of Kin Phone Number",
-      type: "text",
-    },
-  ];
-
-  const guarantorInfoFields: Field2[] = [
-    { id: "giFullName", label: "Full Name", type: "text" },
-    {
-      id: "giRelationshiptoPersonnel",
-      label: "Relationship to Personnel",
-      type: "select",
-      options: [
-        "Father",
-        "Mother",
-        "Brother",
-        "Sister",
-        "Friend",
-        "Other Relative",
-        "Friend",
-      ],
-    },
-    { id: "giOccupation", label: "Occupation", type: "text" },
-    { id: "giPhoneNumber", label: "Phone Number", type: "text" },
-    { id: "giAddress", label: "Address", type: "text" },
-    { id: "giLGA", label: "LGA", type: "text" },
-    { id: "giState", label: "State", type: "text" },
-    { id: "giCountry", label: "Country", type: "text" },
-    { id: "giEmailAddress", label: "Email Address", type: "text" },
-    { id: "giYearsKnown", label: "Years Known", type: "number" },
-    {
-      id: "giNationalIdentificationNumber",
-      label: "National Identification Number (NIN)",
-      type: "number",
-    },
-  ];
-
-  const academicInfoFields: Field3[] = [
-    {
-      id: "aiHighestQualification",
-      label: "Highest Qualification",
-      type: "select",
-      options: [
-        "First Leaving School Certificate",
-        "Senior School Leaving Certificate - SSCE",
-        "Nigerian Certificate In Education - NCE",
-        "Ordinary National Diploma - OND",
-        "Higher National Diploma - HND",
-        "Bachelors -BSc",
-        "Masters - MSc",
-        "Doctor -PhD",
-      ],
-    },
-    { id: "aiNameofInstitution", label: "Name of Institution", type: "text" },
-    { id: "aiYearofGraduation", label: "Year of Graduation", type: "date" },
-    {
-      id: "aiDegreeOrCertificationUpload",
-      label: "Degree Or Certification Upload",
-      type: "text",
-    },
-    {
-      id: "aiProfessionalCertifications",
-      label: "Professional Certifications",
-      type: "text",
-    },
-  ];
-
-  const professionalInfoFields: Field4[] = [
-    { id: "priCurrentJob", label: "Current Job", type: "text" },
-    { id: "priOrganizationName", label: "Organization Name", type: "text" },
-    {
-      id: "priEmploymentStartDate",
-      label: "Employment Start Date",
-      type: "text",
-    },
-    {
-      id: "priEmploymentType",
-      label: "Employment Type",
-      type: "select",
-      options: ["On-site", "Hybrid", "Remote"],
-    },
-    { id: "priJobResponsibility", label: "Job Responsibility", type: "date" },
-    { id: "priProfessionalSkills", label: "Professional Skills", type: "text" },
-    { id: "priLinkedInProfile", label: "LinkedIn Profile", type: "text" },
-    {
-      id: "priProfessionalReferenceName",
-      label: "Professional Reference Name",
-      type: "text",
-    },
-    {
-      id: "priProfessionalReferencePhoneNumber",
-      label: "Professional Reference Phone Number",
-      type: "text",
-    },
-    { id: "priCurrentSalary", label: "Current Salary", type: "number" },
-    {
-      id: "priExpectedSalaryRange",
-      label: "Expected Salary Range",
-      type: "number",
-    },
-  ];
-
-  const mentalHealthFields: Field5[] = [
-    {
-      id: "mhaCurrentMentalHealthCondition",
-      label: "Current Mental Health Condition",
-    },
-    {
-      id: "mhaHistoryofMentalHealthConditions",
-      label: "History of Mental Health Conditions",
-    },
-    {
-      id: "mhaAreYouCurrentlyUnderAnyMedicationOrTreatment",
-      label: "Are you currently under any Medication or Treatment",
-    },
-    {
-      id: "mhaHaveYouHadAnyPreviousPsychiatricConsultations",
-      label: "Have you had any previous Psychiatric Consultations",
-    },
-    {
-      id: "mhaHaveYouExperiencedAnyMajorTraumaInThePastYear",
-      label: "Have you experienced any major trauma in the past Year",
-    },
-    { id: "mhaEmotionalWellbeing", label: "Emotional Wellbeing" },
-  ];
 
   // Filter personalInfoFields based on visibleFields
-  const filteredFields = personalInfoFields.filter((field) =>
+  const filteredFields = personalInfoResponse.filter((field) =>
     visibleFields.includes(field.id)
   );
 
-  const filteredFields2 = guarantorInfoFields.filter((field) =>
+  const filteredGuarantor = guarantorInfoResponse.filter((field) =>
     visibleFields.includes(field.id)
   );
 
-  const filteredFields3 = academicInfoFields.filter((field) =>
+  const filteredGuarantor2 = guarantorInfoResponse2.filter((field) =>
     visibleFields.includes(field.id)
   );
 
-  const filteredFields4 = professionalInfoFields.filter((field) =>
+  const filteredGuarantor3 = guarantorInfoResponse3.filter((field) =>
     visibleFields.includes(field.id)
   );
 
-  const filteredFields5 = mentalHealthFields.filter((field) =>
+  const filteredGuarantor4 = guarantorInfoResponse4.filter((field) =>
+    visibleFields.includes(field.id)
+  );
+
+  const filteredAcademic = academicInfoResponse.filter((field) =>
+    visibleFields.includes(field.id)
+  );
+
+  const filteredProfessional = professionalInfoResponse.filter((field) =>
+    visibleFields.includes(field.id)
+  );
+
+  const filteredProfessional2 = professionalInfoResponse2.filter((field) =>
+    visibleFields.includes(field.id)
+  );
+
+  const filteredMentalHealth = mentalHealthResponse.filter((field) =>
     visibleFields.includes(field.id)
   );
 
@@ -358,25 +162,49 @@ export default function Forms() {
                     </TabsTrigger>
                   )}
 
-                  {filteredFields.length !== 0 && (
+                  {filteredGuarantor.length !== 0 && (
                     <TabsTrigger value="guarantor" className="w-full">
-                      Guarantor's Information
+                      1st Guarantor's Information
                     </TabsTrigger>
                   )}
 
-                  {filteredFields3.length !== 0 && (
+                  {filteredGuarantor2.length !== 0 && (
+                    <TabsTrigger value="guarantor2" className="w-full">
+                      2nd Guarantor's Information
+                    </TabsTrigger>
+                  )}
+
+                  {filteredGuarantor3.length !== 0 && (
+                    <TabsTrigger value="guarantor3" className="w-full">
+                      3rd Guarantor's Information
+                    </TabsTrigger>
+                  )}
+
+                  {filteredGuarantor4.length !== 0 && (
+                    <TabsTrigger value="guarantor4" className="w-full">
+                      4th Guarantor's Information
+                    </TabsTrigger>
+                  )}
+
+                  {filteredAcademic.length !== 0 && (
                     <TabsTrigger value="academic" className="w-full">
                       Academic Information
                     </TabsTrigger>
                   )}
 
-                  {filteredFields4.length !== 0 && (
+                  {filteredProfessional.length !== 0 && (
                     <TabsTrigger value="professional" className="w-full">
-                      Professional Information
+                      1st Professional Information
                     </TabsTrigger>
                   )}
 
-                  {filteredFields5.length !== 0 && (
+                  {filteredProfessional2.length !== 0 && (
+                    <TabsTrigger value="professional2" className="w-full">
+                      2nd Professional Information
+                    </TabsTrigger>
+                  )}
+
+                  {filteredMentalHealth.length !== 0 && (
                     <TabsTrigger value="mental" className="w-full">
                       Mental Assessment
                     </TabsTrigger>
@@ -455,7 +283,214 @@ export default function Forms() {
                 </TabsContent>
 
                 <TabsContent value="guarantor">
-                  {filteredFields2.map((field) => (
+                  {filteredGuarantor.map((field) => (
+                    <label
+                      htmlFor={field.id}
+                      key={field.id}
+                      className="block mb-4"
+                    >
+                      <p>{field.label}</p>
+
+                      {field.type === "text" && (
+                        <Input
+                          type="text"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter your ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
+
+                      {field.type === "number" && (
+                        <Input
+                          type="number"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
+
+                      {field.type === "date" && (
+                        <Input
+                          type="date"
+                          id={field.id}
+                          name={field.id}
+                          value={
+                            formData.responses[field.id]
+                              ? String(formData.responses[field.id])
+                              : ""
+                          }
+                          onChange={handleChange}
+                          required
+                        />
+                      )}
+
+                      {field.type === "select" && field.options && (
+                        <select
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          required
+                          className="btn w-full bg-transparent"
+                        >
+                          <option value="">Select {field.label}</option>
+                          {field.options.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </label>
+                  ))}
+                </TabsContent>
+
+                <TabsContent value="guarantor2">
+                  {filteredGuarantor2.map((field) => (
+                    <label
+                      htmlFor={field.id}
+                      key={field.id}
+                      className="block mb-4"
+                    >
+                      <p>{field.label}</p>
+
+                      {field.type === "text" && (
+                        <Input
+                          type="text"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter your ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
+
+                      {field.type === "number" && (
+                        <Input
+                          type="number"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
+
+                      {field.type === "date" && (
+                        <Input
+                          type="date"
+                          id={field.id}
+                          name={field.id}
+                          value={
+                            formData.responses[field.id]
+                              ? String(formData.responses[field.id])
+                              : ""
+                          }
+                          onChange={handleChange}
+                          required
+                        />
+                      )}
+
+                      {field.type === "select" && field.options && (
+                        <select
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          required
+                          className="btn w-full bg-transparent"
+                        >
+                          <option value="">Select {field.label}</option>
+                          {field.options.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </label>
+                  ))}
+                </TabsContent>
+
+                <TabsContent value="guarantor3">
+                  {filteredGuarantor3.map((field) => (
+                    <label
+                      htmlFor={field.id}
+                      key={field.id}
+                      className="block mb-4"
+                    >
+                      <p>{field.label}</p>
+
+                      {field.type === "text" && (
+                        <Input
+                          type="text"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter your ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
+
+                      {field.type === "number" && (
+                        <Input
+                          type="number"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
+
+                      {field.type === "date" && (
+                        <Input
+                          type="date"
+                          id={field.id}
+                          name={field.id}
+                          value={
+                            formData.responses[field.id]
+                              ? String(formData.responses[field.id])
+                              : ""
+                          }
+                          onChange={handleChange}
+                          required
+                        />
+                      )}
+
+                      {field.type === "select" && field.options && (
+                        <select
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          required
+                          className="btn w-full bg-transparent"
+                        >
+                          <option value="">Select {field.label}</option>
+                          {field.options.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </label>
+                  ))}
+                </TabsContent>
+
+                <TabsContent value="guarantor4">
+                  {filteredGuarantor4.map((field) => (
                     <label
                       htmlFor={field.id}
                       key={field.id}
@@ -524,7 +559,7 @@ export default function Forms() {
                 </TabsContent>
 
                 <TabsContent value="academic">
-                  {filteredFields3.map((field) => (
+                  {filteredAcademic.map((field) => (
                     <label
                       htmlFor={field.id}
                       key={field.id}
@@ -593,7 +628,7 @@ export default function Forms() {
                 </TabsContent>
 
                 <TabsContent value="professional">
-                  {filteredFields4.map((field) => (
+                  {filteredProfessional.map((field) => (
                     <label
                       htmlFor={field.id}
                       key={field.id}
@@ -643,124 +678,60 @@ export default function Forms() {
                         </select>
                       )}
                     </label>
-                    // <label htmlFor="current_job" className="block mb-4">
-                    //   <p>Current/Immediate Job Title</p>
-                    //   <Input
-                    //     type="text"
-                    //     id="current_job"
-                    //     placeholder="e.g. Project Manager"
-                    //   />
-                    // </label>
+                  ))}
+                </TabsContent>
 
-                    // <label htmlFor="organization_name" className="block mb-4">
-                    //   <p>Company/Organization Name</p>
-                    //   <Input
-                    //     type="text"
-                    //     id="organization_name"
-                    //     placeholder="e.g. Unilever"
-                    //   />
-                    // </label>
+                <TabsContent value="professional2">
+                  {filteredProfessional2.map((field) => (
+                    <label
+                      htmlFor={field.id}
+                      key={field.id}
+                      className="block mb-4"
+                    >
+                      <p>{field.label}</p>
 
-                    // <label htmlFor="organization_address" className="block mb-4">
-                    //   <p>Company/Organization Address</p>
-                    //   <Input
-                    //     type="text"
-                    //     id="organization_address"
-                    //     placeholder="e.g. somewhere street, Lagos Nigeria"
-                    //   />
-                    // </label>
+                      {field.type === "text" && (
+                        <Input
+                          type="text"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter your ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
 
-                    // <label htmlFor="employment_type" className="block mb-4">
-                    //   <p>Employment Type</p>
-                    //   <select
-                    //     name="employment_type"
-                    //     id="employment_type"
-                    //     className="btn w-full bg-transparent"
-                    //     required
-                    //   >
-                    //     <option value="" selected={true} disabled>
-                    //       Select an option
-                    //     </option>
-                    //     <option value="full_time">Full Time</option>
-                    //     <option value="hybrid">Hybrid</option>
-                    //     <option value="remote">Remote</option>
-                    //   </select>
-                    // </label>
+                      {field.type === "number" && (
+                        <Input
+                          type="number"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
 
-                    // <label htmlFor="empoyment_start date" className="block mb-4">
-                    //   <p>Employment Start Date</p>
-                    //   <input
-                    //     type="month"
-                    //     id="empoyment_start date"
-                    //     className="w-full btn"
-                    //   />
-                    // </label>
-
-                    // <label htmlFor="job_responsibility" className="block mb-4">
-                    //   <p>Job Responsibility</p>
-                    //   <Input
-                    //     type="text"
-                    //     id="job_responsibility"
-                    //     placeholder="e.g. management of sales outlet and accounting"
-                    //   />
-                    // </label>
-
-                    // <label htmlFor="professional_skills" className="block mb-4">
-                    //   <p>Professional Skills</p>
-                    //   <Input
-                    //     type="text"
-                    //     id="professional_skills"
-                    //     placeholder="e.g. management, leadership, accounting"
-                    //   />
-                    // </label>
-
-                    // <label htmlFor="current_salary" className="block mb-4">
-                    //   <p>Current Salary (NGN)</p>
-                    //   <Input
-                    //     type="text"
-                    //     inputMode="numeric"
-                    //     id="current_salary"
-                    //     placeholder="e.g. 350000"
-                    //   />
-                    // </label>
-
-                    // <label htmlFor="expected_salary" className="block mb-4">
-                    //   <p>Expected Salary Range (NGN)</p>
-                    //   <Input
-                    //     type="text"
-                    //     id="expected_salary"
-                    //     placeholder="e.g. 350000 - 500000"
-                    //   />
-                    // </label>
-
-                    // <label htmlFor="referee_name" className="block mb-4">
-                    //   <p>Profressional Reference Name</p>
-                    //   <Input
-                    //     type="text"
-                    //     id="referee_name"
-                    //     placeholder="e.g. John Doe"
-                    //   />
-                    // </label>
-
-                    // <label htmlFor="referee_phone" className="block mb-4">
-                    //   <p>Profressional Reference Phone number</p>
-                    //   <Input
-                    //     type="text"
-                    //     inputMode="tel"
-                    //     id="referee_phone"
-                    //     placeholder="e.g. 09011223344"
-                    //   />
-                    // </label>
-
-                    // <label htmlFor="linkedin_url" className="block mb-4">
-                    //   <p>LinkedIn Profile URL</p>
-                    //   <Input
-                    //     type="text"
-                    //     inputMode="url"
-                    //     id="linkedin_url"
-                    //     placeholder="e.g. 09011223344"
-                    //   />
-                    // </label>
+                      {field.type === "select" && field.options && (
+                        <select
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          required
+                          className="btn w-full bg-transparent"
+                        >
+                          <option value="">Select {field.label}</option>
+                          {field.options.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </label>
                   ))}
                 </TabsContent>
 

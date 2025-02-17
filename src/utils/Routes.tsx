@@ -18,7 +18,6 @@ import AllChats from "@/pages/back-office/all-chats/AllChats";
 import SupportAdmin from "@/pages/back-office/support/SupportAdmin";
 import UserProvider from "./context/UserProvider";
 
-// import LivenessWidget from "@/pages/guarantor-verification/components/LivenessCheck";
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
 const VerifyEmail = lazy(() => import("@/pages/user/auth/VerifyEmail"));
@@ -61,6 +60,7 @@ const AddressVettForm = lazy(() => import("@/pages/address-verification/AddressV
 const VideoRecorder = lazy(() => import("@/pages/address-verification/VideoRecorder"));
 const GuarantorForm  = lazy(() => import("@/pages/guarantor-verification/GuarantorForm"));
 const AgentForm  = lazy(() => import("@/pages/agent-form/AgentForm"));
+const LiveCameraCapture  = lazy(() => import("@/pages/guarantor-verification/components/LivenessCheck"));
 
 export const routes = [
   {
@@ -274,10 +274,10 @@ export const routes = [
         path: "",
         element: <GuarantorForm/>,
       },
-      // {
-      //   path: "/guarantor-form/liveness-check",
-      //   element: <LivenessWidget />,
-      // },
+      {
+        path: "/guarantor-form/liveness-check",
+        element: <LiveCameraCapture />,
+      },
     ]
   },
 

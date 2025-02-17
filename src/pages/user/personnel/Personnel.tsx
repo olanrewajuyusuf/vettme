@@ -21,8 +21,16 @@ import { Badge } from "@/components/ui/badge";
 import moment from "moment";
 import { useFetchFinding, useFetchVerdict } from "@/hooks/company";
 import { getFilteredObjects } from "@/lib/filteredObjects";
-import { academicInput, guarantorInput, personalInput, professionalInput } from "@/utils/field";
-import { mentalHealthFields } from "@/utils/formSetupData";
+import { 
+  academicInput, 
+  guarantorInput, 
+  guarantorInput2, 
+  guarantorInput3, 
+  guarantorInput4, 
+  mentalHealthInput, 
+  personalInput, 
+  professionalInput, 
+  professionalInput2 } from "@/utils/field";
 
 export default function Personnel() {
   const location = useLocation();
@@ -55,6 +63,9 @@ export default function Personnel() {
       getFinding();
       getVerdict();
   }, [fetchFinding, state.id, fetchVerdict]);
+
+  console.log(state);
+  
   
   const headers = [
     {
@@ -80,10 +91,14 @@ export default function Personnel() {
   ];
   
   const personalInformation = getFilteredObjects(state.responses, findings, personalInput, "pi", verdicts);
-  const guarantorInformation = getFilteredObjects(state.responses, findings, guarantorInput, "gi", verdicts);
+  const guarantorInformation = getFilteredObjects(state.responses, findings, guarantorInput, "gi", "8", verdicts);
+  const guarantorInformation2 = getFilteredObjects(state.responses, findings, guarantorInput2, 'gi', "2", verdicts);
+  const guarantorInformation3 = getFilteredObjects(state.responses, findings, guarantorInput3, "gi", '3', verdicts);
+  const guarantorInformation4 = getFilteredObjects(state.responses, findings, guarantorInput4, "gi", '4', verdicts);
   const academicInformation = getFilteredObjects(state.responses, findings, academicInput, "ai", verdicts);
-  const professionalInformation = getFilteredObjects(state.responses, findings, professionalInput, "pri", verdicts);
-  const mentalInformation = getFilteredObjects(state.responses, findings, mentalHealthFields, "mhi", verdicts);
+  const professionalInformation = getFilteredObjects(state.responses, findings, professionalInput, "pri", "2", verdicts);
+  const professionalInformation2 = getFilteredObjects(state.responses, findings, professionalInput2, "pri", '2', verdicts);
+  const mentalInformation = getFilteredObjects(state.responses, findings, mentalHealthInput, "mhi", verdicts);
   
   return (
     <>
@@ -164,7 +179,7 @@ export default function Personnel() {
           <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
             <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">Guarantor's Information</p>
+                <p className="text-[16px] font-medium">1st Guarantor's Information</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>
@@ -178,6 +193,120 @@ export default function Personnel() {
                   </TableHeader>
                   <TableBody>
                     {guarantorInformation.map((item, idx) => (
+                      <TableRow key={idx}>
+                          <TableCell key={idx} className="font-medium w-1/6">
+                          {item.data}
+                        </TableCell>
+                        <TableCell className="w-2/6">{item.claim}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
+                        <TableCell className="w-1/6">
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </AccordionContent>
+            </AccordionItem>
+          </div>
+        )}
+      </Accordion>
+
+      <Accordion type="single" collapsible>
+        {guarantorInformation2.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
+              <AccordionTrigger className="px-7">
+                <p className="text-[16px] font-medium">2nd Guarantor's Information</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Table>
+                  <TableHeader className="bg-stroke-clr">
+                    <TableRow>
+                      <TableHead className="w-1/6">Data</TableHead>
+                      <TableHead className="w-2/6">Claim</TableHead>
+                      <TableHead className="w-2/6">Finding</TableHead>
+                      <TableHead className="w-1/6">Verdict</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {guarantorInformation2.map((item, idx) => (
+                      <TableRow key={idx}>
+                          <TableCell key={idx} className="font-medium w-1/6">
+                          {item.data}
+                        </TableCell>
+                        <TableCell className="w-2/6">{item.claim}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
+                        <TableCell className="w-1/6">
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </AccordionContent>
+            </AccordionItem>
+          </div>
+        )}
+      </Accordion>
+
+      <Accordion type="single" collapsible>
+        {guarantorInformation3.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
+              <AccordionTrigger className="px-7">
+                <p className="text-[16px] font-medium">3rd Guarantor's Information</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Table>
+                  <TableHeader className="bg-stroke-clr">
+                    <TableRow>
+                      <TableHead className="w-1/6">Data</TableHead>
+                      <TableHead className="w-2/6">Claim</TableHead>
+                      <TableHead className="w-2/6">Finding</TableHead>
+                      <TableHead className="w-1/6">Verdict</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {guarantorInformation3.map((item, idx) => (
+                      <TableRow key={idx}>
+                          <TableCell key={idx} className="font-medium w-1/6">
+                          {item.data}
+                        </TableCell>
+                        <TableCell className="w-2/6">{item.claim}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
+                        <TableCell className="w-1/6">
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </AccordionContent>
+            </AccordionItem>
+          </div>
+        )}
+      </Accordion>
+
+      <Accordion type="single" collapsible>
+        {guarantorInformation4.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
+              <AccordionTrigger className="px-7">
+                <p className="text-[16px] font-medium">4th Guarantor's Information</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Table>
+                  <TableHeader className="bg-stroke-clr">
+                    <TableRow>
+                      <TableHead className="w-1/6">Data</TableHead>
+                      <TableHead className="w-2/6">Claim</TableHead>
+                      <TableHead className="w-2/6">Finding</TableHead>
+                      <TableHead className="w-1/6">Verdict</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {guarantorInformation4.map((item, idx) => (
                       <TableRow key={idx}>
                           <TableCell key={idx} className="font-medium w-1/6">
                           {item.data}
@@ -254,6 +383,44 @@ export default function Personnel() {
                   </TableHeader>
                   <TableBody>
                     {professionalInformation.map((item, idx) => (
+                      <TableRow key={idx}>
+                          <TableCell key={idx} className="font-medium w-1/6">
+                          {item.data}
+                        </TableCell>
+                        <TableCell className="w-2/6">{item.claim}</TableCell>
+                        <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
+                        <TableCell className="w-1/6">
+                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </AccordionContent>
+            </AccordionItem>
+          </div>
+        )}
+      </Accordion>
+
+      <Accordion type="single" collapsible>
+        {professionalInformation2.length > 0 && (
+          <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
+            <AccordionItem value='personal information'>
+              <AccordionTrigger className="px-7">
+                <p className="text-[16px] font-medium">2nd Professional Information</p>
+              </AccordionTrigger>
+              <AccordionContent>
+                <Table>
+                  <TableHeader className="bg-stroke-clr">
+                    <TableRow>
+                      <TableHead className="w-1/6">Data</TableHead>
+                      <TableHead className="w-2/6">Claim</TableHead>
+                      <TableHead className="w-2/6">Finding</TableHead>
+                      <TableHead className="w-1/6">Verdict</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {professionalInformation2.map((item, idx) => (
                       <TableRow key={idx}>
                           <TableCell key={idx} className="font-medium w-1/6">
                           {item.data}

@@ -10,6 +10,7 @@ import email from "@/assets/images/email.png";
 import sad from "@/assets/images/sad.png";
 import verify from "@/assets/images/verify.png";
 import key from "@/assets/images/key.png";
+import avatar from "@/assets/images/avatar.png";
 
 const images = {
   authImg,
@@ -23,7 +24,8 @@ const images = {
   email,
   sad,
   verify,
-  key
+  key,
+  avatar
 };
 
 export default images;

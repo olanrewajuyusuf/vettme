@@ -4,17 +4,13 @@ const personalInfoFields = [
     {id: 'piGender', label: 'Gender'},
     {id: 'piNationality', label: 'Nationality'},
     {id: 'piAddress', label: 'Address'},
-    {id: 'piState', label: 'State'},
-    {id: 'piLGA', label: 'LGA'},
-    {id: 'piCountry', label: 'Country'},
     {id: 'piPhoneNumber', label: 'Phone Number'},
     {id: 'piEmailAddress', label: 'Email Address'},
-    {id: 'piBvn', label: 'BVN'},
-    {id: 'piNationalIdentificationNumber', label: 'National Identification Number (NIN)'},
     {id: 'piMaritalStatus', label: 'Marital Status'},
     {id: 'piNextofKinName', label: 'Next of Kin Name'},
     {id: 'piNextofKinRelationship', label: 'Next of Kin Relationship'},
     {id: 'piNextofKinPhoneNumber', label: 'Next of Kin Phone Number'},
+    {id: 'piPhysicalAddressRequest', label: 'Request for physical Address verification'},
 ];
 
 const guarantorInfoFields = [
@@ -23,12 +19,10 @@ const guarantorInfoFields = [
     {id: 'giOccupation', label: 'Occupation'},
     {id: 'giPhoneNumber', label: 'Phone Number'},
     {id: 'giAddress', label: 'Address'},
-    {id: 'giLGA', label: 'LGA'},
-    {id: 'giState', label: 'State'},
-    {id: 'giCountry', label: 'Country'},
     {id: 'giEmailAddress', label: 'Email Address'},
     {id: 'giYearsKnown', label: 'Years Known'},
-    {id: 'giNationalIdentificationNumber', label: 'National Identification Number (NIN)'},
+    // {id: 'giNationalIdentificationNumber', label: 'National Identification Number (NIN)'},
+    {id: 'giPhysicalAddressRequest', label: 'Request for physical Address verification'},
 ];
 
 const academicInfoFields = [
@@ -40,17 +34,13 @@ const academicInfoFields = [
 ];
 
 const professionalInfoFields = [
-    {id: 'priCurrentJob', label: 'Current Job'},
     {id: 'priOrganizationName', label: 'Organization Name'},
     {id: 'priEmploymentStartDate', label: 'Employment Start Date'},
     {id: 'priEmploymentType', label: 'Employment Type'},
-    {id: 'priJobResponsibility', label: 'Job Responsibility'},
     {id: 'priProfessionalSkills', label: 'Professional Skills'},
-    {id: 'priLinkedInProfile', label: 'LinkedIn Profile'},
     {id: 'priProfessionalReferenceName', label: 'Professional Reference Name'},
+    {id: 'priOrganizationEmail', label: 'Organization Email'},
     {id: 'priProfessionalReferencePhoneNumber', label: 'Professional Reference Phone Number'},
-    {id: 'priCurrentSalary', label: 'Current Salary'},
-    {id: 'priExpectedSalaryRange', label: 'Expected Salary Range'},
 ];
 
 const mentalHealthFields = [

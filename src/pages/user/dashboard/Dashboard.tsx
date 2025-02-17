@@ -70,6 +70,7 @@ export default function Dashboard() {
     };
     ReadNotification();
     navigate(`/notifications/${id}`);
+    window.location.reload();
   };
 
   // Sort notifications by `createdAt` in descending order (most recent first)

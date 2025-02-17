@@ -12,8 +12,9 @@ import {
   SpeakerModerateIcon,
 } from "@radix-ui/react-icons";
 import { ReactNode, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFetchNotifications } from "@/hooks/company";
+import { RiLogoutCircleLine } from "react-icons/ri";
 
 interface LayoutProps {
   children: ReactNode;
@@ -54,6 +55,7 @@ export default function DashboardLayout({ children }: LayoutProps) {
   const [length, setLength] = useState<number | null>(0);
   const { company } = useUser();
   const {fetchNotifications} = useFetchNotifications();
+  const navigate = useNavigate();
 
   useEffect(() => {
       const getNotifications = async () => {
@@ -67,6 +69,10 @@ export default function DashboardLayout({ children }: LayoutProps) {
       };
       getNotifications();
   }, [fetchNotifications]);  
+
+  const handleLogout = () => {
+    navigate('/auth/login')
+  }
 
   return (
     <>
@@ -84,12 +90,20 @@ export default function DashboardLayout({ children }: LayoutProps) {
               <NavLink
                 to={link.path}
                 key={idx}
-                className="nav-link flex items-center gap-3 mb-3 px-5 py-4 rounded-lg"
+                className="nav-link flex items-center gap-3 mb-2 px-5 py-3 rounded-lg"
               >
                 <span className="flex nav-icon">{link.icon}</span>
                 <p className="text-sm">{link.title}</p>
               </NavLink>
             ))}
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 mb-3 px-5 py-4 rounded-lg text-destructive hover:shadow-md"
+            >
+              <span><RiLogoutCircleLine /></span>
+              <p className="text-sm">Log out</p>
+            </button>
           </div>
         </div>
 
