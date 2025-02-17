@@ -823,10 +823,10 @@ export default function Forms() {
               </div>
             </Tabs>
           </div>
-          <label htmlFor="email_copy" className="flex items-center gap-2 p-3">
+          {/* <label htmlFor="email_copy" className="flex items-center gap-2 p-3">
             <input type="checkbox" name="email_copy" id="email_copy" />
             <p>Send a copy of my data to my email</p>
-          </label>
+          </label> */}
         </div>
         <Button type="submit" className="red-gradient mt-3">
           {isLoading ? <Spinner /> : "Submit Data for Verification"}

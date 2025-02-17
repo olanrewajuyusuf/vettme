@@ -1,7 +1,7 @@
 import { performLivenessCheck } from '@/api/dojahLivenessCheck';
 import React, { useState, useRef, useEffect } from 'react';
 import FaceIndicator from './FaceIndicator';
-import avatar from '@/assets/Images/avatar.png'
+import images from '@/assets/Images'
 import { TbBulbFilled, TbSunglassesFilled } from 'react-icons/tb';
 import { LucideScanFace } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -132,7 +132,7 @@ const LiveCameraCapture: React.FC = () => {
     <div className='text-center max-w-[500px] p-5 mx-auto'>
       <h1>Liveness Check</h1>
       <div className='w-[150px] h-[150px] relative rounded-lg bg-red-300 mt-8 mb-5 mx-auto overflow-hidden'>
-        <img src={avatar} alt="avatar"  className='w-full h-full'/>
+        <img src={images.avatar} alt="avatar"  className='w-full h-full'/>
         <div className='w-[110px] h-[110px] rounded-full absolute top-0 left-1/2 -translate-x-1/2 bg-[#000000CC] overflow-hidden'>
             <video 
             ref={videoRef} 
