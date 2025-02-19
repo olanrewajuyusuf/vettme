@@ -47,7 +47,7 @@ export default function Verifications() {
     };
 
     getBatches();
-  }, [fetchBatches]);
+  }, [fetchBatches]);  
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedFilter = event.target.value;

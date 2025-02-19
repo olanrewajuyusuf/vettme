@@ -1,5 +1,4 @@
-import DeleteVerification from "@/components/modals/DeleteVerification";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 // import { TrashIcon } from "@radix-ui/react-icons";
 import {
   Accordion,
@@ -16,29 +15,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
-import { useFetchFinding, useFetchVerdict } from "@/hooks/company";
+import { useFetchFinding, useFetchForm, useFetchVerdict } from "@/hooks/company";
 import { getFilteredObjects } from "@/lib/filteredObjects";
 import { 
   academicInput, 
-  guarantorInput, 
+  guarantorInput1, 
   guarantorInput2, 
   guarantorInput3, 
   guarantorInput4, 
   mentalHealthInput, 
   personalInput, 
-  professionalInput, 
+  professionalInput1, 
   professionalInput2 } from "@/utils/field";
 
 export default function Personnel() {
   const location = useLocation();
   const { state } = location;
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [findings, setFindings] = useState<"" | any>("");
   const [verdicts, setVerdicts] = useState<"" | any>("");
+  const [ expiryDate, setExpiryDate ] = useState<any | null>(null);
+  const { fetchForm } = useFetchForm();
   const { fetchFinding } = useFetchFinding();
+  const params = useParams();
   const { fetchVerdict } = useFetchVerdict();
 
   useEffect(() => {
@@ -59,22 +60,28 @@ export default function Personnel() {
           console.error("Failed to get Verdict:", error);
         }
       };
+
+      const getForm = async () => {
+        try {
+          const data = await fetchForm(params.verification_id as string);
+          setExpiryDate(data.data.expiryDate);
+        } catch (error) {
+          console.error("Failed to fetch Form:", error);
+        }
+      };
   
+      getForm();
       getFinding();
       getVerdict();
-  }, [fetchFinding, state.id, fetchVerdict]);
+  }, [fetchFinding, state.id, fetchVerdict, fetchForm, params.verification_id]);
 
-  console.log(state);
-  
+  const today = new Date();
+  const expDate = new Date(expiryDate);
   
   const headers = [
     {
       title: "Status",
       text: state.status,
-    },
-    {
-      title: "Position",
-      text: state.position,
     },
     {
       title: "Verification Rating",
@@ -91,39 +98,30 @@ export default function Personnel() {
   ];
   
   const personalInformation = getFilteredObjects(state.responses, findings, personalInput, "pi", verdicts);
-  const guarantorInformation = getFilteredObjects(state.responses, findings, guarantorInput, "gi", "8", verdicts);
+  const guarantorInformation = getFilteredObjects(state.responses, findings, guarantorInput1, "gi", "1", verdicts);
   const guarantorInformation2 = getFilteredObjects(state.responses, findings, guarantorInput2, 'gi', "2", verdicts);
   const guarantorInformation3 = getFilteredObjects(state.responses, findings, guarantorInput3, "gi", '3', verdicts);
   const guarantorInformation4 = getFilteredObjects(state.responses, findings, guarantorInput4, "gi", '4', verdicts);
   const academicInformation = getFilteredObjects(state.responses, findings, academicInput, "ai", verdicts);
-  const professionalInformation = getFilteredObjects(state.responses, findings, professionalInput, "pri", "2", verdicts);
+  const professionalInformation = getFilteredObjects(state.responses, findings, professionalInput1, "pri", "1", verdicts);
   const professionalInformation2 = getFilteredObjects(state.responses, findings, professionalInput2, "pri", '2', verdicts);
-  const mentalInformation = getFilteredObjects(state.responses, findings, mentalHealthInput, "mhi", verdicts);
+  const mentalInformation = getFilteredObjects(state.responses, findings, mentalHealthInput, "mhi", verdicts);  
   
   return (
     <>
-      {
-        <DeleteVerification
-          isOpen={deleteModalOpen}
-          setIsOpen={setDeleteModalOpen}
-        />
-      }
-
       <div className="mb-[30px] flex justify-between items-center">
         <div>
           <h2>{state.responses.piFullname}</h2>
           <p className="text-sm">Date Created: {moment(state.submittedAt).calendar()}</p>
         </div>
-
-        {/* <Button
-          variant="outline"
-          className="gap-2 border-red-clr text-red-clr hover:text-red-clr hover:bg-red-50"
-          onClick={() => setDeleteModalOpen(true)}
-        >
-          <TrashIcon /> Delete
-        </Button> */}
       </div>
 
+      {(expDate > today) && (
+        <div className="h-[300px] flex items-center justify-center bg-white rounded-lg shadow-lg">
+          <h3>The Verification will start on <span className="text-blue-600">{expiryDate && moment(expiryDate).format("dddd MMMM YYYY")}</span>.</h3>
+        </div>
+      )}
+      {(expDate <= today) && <div>
       <div className="w-full bg-white rounded-xl flex items-center justify-between overflow-hidden border-[1px] border-stroke-clr mb-6">
         {headers.map((header, idx) => (
           <div
@@ -477,10 +475,11 @@ export default function Personnel() {
           </div>
         )}
       </Accordion>
+      </div>}
 
-      <div className="flex gap-3">
+      {/* <div className="flex gap-3">
         <Button className="red-gradient">Download Data</Button>
-      </div>
+      </div> */}
     </>
   );
 }

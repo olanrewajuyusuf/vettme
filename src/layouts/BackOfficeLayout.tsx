@@ -2,15 +2,13 @@ import images from "@/assets/Images";
 import ScreenNotice from "@/components/ScreenNotice";
 import {
   AvatarIcon,
-  // CardStackIcon,
-  ChatBubbleIcon,
   DashboardIcon,
   ReaderIcon,
-  // SpeakerModerateIcon,
 } from "@radix-ui/react-icons";
 // import path from "path";
 import { ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { RiLogoutCircleLine } from "react-icons/ri";
+import { NavLink, useNavigate } from "react-router-dom";
 
 interface LayoutProps {
   children: ReactNode;
@@ -32,11 +30,6 @@ const navLinks = [
     icon: <AvatarIcon />,
   },
   {
-    path: "/guarantor-form",
-    title: "Guarantor Form",
-    icon: <ChatBubbleIcon />,
-  },
-  {
     path: "/back-office/all-chats",
     title: "Support",
     icon: <ReaderIcon />
@@ -44,6 +37,14 @@ const navLinks = [
 ];
 
 export default function DashboardLayout({ children }: LayoutProps) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('adminId');
+    sessionStorage.removeItem('adminToken');
+    navigate('/auth/back-office/login')
+  }
+
   return (
     <>
       <div className="small-screen-notice">
@@ -51,21 +52,31 @@ export default function DashboardLayout({ children }: LayoutProps) {
       </div>
       <div className="flex h-screen overflow-hidden">
         <div className="w-[250px] border-r-[1px] border-stroke-clr bg-white h-full">
-          <div className="h-[70px] flex items-center justify-center mb-12 border-b-[1px] border-stroke-clr">
+          <div className="h-[70px] flex items-center justify-center border-b-[1px] border-stroke-clr">
             <img src={images.logo} alt="Vettme" className="h-8" />
           </div>
 
-          <div className="px-5">
+          <div className="px-5 h-[calc(100%-70px)] flex flex-col justify-between">
+            <div className="mt-10">
             {navLinks.map((link, idx) => (
               <NavLink
                 to={link.path}
                 key={idx}
-                className="nav-link flex items-center gap-3 mb-3 px-5 py-4 rounded-lg"
+                className="nav-link flex items-center gap-3 mb-2 px-5 py-3 rounded-lg"
               >
                 <span className="flex nav-icon">{link.icon}</span>
                 <p className="text-sm">{link.title}</p>
               </NavLink>
             ))}
+            </div>
+            
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 mb-3 px-5 py-4 rounded-lg text-destructive logout_btn"
+            >
+              <span><RiLogoutCircleLine /></span>
+              <p className="text-sm">Log out</p>
+            </button>
           </div>
         </div>
 

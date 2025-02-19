@@ -6,20 +6,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import moment from "moment";
-import Pagination from "../pagination";
-import loader from "@/assets/loader.svg";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useActivateCompany, useDeleteCompany, useFetchCompany } from "@/hooks/backOffice";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { UpdateIcon, TrashIcon } from "@radix-ui/react-icons";
+import { UpdateIcon, TrashIcon, ThickArrowRightIcon, ThickArrowLeftIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
-import { SearchCodeIcon } from "lucide-react";
-// import DeleteCompany from "@/components/modals/DeleteCompany";
+import { SearchIcon } from "lucide-react";
+import { VerificationSkeleton } from "@/components/SkeletonUi";
+import { Button } from "@/components/ui/button";
 
-interface companyProps {
+interface CompanyProps {
     id: string,
     companyId: string,
     companyName: string,
@@ -35,28 +34,91 @@ interface companyProps {
     const { fetchCompany } = useFetchCompany();
     const { activateCompany } = useActivateCompany();
     const { deleteCompany } = useDeleteCompany();
-    const [companyInfo, setCompanyInfo] = useState<companyProps[] | null>(null);
+    const [companyInfo, setCompanyInfo] = useState<CompanyProps[] | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchQuery, setSearchQuery] = useState("");
+    const filter = searchParams.get("filter") || "all";
   
     useEffect(() => {
       const getCompanyInfo = async () => {
         try {
           const data = await fetchCompany();
-            // console.log(data)
           setCompanyInfo(data.result.companies);
         } catch (error) {
           console.error("Failed to fetch company info:", error);
+          setError("Failed to fetch Company")
+        } finally {
+          setLoading(false);
         }
       };
   
       getCompanyInfo();
     }, [fetchCompany]);
 
+    // Handle Filter Change
+    const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedFilter = event.target.value;
+        setSearchParams({ filter: selectedFilter });
+    };
+    
+    // Filter Addresses
+    const filteredCompany = companyInfo
+      ? companyInfo
+          .filter((company) => {
+              const query = searchQuery.toLowerCase();
+              return (
+                  company.companyName.toLowerCase().includes(query)
+              );
+          })
+          .filter((company) =>
+              filter === "active" ? company.isActive === true :
+              filter === "inactive" ? company.isActive === false :
+              true
+          )
+      : null;
+    
+    const itemsPerPage = 10;
+    const location = useLocation();
+    
+    // Get current page from URL, defaulting to 1 if not present
+    const currentPage = useMemo(() => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get("page") || "1", 10);
+        return page > 0 ? page : 1;
+    }, [location.search]);
+    
+    // Calculate total pages and paginated data
+    const totalPages = Math.ceil((filteredCompany?.length || 0) / itemsPerPage);
+    const paginatedData = useMemo(
+        () =>
+          filteredCompany?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
+        [filteredCompany, currentPage, itemsPerPage]
+    );
+    
+    // Handle page change by updating URL
+    const handlePageChange = (page: number) => {
+        const params = new URLSearchParams(location.search);
+        params.set("page", page.toString());
+        navigate({ search: params.toString() });
+    };
+    
+    const noCompanyMessage =
+      filteredCompany && filteredCompany.length === 0
+        ? filter === "active"
+            ? "No Active Company."
+            : filter === "inactive"
+            ? "No Inactive Company"
+            : "No Registered Company."
+        : null;
+    
+
     const handleActivate = async (companyId: string) => {
         try {
             await activateCompany({companyId});
             const updatedCompanies = await fetchCompany();
             setCompanyInfo(updatedCompanies.result.companies);
-            // console.log("Activation response:", response);
         } catch (error: any) {
             console.error("Failed to activate company:", error.message);
         }
@@ -67,7 +129,6 @@ interface companyProps {
           await deleteCompany(companyId);
           const updatedCompanies = await fetchCompany();
           setCompanyInfo(updatedCompanies.result.companies);
-          // console.log("Activation response:", response);
       } catch (error: any) {
           console.error("Failed to delete company:", error.message);
       }
@@ -76,36 +137,53 @@ interface companyProps {
     return (
       <>
         <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
-          <div className="w-full p-5 flex justify-between items-center border-b-[1px] border-stroke-clr">
-                <div className="flex items-center gap-3">
-                    <p>Filter by: </p>
-                    <select name="" id="" className="btn px-3">
-                    <option value="active">Active</option>
-                    <option value="not_active">Not active</option>
-                    <option value="verified">Verified</option>
-                    <option value="not_verified">Not verified</option>
-                    </select>
-                </div>
-                <div className="relative">
+          {/* Filter and Search */}
+          <div className="flex justify-between items-center py-4 border-b-[1px] border-stroke-clr px-5">
+              <div className="flex items-center gap-3">
+                  <p>Filter by: </p>
+                  <select
+                      name="filter"
+                      id="filter"
+                      className="btn px-3"
+                      value={filter}
+                      onChange={handleFilterChange}
+                  >
+                      <option value="all">All</option>
+                      <option value="active">Active</option>
+                      <option value="inactive">Not Active</option>
+                  </select>
+              </div>
+              <div className="relative w-[33%]">
                   <Input
                       type="text"
-                      placeholder="Search by company name"
+                      value={searchQuery} 
+                      onChange={(e) => setSearchQuery(e.target.value)}
                       className="max-w-sm"
+                      placeholder="Search companies by name"
                   />
-                  <SearchCodeIcon className="text-stroke-clr absolute right-3 top-1/2 -translate-y-1/2" />
-                </div>
+                  <SearchIcon className="text-stroke-clr absolute right-3 top-1/2 -translate-y-1/2" />
+              </div>
           </div>
 
-          {companyInfo === null ? (
-            <div className="w-full h-[300px] flex items-center justify-center">
-              <img src={loader} alt="" className="w-10" />
-            </div>
-          ) :
-           companyInfo?.length === 0 ? (
-            <div className="w-full h-[300px] flex justify-center items-center">
-                <h3>No Company available.</h3>
-            </div>
-          ) : (
+          {/* Loading, Error, and No Data States */}
+          {loading && (
+              <div className="flex flex-col gap-3">
+                  <VerificationSkeleton />
+                  <VerificationSkeleton />
+                  <VerificationSkeleton />
+              </div>
+          )}
+          {error && (
+              <div className="w-full h-[300px] flex justify-center items-center">
+                  <h3>{error}</h3>
+              </div>
+          )}
+          {noCompanyMessage && (
+              <div className="w-full h-[300px] flex justify-center items-center">
+                  <h3>{noCompanyMessage}</h3>
+              </div>
+          )}
+          {paginatedData && paginatedData.length > 0 && (
           <Table>
             <TableHeader className="bg-blue-700 h-8">
               <TableRow>
@@ -119,7 +197,7 @@ interface companyProps {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {companyInfo?.map((company: any) => (
+              {paginatedData?.map((company: CompanyProps) => (
                 <TableRow
                   key={company.id}
                   onClick={() => navigate(`verification-batch/${company.id}`)}
@@ -193,7 +271,30 @@ interface companyProps {
               ))}
             </TableBody>
           </Table>)}
-          {companyInfo === null || companyInfo?.length === 0  || <Pagination />}
+          {/* Pagination Controls */}
+          <div className="flex items-center justify-center w-full gap-3 py-3 border-t-[1px]">
+            <Button
+              size="sm"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              variant="outline"
+              className="bg-green-600 text-white hover:bg-green-500"
+            >
+              <ThickArrowLeftIcon/>
+            </Button>
+            <p>
+              Page <span className="font-bold">{currentPage}</span> of <span className="font-bold text-blue-700">{totalPages}</span>
+            </p>
+            <Button
+              size="sm"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              variant="outline"
+              className="bg-green-600 text-white hover:bg-green-500"
+            >
+              <ThickArrowRightIcon/>
+            </Button>
+          </div>
         </div>
       </>
     );

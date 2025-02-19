@@ -2,6 +2,7 @@ import DashboardChart from "@/components/DashboardChart";
 import { CardSkeleton, RecentSkeleton } from "@/components/SkeletonUi";
 import { useFetchCardData, useFetchNotifications, useReadNote } from "@/hooks/company";
 import { formatTimeAgo } from "@/lib/formatter";
+import { useNotification } from "@/utils/context/useNotification";
 import { FileMinusIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -24,6 +25,7 @@ interface Notifications {
 export default function Dashboard() {
   const [cardData, setCardData] = useState<CardProps | null>(null);
   const [notifications, setNotifications] = useState<Notifications[] | null>(null);
+  const { setUnreadCount } = useNotification();
   const { fetchNotifications } = useFetchNotifications();
   const { fetchCardData } = useFetchCardData();
   const [loading, setLoading] = useState(true);
@@ -47,6 +49,8 @@ export default function Dashboard() {
       try {
         const data = await fetchNotifications();
         setNotifications(data.data);
+        const unread = data.data.filter((notification: Notifications) => !notification.read).length;
+        setUnreadCount(unread);
       } catch (error) {
         console.error("Failed to fetch Notification:", error);
         setError("Failed to fetch notifications");
@@ -56,7 +60,7 @@ export default function Dashboard() {
     };
     getNotifications();
     getCardData();
-  }, [fetchCardData, fetchNotifications]);
+  }, [fetchCardData, fetchNotifications, setUnreadCount]);
 
   const handleClick = (id: string) => {
     const ReadNotification = async () => {
@@ -64,13 +68,14 @@ export default function Dashboard() {
         await ReadNote(id);
         const data = await fetchNotifications();
         setNotifications(data.data);
+        const unread = data.data.filter((notification: Notifications) => !notification.read).length;
+        setUnreadCount(unread);
       } catch (error) {
         console.error("Failed to read:", error);
       }
     };
     ReadNotification();
     navigate(`/notifications/${id}`);
-    window.location.reload();
   };
 
   // Sort notifications by `createdAt` in descending order (most recent first)

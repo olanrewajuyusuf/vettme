@@ -5,16 +5,17 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-  } from "@/components/ui/table";
-  import { useNavigate, useParams } from "react-router-dom";
-  import loader from "@/assets/loader.svg";
-  import { Badge } from "@/components/ui/badge";
-  import Pagination from "../../components/pagination";
-  import { useFetchVerificationBatches } from "@/hooks/backOffice";
-  import { useEffect, useState } from "react";
-  import { Input } from "@/components/ui/input";
-  import { SearchCodeIcon } from "lucide-react";
+} from "@/components/ui/table";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { useFetchVerificationBatches } from "@/hooks/backOffice";
+import { useEffect, useMemo, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { SearchIcon } from "lucide-react";
 import moment from "moment";
+import { ThickArrowLeftIcon, ThickArrowRightIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
+import { VerificationSkeleton } from "@/components/SkeletonUi";
   
   interface batchesProps {
     id: string,
@@ -23,12 +24,18 @@ import moment from "moment";
     status: string,
     verificationType: string,
     createdAt: string,
+    expiryDate: string,
   }
   
   export default function Batches() {
     const { id } = useParams();
     const { fetchVerificationBatches } = useFetchVerificationBatches(id);
     const [ getBatches, setGetBatches ] = useState<batchesProps[] | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchQuery, setSearchQuery] = useState("");
+    const filter = searchParams.get("filter") || "all";
     const navigate = useNavigate();
   
     useEffect(() => {
@@ -38,12 +45,77 @@ import moment from "moment";
             setGetBatches(data.data);
         } catch (error) {
           console.error("Failed to fetch company info:", error);
+          setError("Can not fetch verification batches")
+        } finally {
+          setLoading(false);
         }
       };
   
       getBatchesInfo();
     }, [fetchVerificationBatches, id]);
-    
+
+    // Handle Filter Change
+    const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedFilter = event.target.value;
+      setSearchParams({ filter: selectedFilter });
+    };
+
+    // Filter Addresses
+    const filteredBatches = getBatches
+      ? getBatches
+          .filter((batch) => {
+              const query = searchQuery.toLowerCase();
+              return (
+                  batch.title.toLowerCase().includes(query)
+              );
+          })
+          .filter((batch) =>
+            filter === "pending" ? batch.status === "PENDING" :
+            filter === "failed" ? batch.status === "FAILED" :
+            filter === "completed" ? batch.status === "COMPLETED" :
+            filter === "in_progress" ? batch.status === "INPROGRESS" :
+            true
+          )
+      : null;      
+
+    const itemsPerPage = 10;
+    const location = useLocation();
+        
+    // Get current page from URL, defaulting to 1 if not present
+    const currentPage = useMemo(() => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get("page") || "1", 10);
+        return page > 0 ? page : 1;
+    }, [location.search]);
+
+    // Calculate total pages and paginated data
+    const totalPages = Math.ceil((filteredBatches?.length || 0) / itemsPerPage);
+    const paginatedData = useMemo(
+        () =>
+          filteredBatches?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
+        [filteredBatches, currentPage, itemsPerPage]
+    );
+
+    // Handle page change by updating URL
+    const handlePageChange = (page: number) => {
+      const params = new URLSearchParams(location.search);
+      params.set("page", page.toString());
+      navigate({ search: params.toString() });
+    };
+
+    const noBatchesMessage =
+      filteredBatches && filteredBatches.length === 0
+        ? filter === "completed"
+        ? "You have no completed Verification."
+        : filter === "pending"
+        ? "You have no pending Verification."
+        : filter === "in_progress"
+        ? "You have no In progress Verification."
+        : filter === "failed"
+        ? "You have no failed Verification."
+        : "No processing Verification."
+    : null;
+        
     return (
       <>
         <div className="mb-10">
@@ -51,36 +123,55 @@ import moment from "moment";
             <p>This is where you get all batches being process by this company</p>
         </div>
         <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
-            <div className="w-full p-5 flex justify-between items-center border-b-[1px] border-stroke-clr">
-                  <div className="flex items-center gap-3">
-                      <p>Filter by: </p>
-                      <select name="" id="" className="btn px-3">
+            {/* Filter and Search */}
+            <div className="flex justify-between items-center py-4 border-b-[1px] border-stroke-clr px-5">
+              <div className="flex items-center gap-3">
+                  <p>Filter by: </p>
+                  <select
+                      name="filter"
+                      id="filter"
+                      className="btn px-3"
+                      value={filter}
+                      onChange={handleFilterChange}
+                  >
+                      <option value="all">All</option>
                       <option value="pending">Pending</option>
                       <option value="in_progress">In Progress</option>
                       <option value="completed">Completed</option>
                       <option value="failed">Failed</option>
-                      </select>
-                  </div>
-                  <div className="relative">
-                    <Input
-                        type="text"
-                        placeholder="Search by title or type"
-                        className="max-w-sm"
-                    />
-                    <SearchCodeIcon className="text-stroke-clr absolute right-3 top-1/2 -translate-y-1/2" />
-                  </div>
-            </div>
+                  </select>
+              </div>
+              <div className="relative w-[33%]">
+                  <Input
+                      type="text"
+                      value={searchQuery} 
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="max-w-sm"
+                      placeholder="Search by Title or Type"
+                  />
+                  <SearchIcon className="text-stroke-clr absolute right-3 top-1/2 -translate-y-1/2" />
+              </div>
+          </div>
           
-          {getBatches === null ? (
-              <div className="w-full h-[500px] flex items-center justify-center">
-                <img src={loader} alt="" className="w-10" />
+          {/* Loading, Error, and No Data States */}
+          {loading && (
+              <div className="flex flex-col gap-3">
+                  <VerificationSkeleton />
+                  <VerificationSkeleton />
+                  <VerificationSkeleton />
               </div>
-            ) :
-            getBatches.length === 0 ? (
+          )}
+          {error && (
               <div className="w-full h-[300px] flex justify-center items-center">
-                  <h3>No Verification initiated.</h3>
+                  <h3>{error}</h3>
               </div>
-            ) : (
+          )}
+          {noBatchesMessage && (
+              <div className="w-full h-[300px] flex justify-center items-center">
+                  <h3>{noBatchesMessage}</h3>
+              </div>
+          )}
+          {paginatedData && paginatedData.length > 0 && (
           <Table>
             <TableHeader className="bg-stroke-clr">
               <TableRow>
@@ -89,10 +180,11 @@ import moment from "moment";
                 <TableHead>Status</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Date Initiated</TableHead>
+                <TableHead>Exp Date</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {getBatches.map((batch: batchesProps) => (
+              {paginatedData.map((batch: batchesProps) => (
                 <TableRow
                  key={batch.id} 
                  onClick={() => navigate(`personnels/${batch.id}`)}
@@ -121,11 +213,35 @@ import moment from "moment";
                   </TableCell>
                   <TableCell>{batch.verificationType}</TableCell>
                   <TableCell>{moment(batch.createdAt).format("MMM DD, YYYY")}</TableCell>
+                  <TableCell>{moment(batch.expiryDate).format("MMM DD, YYYY")}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>)}
-          {getBatches === null || getBatches.length === 0  || <Pagination />}
+          {/* Pagination Controls */}
+          <div className="flex items-center justify-center w-full gap-3 py-3 border-t-[1px]">
+            <Button
+              size="sm"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              variant="outline"
+              className="bg-green-600 text-white hover:bg-green-500"
+            >
+              <ThickArrowLeftIcon/>
+            </Button>
+            <p>
+              Page <span className="font-bold">{currentPage}</span> of <span className="font-bold text-blue-700">{totalPages}</span>
+            </p>
+            <Button
+              size="sm"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              variant="outline"
+              className="bg-green-600 text-white hover:bg-green-500"
+            >
+              <ThickArrowRightIcon/>
+            </Button>
+          </div>
         </div>
       </>
     );

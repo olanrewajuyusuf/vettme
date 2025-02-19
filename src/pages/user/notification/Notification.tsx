@@ -1,6 +1,7 @@
 import { NotificationsSkeleton } from "@/components/SkeletonUi";
 import { useFetchNotifications, useReadNote } from "@/hooks/company";
 import { formatTimeAgo } from "@/lib/formatter";
+import { useNotification } from "@/utils/context/useNotification";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -14,6 +15,7 @@ interface Notifications {
 
 export default function Notification() {
   const [notifications, setNotifications] = useState<Notifications[] | null>(null);
+  const { setUnreadCount } = useNotification();
   const { fetchNotifications } = useFetchNotifications();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +31,8 @@ export default function Notification() {
       try {
         const data = await fetchNotifications();
         setNotifications(data.data);
+        const unread = data.data.filter((notification: Notifications) => !notification.read).length;
+        setUnreadCount(unread);
       } catch (error) {
         console.error("Failed to fetch Notification:", error);
         setError("Failed to fetch notifications");
@@ -37,7 +41,7 @@ export default function Notification() {
       }
     };
     getNotifications();
-  }, [fetchNotifications]);
+  }, [fetchNotifications, setUnreadCount]);
 
   const handleClick = (id: string) => {
     const ReadNotification = async () => {
@@ -45,7 +49,8 @@ export default function Notification() {
         await ReadNote(id);
         const data = await fetchNotifications();
         setNotifications(data.data);
-        
+        const unread = data.data.filter((notification: Notifications) => !notification.read).length;
+        setUnreadCount(unread);
       } catch (error) {
         console.error("Failed to read:", error);
       }

@@ -60,9 +60,9 @@ const personalInfoResponse: Field[] = [
 ];
 
 const guarantorInfoResponse: Field[] = [
-  { id: "giFullName", label: "Full Name", type: "text" },
+  { id: "giFullName1", label: "Full Name", type: "text" },
   {
-    id: "giRelationshiptoPersonnel",
+    id: "giRelationshiptoPersonnel1",
     label: "Relationship to Personnel",
     type: "select",
     options: [
@@ -74,16 +74,16 @@ const guarantorInfoResponse: Field[] = [
       "Other Relative",
     ],
   },
-  { id: "giOccupation", label: "Occupation", type: "text" },
-  { id: "giPhoneNumber", label: "Phone Number", type: "text" },
-  { id: "giAddress", label: "Address", type: "text" },
-  { id: "giCountry", label: "Country", type: "text" },
-  { id: "giState", label: "State", type: "text" },
-  { id: "giLGA", label: "LGA", type: "text" },
-  { id: "giEmailAddress", label: "Email Address", type: "text" },
-  { id: "giYearsKnown", label: "Years Known", type: "number" },
+  { id: "giOccupation1", label: "Occupation", type: "text" },
+  { id: "giPhoneNumber1", label: "Phone Number", type: "text" },
+  { id: "giAddress1", label: "Address", type: "text" },
+  { id: "giCountry1", label: "Country", type: "text" },
+  { id: "giState1", label: "State", type: "text" },
+  { id: "giLGA1", label: "LGA", type: "text" },
+  { id: "giEmailAddress1", label: "Email Address", type: "text" },
+  { id: "giYearsKnown1", label: "Years Known", type: "number" },
   {
-    id: "giNationalIdentificationNumber",
+    id: "giNationalIdentificationNumber1",
     label: "National Identification Number (NIN)",
     type: "number",
   },
@@ -210,28 +210,28 @@ const academicInfoResponse: Field[] = [
 ];
 
 const professionalInfoResponse: Field[] = [
-  { id: "priOrganizationName", label: "Organization Name", type: "text" },
+  { id: "priOrganizationName1", label: "Organization Name", type: "text" },
   {
-    id: "priEmploymentStartDate",
+    id: "priEmploymentStartDate1",
     label: "Employment Start Date",
     type: "text",
   },
   {
-    id: "priEmploymentType",
+    id: "priEmploymentType1",
     label: "Employment Type",
     type: "select",
     options: ["On-site", "Hybrid", "Remote"],
   },
-  { id: "priProfessionalSkills", label: "Professional Skills", type: "text" },
-  { id: "priLinkedInProfile2", label: "LinkedIn Profile", type: "text" },
+  { id: "priProfessionalSkills1", label: "Professional Skills", type: "text" },
+  { id: "priLinkedInProfile21", label: "LinkedIn Profile", type: "text" },
   {
-    id: "priProfessionalReferenceName",
+    id: "priProfessionalReferenceName1",
     label: "Professional Reference Name",
     type: "text",
   },
-  { id: "priOrganizationEmail", label: "Organization Email", type: "text" },
+  { id: "priOrganizationEmail1", label: "Organization Email", type: "text" },
   {
-    id: "priProfessionalReferencePhoneNumber",
+    id: "priProfessionalReferencePhoneNumber1",
     label: "Professional Reference Phone Number",
     type: "text",
   },

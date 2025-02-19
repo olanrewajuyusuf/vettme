@@ -14,6 +14,7 @@ import { AvatarIcon, CheckCircledIcon, CrossCircledIcon, GlobeIcon } from "@radi
 import { Button } from "@/components/ui/button";
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { VerificationSkeleton } from "@/components/SkeletonUi";
   
   interface AgentProps {
     agentName: string;
@@ -40,10 +41,13 @@ import { Input } from "@/components/ui/input";
     const [agent, setAgent] = useState<AgentProps | null>(null);
     const [pendingAddresses, setPendingAddresses] = useState<addressesProps[] | null>(null);
     const [assignedAddresses, setAssignedAddresses] = useState<addressesProps[] | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const { fetchAddresses } = useFetchAddresses();
     const { fetchAgents } = useFetchAgents();
     const { fetchAssignedAddress } = useFetchAssignedAddress();
     const { assignAddress } = useAssignAddress();
+    const [searchQuery, setSearchQuery] = useState("");
     const { id } = useParams();
     const navigate = useNavigate();
   
@@ -65,6 +69,9 @@ import { Input } from "@/components/ui/input";
           setPendingAddresses(addresses);
         } catch (error) {
           console.error("Failed to fetch pending addresses:", error);
+          setError("Failed to fetch addresses");
+        } finally {
+          setLoading(false);
         }
       };
 
@@ -80,7 +87,24 @@ import { Input } from "@/components/ui/input";
       getAgents();
       getAddresses();
       getAssignedAddresses();
-    }, [fetchAgents, id, fetchAddresses, fetchAssignedAddress]);    
+    }, [fetchAgents, id, fetchAddresses, fetchAssignedAddress]); 
+    
+    const filteredAddresses = pendingAddresses
+        ? pendingAddresses
+            .filter((address) => {
+                const query = searchQuery.toLowerCase();
+                return (
+                    address.country.toLowerCase().includes(query) ||
+                    address.state.toLowerCase().includes(query) ||
+                    address.lga.toLowerCase().includes(query)
+                );
+            })
+        : null;
+
+    const noAddressMessage =
+        filteredAddresses && filteredAddresses.length === 0
+        ? `No State or LGA match ${searchQuery}...`
+        : null;
   
     // Toggling checked addresses
     const toggleChecked = (id: string) => {
@@ -192,6 +216,8 @@ import { Input } from "@/components/ui/input";
                 <div className="relative">
                     <Input
                         type="text"
+                        value={searchQuery} 
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search by State or lga"
                         className="max-w-sm"
                     />
@@ -199,15 +225,25 @@ import { Input } from "@/components/ui/input";
                   </div>
                     <Button type="submit" className="red-gradient">Submit</Button>
                 </div>
-              {pendingAddresses === null ? (
-                <div className="w-full h-[300px] flex items-center justify-center">
-                  <img src={loader} alt="Loading" className="w-10" />
-                </div>
-              ) : pendingAddresses?.length === 0 ? (
-                <div className="w-full h-[300px] flex justify-center items-center">
-                  <h3>No available address data.</h3>
-                </div>
-              ) : (
+                {/* Loading, Error, and No Data States */}
+                {loading && (
+                    <div className="flex flex-col gap-3">
+                        <VerificationSkeleton />
+                        <VerificationSkeleton />
+                        <VerificationSkeleton />
+                    </div>
+                )}
+                {error && (
+                    <div className="w-full h-[300px] flex justify-center items-center">
+                        <h3>{error}</h3>
+                    </div>
+                )}
+                {noAddressMessage && (
+                    <div className="w-full h-[300px] flex justify-center items-center">
+                        <h3>{noAddressMessage}</h3>
+                    </div>
+                )}
+                {filteredAddresses && filteredAddresses.length > 0 && (
                 <div className="h-[300px] overflow-y-scroll">
                 <Table>
                   <TableHeader className="bg-blue-700">
@@ -220,7 +256,7 @@ import { Input } from "@/components/ui/input";
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {pendingAddresses?.map((item) => (
+                    {filteredAddresses?.map((item) => (
                       <TableRow key={item.id} onClick={() => toggleChecked(item.id)}>
                         <TableCell>
                           <input

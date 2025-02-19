@@ -16,18 +16,18 @@ const personalInput = {
     'piNextofKinPhoneNumber': 'Next of Kin Phone Number',
 };
 
-const guarantorInput = {
-    'giFullName': 'Full Name',
-    'giRelationshiptoPersonnel': 'Relationship to Personnel',
-    'giOccupation': 'Occupation',
-    'giAddress': 'Address',
-    'giState': 'State',
-    'giLGA': 'LGA',
-    'giCountry': 'Country',
-    'giEmailAddress': 'Email Address',
-    'giPhoneNumber': 'Phone Number',
-    'giYearsKnown': 'Years Known',
-    'giNationalIdentificationNumber': 'National Identification Number (NIN)',
+const guarantorInput1 = {
+    'giFullName1': 'Full Name',
+    'giRelationshiptoPersonnel1': 'Relationship to Personnel',
+    'giOccupation1': 'Occupation',
+    'giAddress1': 'Address',
+    'giState1': 'State',
+    'giLGA1': 'LGA',
+    'giCountry1': 'Country',
+    'giEmailAddress1': 'Email Address',
+    'giPhoneNumber1': 'Phone Number',
+    'giYearsKnown1': 'Years Known',
+    'giNationalIdentificationNumber1': 'National Identification Number (NIN)',
 }
 
 const guarantorInput2 = {
@@ -80,14 +80,14 @@ const academicInput = {
     'aiProfessionalCertifications': 'Professional Certifications',
 };
 
-const professionalInput = {
-    'priOrganizationName': 'Organization Name',
-    'priOrganizationEmail': 'Organization Email',
-    'priEmploymentStartDate': 'Employment Start Date',
-    'priEmploymentType': 'Employment Type',
-    'priProfessionalSkills': 'Professional Skills',
-    'priProfessionalReferenceName': 'Professional Reference Name',
-    'priProfessionalReferencePhoneNumber': 'Professional Reference Phone Number',
+const professionalInput1 = {
+    'priOrganizationName1': 'Organization Name',
+    'priOrganizationEmail1': 'Organization Email',
+    'priEmploymentStartDate1': 'Employment Start Date',
+    'priEmploymentType1': 'Employment Type',
+    'priProfessionalSkills1': 'Professional Skills',
+    'priProfessionalReferenceName1': 'Professional Reference Name',
+    'priProfessionalReferencePhoneNumber1': 'Professional Reference Phone Number',
 };
 
 const professionalInput2 = {
@@ -109,4 +109,4 @@ const mentalHealthInput = {
     'mhaEmotionalWellbeing': 'Emotional Wellbeing',
 };
 
-export {personalInput, guarantorInput, guarantorInput2, guarantorInput3, guarantorInput4, academicInput, professionalInput, professionalInput2, mentalHealthInput};
+export {personalInput, guarantorInput1, guarantorInput2, guarantorInput3, guarantorInput4, academicInput, professionalInput1, professionalInput2, mentalHealthInput};

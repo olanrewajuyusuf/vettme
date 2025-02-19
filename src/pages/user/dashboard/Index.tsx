@@ -1,37 +1,8 @@
 import Skeleton from "@/components/Skeleton";
-import { Suspense } from "react"; //
-import { Outlet } from "react-router-dom"; //useNavigate
-// import { jwtDecode } from "jwt-decode";
+import { Suspense } from "react";
+import { Outlet } from "react-router-dom";
 
-export default function AppIndex() {
-  // const navigate = useNavigate();  
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   const companyId = localStorage.getItem("companyId");
-
-  //   if (!token || !companyId) {
-  //     navigate("/auth/login");
-  //     return;
-  //   }
-
-  //   try {
-  //     const decodedToken: { exp: number } = jwtDecode(token);
-  //     const tokenExpiry = decodedToken.exp;
-  //     const currentTime = Math.floor(Date.now() / 1000);
-  //     console.log(tokenExpiry, currentTime);
-  //     console.log(tokenExpiry - currentTime);
-
-  //     if (companyId && (currentTime > tokenExpiry) ) {
-  //       console.log("Token Expired");
-  //       navigate("/auth/login");
-  //     }
-  //   } catch (error) {
-  //     console.error("Invalid token:", error);
-  //     navigate("/auth/login");
-  //   }
-  // }, [navigate]);
-  
+export default function AppIndex() { 
   return (
     <Suspense
       fallback={

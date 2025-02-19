@@ -14,15 +14,14 @@ const personalInfoFields = [
 ];
 
 const guarantorInfoFields = [
-    {id: 'giFullName', label: 'Full Name'},
-    {id: 'giRelationshiptoPersonnel', label: 'Relationship to Personnel'},
-    {id: 'giOccupation', label: 'Occupation'},
-    {id: 'giPhoneNumber', label: 'Phone Number'},
-    {id: 'giAddress', label: 'Address'},
+    {id: 'giFullName1', label: 'Full Name'},
+    {id: 'giRelationshiptoPersonnel1', label: 'Relationship to Personnel'},
+    {id: 'giOccupation1', label: 'Occupation'},
+    {id: 'giPhoneNumber1', label: 'Phone Number'},
+    {id: 'giAddress1', label: 'Address'},
     {id: 'giEmailAddress', label: 'Email Address'},
-    {id: 'giYearsKnown', label: 'Years Known'},
-    // {id: 'giNationalIdentificationNumber', label: 'National Identification Number (NIN)'},
-    {id: 'giPhysicalAddressRequest', label: 'Request for physical Address verification'},
+    {id: 'giYearsKnown1', label: 'Years Known'},
+    {id: 'giPhysicalAddressRequest1', label: 'Request for physical Address verification'},
 ];
 
 const academicInfoFields = [
@@ -34,13 +33,13 @@ const academicInfoFields = [
 ];
 
 const professionalInfoFields = [
-    {id: 'priOrganizationName', label: 'Organization Name'},
-    {id: 'priEmploymentStartDate', label: 'Employment Start Date'},
-    {id: 'priEmploymentType', label: 'Employment Type'},
-    {id: 'priProfessionalSkills', label: 'Professional Skills'},
-    {id: 'priProfessionalReferenceName', label: 'Professional Reference Name'},
-    {id: 'priOrganizationEmail', label: 'Organization Email'},
-    {id: 'priProfessionalReferencePhoneNumber', label: 'Professional Reference Phone Number'},
+    {id: 'priOrganizationName1', label: 'Organization Name'},
+    {id: 'priEmploymentStartDate1', label: 'Employment Start Date'},
+    {id: 'priEmploymentType1', label: 'Employment Type'},
+    {id: 'priProfessionalSkills1', label: 'Professional Skills'},
+    {id: 'priProfessionalReferenceName1', label: 'Professional Reference Name'},
+    {id: 'priOrganizationEmail1', label: 'Organization Email'},
+    {id: 'priProfessionalReferencePhoneNumber1', label: 'Professional Reference Phone Number'},
 ];
 
 const mentalHealthFields = [

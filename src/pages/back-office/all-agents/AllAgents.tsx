@@ -6,13 +6,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useNavigate } from "react-router-dom";
-import Pagination from "../components/pagination";
+import { useLocation, useNavigate } from "react-router-dom";
 import loader from "@/assets/loader.svg";
-import { TrashIcon } from "@radix-ui/react-icons";
+import { ThickArrowLeftIcon, ThickArrowRightIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useDeleteAgent, useFetchAgents } from "@/hooks/backOffice";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BiPhoneIncoming } from "react-icons/bi";
+import { Button } from "@/components/ui/button";
+import { SearchIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { VerificationSkeleton } from "@/components/SkeletonUi";
 
 interface agentsProps {
     id: string,
@@ -20,6 +23,7 @@ interface agentsProps {
     phone_number: string,
     email: string,
     accessCode: string,
+    country: string,
     lga: string,
     state: string,
 }
@@ -28,6 +32,9 @@ const AllAgents = () => {
     const [ agents, setAgents ] = useState<agentsProps[] | null>(null);
     const { fetchAgents } = useFetchAgents();
     const { deleteAgent } = useDeleteAgent();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,11 +44,57 @@ const AllAgents = () => {
             setAgents(data.result);
           } catch (error) {
             console.error("Failed to fetch Field Agents:", error);
+            setError("Failed to fetch Field Agents")
+          } finally {
+            setLoading(false);
           }
         };
     
         getAgents();
-    }, [fetchAgents]);
+    }, [fetchAgents]);    
+
+    const filteredAgents = agents
+        ? agents
+            .filter((agent) => {
+                const query = searchQuery.toLowerCase();
+                return (
+                    agent.agentName.toLowerCase().includes(query) ||
+                    agent.country.toLowerCase().includes(query) ||
+                    agent.state.toLowerCase().includes(query) ||
+                    agent.lga.toLowerCase().includes(query)
+                );
+            })
+        : null;
+
+    const noAgentsMessage =
+        filteredAgents && filteredAgents.length === 0
+        ? `No Country, State or LGA match ${searchQuery}...`
+        : null;
+
+    const itemsPerPage = 10;
+    const location = useLocation();
+    
+    // Get current page from URL, defaulting to 1 if not present
+    const currentPage = useMemo(() => {
+        const params = new URLSearchParams(location.search);
+        const page = parseInt(params.get("page") || "1", 10);
+        return page > 0 ? page : 1;
+    }, [location.search]);
+    
+    // Calculate total pages and paginated data
+    const totalPages = Math.ceil((filteredAgents?.length || 0) / itemsPerPage);
+    const paginatedData = useMemo(
+        () =>
+        filteredAgents?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
+        [filteredAgents, currentPage, itemsPerPage]
+    );
+    
+    // Handle page change by updating URL
+    const handlePageChange = (page: number) => {
+        const params = new URLSearchParams(location.search);
+        params.set("page", page.toString());
+        navigate({ search: params.toString() });
+    };
 
     const handleDelete = async (agentId: string) => {
         try {
@@ -58,26 +111,37 @@ const AllAgents = () => {
             <h1 className="font-normal">All Registered Agents</h1>
             <p className="mb-10">Manage all Field Agent information here.</p>
             <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
-                <div className="w-full py-4 grid grid-cols-3 border-b-[1px] border-stroke-clr px-5">
-                    <div className="flex items-center gap-3">
-                        <p>Filter by: </p>
-                        <select name="" id="" className="btn px-3">
-                            <option value="country">Country</option>
-                            <option value="state">State</option>
-                            <option value="lga">LGA</option>
-                        </select>
+                <div className="py-4 border-b-[1px] border-stroke-clr px-5">
+                    <div className="relative w-[33%]">
+                        <Input
+                            type="text"
+                            value={searchQuery} 
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="max-w-sm"
+                            placeholder="Search by name, country, state, or LGA"
+                        />
+                        <SearchIcon className="text-stroke-clr absolute right-3 top-1/2 -translate-y-1/2" />
                     </div>
                 </div>
-                {agents === null ? (
-                    <div className="w-full h-[300px] flex items-center justify-center">
-                        <img src={loader} alt="" className="w-10" />
+                {/* Loading, Error, and No Data States */}
+                {loading && (
+                    <div className="flex flex-col gap-3">
+                        <VerificationSkeleton />
+                        <VerificationSkeleton />
+                        <VerificationSkeleton />
                     </div>
-                ) :
-                agents.length === 0 ? (
+                )}
+                {error && (
                     <div className="w-full h-[300px] flex justify-center items-center">
-                        <h3>No registered Agent.</h3>
+                        <h3>{error}</h3>
                     </div>
-                ) : (
+                )}
+                {noAgentsMessage && (
+                    <div className="w-full h-[300px] flex justify-center items-center">
+                        <h3>{noAgentsMessage}</h3>
+                    </div>
+                )}
+                {paginatedData && paginatedData.length > 0 && (
                     <Table>
                         <TableHeader className="bg-blue-700 h-8">
                             <TableRow>
@@ -91,7 +155,7 @@ const AllAgents = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {agents.map((agent: agentsProps) => (
+                        {paginatedData?.map((agent: agentsProps) => (
                             <TableRow
                                 key={agent.id}
                                 onClick={() => navigate(`agent-info/${agent.id}`)}
@@ -125,7 +189,30 @@ const AllAgents = () => {
                     </Table>
 
                 )}
-                {agents === null || agents?.length === 0  || <Pagination />}
+                {/* Pagination Controls */}
+                <div className="flex items-center justify-center w-full gap-3 py-3 border-t-[1px]">
+                    <Button
+                      size="sm"
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      variant="outline"
+                      className="bg-green-600 text-white hover:bg-green-500"
+                    >
+                      <ThickArrowLeftIcon/>
+                    </Button>
+                    <p>
+                      Page <span className="font-bold">{currentPage}</span> of <span className="font-bold text-blue-700">{totalPages}</span>
+                    </p>
+                    <Button
+                      size="sm"
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      variant="outline"
+                      className="bg-green-600 text-white hover:bg-green-500"
+                    >
+                      <ThickArrowRightIcon/>
+                    </Button>
+                </div>
             </div>
         </div>
     );

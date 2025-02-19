@@ -3,20 +3,17 @@ import AuthLayout from "@/layouts/AuthLayout";
 import BackOfficeLayout from "@/layouts/BackOfficeLayout";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import AddressLayout from "@/layouts/AddressLayout";
-import GuarantorLayout from "@/layouts/GuarantorLayout";
-import AgentFormLayout from "@/layouts/AgentFormLayout";
 import Index from "@/pages/user/auth/Index";
 import AppIndex from "@/pages/user/dashboard/Index";
 import BackOfficeIndex from "@/pages/back-office";
 import AddressIndex from "@/pages/address-verification";
-import GuarantorIndex from "@/pages/guarantor-verification";
-import AgentFormIndex from "@/pages/agent-form";
 
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
 import AllChats from "@/pages/back-office/all-chats/AllChats";
 import SupportAdmin from "@/pages/back-office/support/SupportAdmin";
 import UserProvider from "./context/UserProvider";
+import { NotificationProvider } from "./context/NotificationContext";
 
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
@@ -58,9 +55,10 @@ const AddressVerification = lazy(() => import("@/pages/address-verification/Addr
 const PersonnelsList = lazy(() => import("@/pages/address-verification/PersonnelsList"));
 const AddressVettForm = lazy(() => import("@/pages/address-verification/AddressVettForm"));
 const VideoRecorder = lazy(() => import("@/pages/address-verification/VideoRecorder"));
-const GuarantorForm  = lazy(() => import("@/pages/guarantor-verification/GuarantorForm"));
-const AgentForm  = lazy(() => import("@/pages/agent-form/AgentForm"));
-const LiveCameraCapture  = lazy(() => import("@/pages/guarantor-verification/components/LivenessCheck"));
+const GuarantorForm  = lazy(() => import("@/pages/forms/GuarantorForm"));
+const AgentForm  = lazy(() => import("@/pages/forms/AgentForm"));
+const ProfessionalInfo  = lazy(() => import("@/pages/forms/ProfessionalInfoForm"));
+const LiveCameraCapture  = lazy(() => import("@/pages/forms/components/LivenessCheck"));
 
 export const routes = [
   {
@@ -110,9 +108,11 @@ export const routes = [
     path: "/",
     element: (
       <UserProvider>
+        <NotificationProvider>
         <DashboardLayout>
           <AppIndex />
         </DashboardLayout>
+        </NotificationProvider>
       </UserProvider>
     ),
     children: [
@@ -263,40 +263,19 @@ export const routes = [
   },
 
   {
-    path: "/guarantor-form",
-    element: (
-      <GuarantorLayout>
-        <GuarantorIndex/>
-      </GuarantorLayout>
-    ),
-    children: [
-      {
-        path: "",
-        element: <GuarantorForm/>,
-      },
-      {
-        path: "/guarantor-form/liveness-check",
-        element: <LiveCameraCapture />,
-      },
-    ]
+    path: "/guarantor-form/:personnelName/:verificationType/:id/:guarantorId",
+    element: <GuarantorForm/>,
   },
-
+  {
+    path: "/guarantor-form/:personnelName/:verificatonType/:id/:guarantorId/liveness-check",
+    element: <LiveCameraCapture />,
+  },
   {
     path: "/agent-form",
-    element: (
-      <AgentFormLayout>
-        <AgentFormIndex/>
-      </AgentFormLayout>
-    ),
-    children: [
-      {
-        path: "",
-        element: <AgentForm/>,
-      },
-      // {
-      //   path: "personnelslist/address-form/:personnel_id",
-      //   element: <AddressVettForm />,
-      // },
-    ]
+    element: <AgentForm/>,
+  },
+  {
+    path: "/professional-info-form/:id/:personnelName/:organizationId",
+    element: <ProfessionalInfo/>,
   },
 ];

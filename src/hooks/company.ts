@@ -318,6 +318,21 @@ export const useFetchVerdict = () => {
   }, []);
   return {fetchVerdict};
 };
+
+export const useFetchForm = () => {
+  const fetchForm = useCallback(async (id: string) => {
+    try {
+      const res = await axios.get(
+        `${baseUrl}/verification/form/${id}`,
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Form:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Form");
+    }
+  }, []);
+  return {fetchForm};
+};
 // export const useFetchCompany = (id: string) => {
 //   const fetchCompany = async () => {
 //     try {

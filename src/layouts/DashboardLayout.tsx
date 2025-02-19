@@ -11,10 +11,10 @@ import {
   ReaderIcon,
   SpeakerModerateIcon,
 } from "@radix-ui/react-icons";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useFetchNotifications } from "@/hooks/company";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { useNotification } from "@/utils/context/useNotification";
 
 interface LayoutProps {
   children: ReactNode;
@@ -52,25 +52,13 @@ const navLinks = [
   },
 ];
 export default function DashboardLayout({ children }: LayoutProps) {
-  const [length, setLength] = useState<number | null>(0);
   const { company } = useUser();
-  const {fetchNotifications} = useFetchNotifications();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-      const getNotifications = async () => {
-        try {
-          const data = await fetchNotifications();
-          const len = data.data.filter((item: any)=> !item.read)
-          setLength(len.length);
-        } catch (error) {
-          console.error("Failed to fetch Notification:", error);
-        }
-      };
-      getNotifications();
-  }, [fetchNotifications]);  
+  const { unreadCount } = useNotification();
+  const navigate = useNavigate(); 
 
   const handleLogout = () => {
+    localStorage.removeItem('companyId');
+    localStorage.removeItem('token');
     navigate('/auth/login')
   }
 
@@ -81,11 +69,12 @@ export default function DashboardLayout({ children }: LayoutProps) {
       </div>
       <div className="flex h-screen overflow-hidden">
         <div className="w-[250px] border-r-[1px] border-stroke-clr bg-white h-full">
-          <div className="h-[70px] flex items-center justify-center mb-12 border-b-[1px] border-stroke-clr">
+          <div className="h-[70px] flex items-center justify-center border-b-[1px] border-stroke-clr">
             <img src={images.logo} alt="Vettme" className="h-8" />
           </div>
 
-          <div className="px-5">
+          <div className="px-5 h-[calc(100%-70px)] flex flex-col justify-between">
+            <div className="mt-10">
             {navLinks.map((link, idx) => (
               <NavLink
                 to={link.path}
@@ -96,10 +85,11 @@ export default function DashboardLayout({ children }: LayoutProps) {
                 <p className="text-sm">{link.title}</p>
               </NavLink>
             ))}
+            </div>
 
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 mb-3 px-5 py-4 rounded-lg text-destructive hover:shadow-md"
+              className="flex items-center gap-3 mb-3 px-5 py-4 rounded-lg text-destructive logout_btn"
             >
               <span><RiLogoutCircleLine /></span>
               <p className="text-sm">Log out</p>
@@ -125,10 +115,10 @@ export default function DashboardLayout({ children }: LayoutProps) {
               </div>
               <div className="relative">
                 <IoMdNotificationsOutline className="text-3xl"/>
-                {(length === null || length > 0) && <div 
+                {(unreadCount !== 0) && <div 
                 className="absolute top-0 -right-1 w-4 h-4 bg-destructive rounded-full text-white grid place-items-center text-xs font-bold"
                 >
-                {length}
+                {unreadCount}
                 </div>}
               </div>
             </div>
