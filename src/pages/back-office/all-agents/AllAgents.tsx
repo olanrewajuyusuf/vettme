@@ -7,7 +7,6 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useLocation, useNavigate } from "react-router-dom";
-import loader from "@/assets/loader.svg";
 import { ThickArrowLeftIcon, ThickArrowRightIcon, TrashIcon } from "@radix-ui/react-icons";
 import { useDeleteAgent, useFetchAgents } from "@/hooks/backOffice";
 import { useEffect, useMemo, useState } from "react";
