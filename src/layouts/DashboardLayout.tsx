@@ -14,7 +14,11 @@ import {
 import { ReactNode } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import { MdAccountBalanceWallet } from "react-icons/md";
 import { useNotification } from "@/utils/context/useNotification";
+import { FaPlusCircle } from "react-icons/fa";
+import { HiIdentification } from "react-icons/hi2";
+import { IoMedal } from "react-icons/io5";
 
 interface LayoutProps {
   children: ReactNode;
@@ -102,16 +106,19 @@ export default function DashboardLayout({ children }: LayoutProps) {
           {company && (
             <div className="w-full bg-white h-[70px] flex items-center justify-between px-[30px] border-b-[1px] border-stroke-clr">
             <div className="flex items-center justify-end gap-2">
-                <span className="w-[40px] h-[40px] rounded-full grid place-items-center text-white border-[1px] bg-blue-400">
-                  {company?.companyName.slice(0, 2).toUpperCase()}
-                </span>
-                <hr className="h-7 w-[1px] bg-stroke-clr" />
-                <p className="font-medium">User: <span className="text-blue-400">{company?.companyName}</span></p>
+                <h1 className="font-light">Hi, {company?.companyName}</h1>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="border-[1px] border-blue-400 rounded-md h-7 flex items-center overflow-hidden">
-                <span className="text-blue-400 px-3">Balance</span>
-                <span className="bg-blue-400 text-white px-3 h-full flex items-center font-bold">{company?.balance.toFixed(2)}</span>
+            <div className="flex items-center justify-end gap-2 bg-stroke-clr px-5 py-1 rounded-full">
+                <HiIdentification />
+                <hr className="h-3 w-[1px] bg-white" />
+                <p className="font-medium text-blue-500">{company?.companyId}</p>
+                <IoMedal className="text-orange-500"/>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="bg-green-600 rounded-full px-2 py-4 h-7 flex items-center overflow-hidden">
+                <span className="text-white text-xl"><MdAccountBalanceWallet /></span>
+                <span className="text-white mx-2">{company?.balance.toLocaleString()}</span>
+                <FaPlusCircle className="text-white text-xl ml-2"/>
               </div>
               <div className="relative">
                 <IoMdNotificationsOutline className="text-3xl"/>
@@ -121,11 +128,9 @@ export default function DashboardLayout({ children }: LayoutProps) {
                 {unreadCount}
                 </div>}
               </div>
-            </div>
-            <div className="flex items-center justify-end gap-2">
-                <p>Company ID</p>
-                <hr className="h-7 w-[1px] bg-stroke-clr" />
-                <p className="font-medium text-blue-400">{company?.companyId}</p>
+              <span className="w-[40px] h-[40px] ml-2 rounded-full grid place-items-center text-white border-[1px] bg-blue-400">
+                  {company?.companyName.slice(0, 2).toUpperCase()}
+              </span>
             </div>
           </div>)}
           <div className="w-full overflow-y-scroll p-[30px]">{children}</div>

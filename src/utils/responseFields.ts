@@ -26,12 +26,7 @@ const personalInfoResponse: Field[] = [
   { id: "piLGA", label: "LGA", type: "text" },
   { id: "piPhoneNumber", label: "Phone Number", type: "text" },
   { id: "piEmailAddress", label: "Email Address", type: "text" },
-  { id: "piBvn", label: "BVN", type: "number" },
-  {
-    id: "piNationalIdentificationNumber",
-    label: "National Identification Number (NIN)",
-    type: "number",
-  },
+  { id: "piBvn", label: "BVN", type: "text" },
   {
     id: "piMaritalStatus",
     label: "Marital Status",
@@ -85,7 +80,7 @@ const guarantorInfoResponse: Field[] = [
   {
     id: "giNationalIdentificationNumber1",
     label: "National Identification Number (NIN)",
-    type: "number",
+    type: "text",
   },
 ];
 
@@ -115,7 +110,7 @@ const guarantorInfoResponse2: Field[] = [
   {
     id: "giNationalIdentificationNumber2",
     label: "National Identification Number (NIN)",
-    type: "number",
+    type: "text",
   },
 ];
 
@@ -145,7 +140,7 @@ const guarantorInfoResponse3: Field[] = [
   {
     id: "giNationalIdentificationNumber3",
     label: "National Identification Number (NIN)",
-    type: "number",
+    type: "text",
   },
 ];
 
@@ -175,7 +170,7 @@ const guarantorInfoResponse4: Field[] = [
   {
     id: "giNationalIdentificationNumber4",
     label: "National Identification Number (NIN)",
-    type: "number",
+    type: "text",
   },
 ];
 
@@ -223,7 +218,6 @@ const professionalInfoResponse: Field[] = [
     options: ["On-site", "Hybrid", "Remote"],
   },
   { id: "priProfessionalSkills1", label: "Professional Skills", type: "text" },
-  { id: "priLinkedInProfile21", label: "LinkedIn Profile", type: "text" },
   {
     id: "priProfessionalReferenceName1",
     label: "Professional Reference Name",

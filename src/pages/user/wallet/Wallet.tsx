@@ -15,6 +15,7 @@ import { useUser } from "@/utils/context/useUser";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { MdAccountBalanceWallet } from "react-icons/md";
 
 // const metrics = [
 //   {
@@ -82,7 +83,7 @@ export default function Wallet() {
       <div className="w-full mb-6 rounded-xl wallet py-4 px-6 flex justify-between items-center text-white">
         <div>
           <p className="text-sm">Available Balance</p>
-          <h1>{company?.balance.toFixed(2)}</h1>
+          <h1 className="flex items-center gap-1"><MdAccountBalanceWallet />{company?.balance.toLocaleString()}</h1>
         </div>
         <Button
           className="bg-white text-base-clr hover:bg-gray-100"
@@ -124,8 +125,8 @@ export default function Wallet() {
               {payments.map((item, idx) => (
                 <TableRow key={idx}>
                   <TableCell>{item.type}</TableCell>
-                  <TableCell>{item.amount}</TableCell>
-                  <TableCell>{moment(item.createdAt).format("MMMM Do YYYY, h:mm A")}</TableCell>
+                  <TableCell>{item.amount.toLocaleString()}</TableCell>
+                  <TableCell>{moment(item.createdAt).format("MMM Do YYYY, h:mm A")}</TableCell>
                   <TableCell>
                     <Badge
                       className={`pointer-events-none ${
