@@ -1,5 +1,5 @@
 export function getFilteredObjects(
-  x: Record<string, any>, 
+  x: Record<string, any> = {}, 
   s: Record<string, any> = {}, 
   t: Record<string, any> = {}, 
   str: string,

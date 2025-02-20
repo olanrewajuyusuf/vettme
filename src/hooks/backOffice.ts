@@ -319,27 +319,111 @@ export const useFetchCardsData = () => {
 return { fetchCardsData };
 };
 
+// Getting Verification Batches responses
+export const useFetchBatchesResponse = () => {
+  const fetchBatchesResponse = useCallback(async (id: string) => {
+    try {
+      const token = sessionStorage.getItem("adminToken");
 
-// import { axiosInstance } from "@/api/axiosConfig";
-// import { useQuery } from "@tanstack/react-query";
-// // import { SetStateAction } from "react";
-// // import toast from "react-hot-toast";
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
 
-// export const useFetchCompanies = () => {
-//   const fetchApps = async () => {
-//     try {
-//       const res = await axiosInstance.get("/company");
+      const res = await axios.get(
+        `${baseUrl}/verification-response/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Verification response:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Verification response");
+    }
+  }, []);
 
-//       return await res.data;
-//     } catch (error) {
-//       throw new Error("Failed to fetch applications");
-//     }
-//   };
+  return { fetchBatchesResponse };
+};
 
-//   return useQuery({
-//     queryKey: ["Applications"],
-//     queryFn: fetchApps,
-//     staleTime: 1000 * 60 * 2,
-//     select: (data) => data.result,
-//   });
-// };
+// Getting Verification Batches responses cards
+export const useFetchBatchesResponseCards = () => {
+  const fetchBatchesResponseCards = useCallback(async (id: string) => {
+    try {
+      const token = sessionStorage.getItem("adminToken");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification/form/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Verification response cards:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Verification response cards");
+    }
+  }, []);
+
+  return { fetchBatchesResponseCards };
+};
+
+// Getting verification findings
+export const useFetchFinding = () => {
+  const fetchFinding = useCallback(async (id: string) => {
+    try {
+      const token = sessionStorage.getItem("adminToken");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification-finding/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Finding:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Finding");
+    }
+  }, []);
+  return {fetchFinding};
+};
+
+export const useFetchVerdict = () => {
+  const fetchVerdict = useCallback(async (id: string) => {
+    try {
+      const token = sessionStorage.getItem("adminToken");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification-result/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching Verdict:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get Verdict");
+    }
+  }, []);
+  return {fetchVerdict};
+};

@@ -164,25 +164,25 @@ export default function Forms() {
 
                   {filteredGuarantor.length !== 0 && (
                     <TabsTrigger value="guarantor" className="w-full">
-                      1st Guarantor's Information
+                      {filteredGuarantor2.length !== 0 ? "1st Guarantor Information" : "Guarantor Information"}
                     </TabsTrigger>
                   )}
 
                   {filteredGuarantor2.length !== 0 && (
                     <TabsTrigger value="guarantor2" className="w-full">
-                      2nd Guarantor's Information
+                      2nd Guarantor Information
                     </TabsTrigger>
                   )}
 
                   {filteredGuarantor3.length !== 0 && (
                     <TabsTrigger value="guarantor3" className="w-full">
-                      3rd Guarantor's Information
+                      3rd Guarantor Information
                     </TabsTrigger>
                   )}
 
                   {filteredGuarantor4.length !== 0 && (
                     <TabsTrigger value="guarantor4" className="w-full">
-                      4th Guarantor's Information
+                      4th Guarantor Information
                     </TabsTrigger>
                   )}
 
@@ -194,7 +194,7 @@ export default function Forms() {
 
                   {filteredProfessional.length !== 0 && (
                     <TabsTrigger value="professional" className="w-full">
-                      1st Professional Information
+                      {filteredProfessional2.length !== 0 ? "1st Professional Information" : "Professional Information"}
                     </TabsTrigger>
                   )}
 
@@ -582,6 +582,18 @@ export default function Forms() {
                       {field.type === "number" && (
                         <Input
                           type="number"
+                          id={field.id}
+                          name={field.id}
+                          value={formData.responses[field.id] || ""}
+                          onChange={handleChange}
+                          placeholder={`Enter ${field.label.toLowerCase()}`}
+                          required
+                        />
+                      )}
+
+                      {field.type === "file" && (
+                        <Input
+                          type="file"
                           id={field.id}
                           name={field.id}
                           value={formData.responses[field.id] || ""}

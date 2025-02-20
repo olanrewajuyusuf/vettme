@@ -6,18 +6,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { MixerVerticalIcon, ThickArrowLeftIcon, ThickArrowRightIcon } from "@radix-ui/react-icons";
+import { MixerVerticalIcon } from "@radix-ui/react-icons";
 import { useFetchAddresses } from "@/hooks/backOffice";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
+import { usePagination } from "@/hooks/usePagination";
+import Pagination from "@/components/pagination";
 
-interface addressesProps {
+interface AddressesProps {
     id: string,
     personnelName: string,
     personnelType: string,
@@ -29,7 +30,7 @@ interface addressesProps {
 }
 
 const AllAddresses = () => {
-    const [addresses, setAddresses] = useState<addressesProps[] | null>(null);
+    const [addresses, setAddresses] = useState<AddressesProps[] | null>(null);
     const { fetchAddresses } = useFetchAddresses();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -81,31 +82,6 @@ const AllAddresses = () => {
             )
         : null;
 
-    const itemsPerPage = 10;
-    const location = useLocation();
-
-    // Get current page from URL, defaulting to 1 if not present
-    const currentPage = useMemo(() => {
-        const params = new URLSearchParams(location.search);
-        const page = parseInt(params.get("page") || "1", 10);
-        return page > 0 ? page : 1;
-    }, [location.search]);
-
-    // Calculate total pages and paginated data
-    const totalPages = Math.ceil((filteredAddresses?.length || 0) / itemsPerPage);
-    const paginatedData = useMemo(
-        () =>
-        filteredAddresses?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
-        [filteredAddresses, currentPage, itemsPerPage]
-    );
-
-    // Handle page change by updating URL
-    const handlePageChange = (page: number) => {
-        const params = new URLSearchParams(location.search);
-        params.set("page", page.toString());
-        navigate({ search: params.toString() });
-    };
-
     const noAddressMessage =
         filteredAddresses && filteredAddresses.length === 0
             ? filter === "completed"
@@ -118,6 +94,8 @@ const AllAddresses = () => {
                 ? "You have no failed Address."
                 : "No processing Address."
             : null;
+
+    const { currentPage, totalPages, paginatedData, handlePageChange } = usePagination(filteredAddresses);
 
     return (
         <div>
@@ -223,29 +201,7 @@ const AllAddresses = () => {
                 )}
 
                 {/* Pagination Controls */}
-                <div className="flex items-center justify-center w-full gap-3 py-3 border-t-[1px]">
-                    <Button
-                      size="sm"
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      variant="outline"
-                      className="bg-green-600 text-white hover:bg-green-500"
-                    >
-                      <ThickArrowLeftIcon/>
-                    </Button>
-                    <p>
-                      Page <span className="font-bold">{currentPage}</span> of <span className="font-bold text-blue-700">{totalPages}</span>
-                    </p>
-                    <Button
-                      size="sm"
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      variant="outline"
-                      className="bg-green-600 text-white hover:bg-green-500"
-                    >
-                      <ThickArrowRightIcon/>
-                    </Button>
-                </div>
+                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
             </div>
         </div>
     );

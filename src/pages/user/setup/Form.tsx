@@ -17,22 +17,22 @@ import Spinner from "@/components/Spinner";
 const fieldGroups: { [key: string]: { fields: string[]; cost: number } } = {
   PersonalInformationGroup: {
     fields: [
-      "piFullname",
-      "piDateOfBirth",
-      "piGender",
-      "piAddress",
-      "piNationality",
-      "piNextofKinName",
-      "piNextofKinRelationship",
-      "piNextofKinPhoneNumber",
-      "piPhoneNumber",
-      "piEmailAddress",
-      "piMaritalStatus",
+      "piFullname1",
+      "piDateOfBirth1",
+      "piGender1",
+      "piAddress1",
+      "piNationality1",
+      "piNextofKinName1",
+      "piNextofKinRelationship1",
+      "piNextofKinPhoneNumber1",
+      "piPhoneNumber1",
+      "piEmailAddress1",
+      "piMaritalStatus1",
     ],
     cost: 500,
   },
   PersonalAddressGroup: {
-    fields: [ "piPhysicalAddressRequest" ],
+    fields: [ "piPhysicalAddressRequest1" ],
     cost: 7000,
   },
 
@@ -66,13 +66,13 @@ const fieldGroups: { [key: string]: { fields: string[]; cost: number } } = {
 
   ProfessionalInformationGroup: {
     fields: [
-      "priOrganizationName",
-      "priEmploymentStartDate",
-      "priEmploymentType",
-      "priProfessionalSkills",
-      "priProfessionalReferenceName",
+      "priOrganizationName1",
+      "priEmploymentStartDate1",
+      "priEmploymentType1",
+      "priProfessionalSkills1",
+      "priProfessionalReferenceName1",
       "priOrganizationEmail",
-      "priProfessionalReferencePhoneNumber",
+      "priProfessionalReferencePhoneNumber1",
     ],
     cost: 1000,
   },
@@ -246,7 +246,7 @@ const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
                   name="giNumberofGuarantors"
                   min='0'
                   max='4'
-                  value={formData.giNumberofGuarantors as string}
+                  value={formData.giNumberofGuarantors as number}
                   onChange={handleChange}
                   className="w-full"
                   required

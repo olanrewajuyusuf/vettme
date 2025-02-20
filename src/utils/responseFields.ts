@@ -200,7 +200,7 @@ const academicInfoResponse: Field[] = [
   {
     id: "aiDegreeOrCertificationUpload",
     label: "Degree Or Certification Upload",
-    type: "text",
+    type: "file",
   },
   {
     id: "aiProfessionalCertifications",

@@ -6,15 +6,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ThickArrowLeftIcon, ThickArrowRightIcon, TrashIcon } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router-dom";
+import { TrashIcon } from "@radix-ui/react-icons";
 import { useDeleteAgent, useFetchAgents } from "@/hooks/backOffice";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { BiPhoneIncoming } from "react-icons/bi";
-import { Button } from "@/components/ui/button";
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
+import { usePagination } from "@/hooks/usePagination"; // Import the custom hook
+import Pagination from "@/components/pagination";
 
 interface agentsProps {
     id: string,
@@ -28,7 +29,7 @@ interface agentsProps {
 }
 
 const AllAgents = () => {
-    const [ agents, setAgents ] = useState<agentsProps[] | null>(null);
+    const [agents, setAgents] = useState<agentsProps[] | null>(null);
     const { fetchAgents } = useFetchAgents();
     const { deleteAgent } = useDeleteAgent();
     const [loading, setLoading] = useState(true);
@@ -38,19 +39,19 @@ const AllAgents = () => {
 
     useEffect(() => {
         const getAgents = async () => {
-          try {
-            const data = await fetchAgents();
-            setAgents(data.result);
-          } catch (error) {
-            console.error("Failed to fetch Field Agents:", error);
-            setError("Failed to fetch Field Agents")
-          } finally {
-            setLoading(false);
-          }
+            try {
+                const data = await fetchAgents();
+                setAgents(data.result);
+            } catch (error) {
+                console.error("Failed to fetch Field Agents:", error);
+                setError("Failed to fetch Field Agents")
+            } finally {
+                setLoading(false);
+            }
         };
-    
+
         getAgents();
-    }, [fetchAgents]);    
+    }, [fetchAgents]);
 
     const filteredAgents = agents
         ? agents
@@ -67,33 +68,11 @@ const AllAgents = () => {
 
     const noAgentsMessage =
         filteredAgents && filteredAgents.length === 0
-        ? `No Country, State or LGA match ${searchQuery}...`
-        : null;
+            ? `No Country, State or LGA match ${searchQuery}...`
+            : null;
 
-    const itemsPerPage = 10;
-    const location = useLocation();
-    
-    // Get current page from URL, defaulting to 1 if not present
-    const currentPage = useMemo(() => {
-        const params = new URLSearchParams(location.search);
-        const page = parseInt(params.get("page") || "1", 10);
-        return page > 0 ? page : 1;
-    }, [location.search]);
-    
-    // Calculate total pages and paginated data
-    const totalPages = Math.ceil((filteredAgents?.length || 0) / itemsPerPage);
-    const paginatedData = useMemo(
-        () =>
-        filteredAgents?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage),
-        [filteredAgents, currentPage, itemsPerPage]
-    );
-    
-    // Handle page change by updating URL
-    const handlePageChange = (page: number) => {
-        const params = new URLSearchParams(location.search);
-        params.set("page", page.toString());
-        navigate({ search: params.toString() });
-    };
+    //Pagination Logic
+    const { currentPage, totalPages, paginatedData, handlePageChange } = usePagination(filteredAgents);
 
     const handleDelete = async (agentId: string) => {
         try {
@@ -114,7 +93,7 @@ const AllAgents = () => {
                     <div className="relative w-[33%]">
                         <Input
                             type="text"
-                            value={searchQuery} 
+                            value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="max-w-sm"
                             placeholder="Search by name, country, state, or LGA"
@@ -154,64 +133,42 @@ const AllAgents = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {paginatedData?.map((agent: agentsProps) => (
-                            <TableRow
-                                key={agent.id}
-                                onClick={() => navigate(`agent-info/${agent.id}`)}
-                            >
-                                <TableCell className="text-xs font-medium uppercase flex items-center gap-1">
-                                    <div 
-                                    className={`w-6 h-6 grid place-items-center text-white rounded-md bg-purple-600`}
-                                    >
-                                        {agent.agentName.slice(0, 2)}
-                                    </div>
-                                    <span>{agent.agentName}</span>
-                                </TableCell>
-                                <TableCell className='text-purple-600'>{agent.accessCode}</TableCell>
-                                <TableCell className="text-gray-400">{agent.email}</TableCell>
-                                <TableCell className="text-gray-400">{agent.state}</TableCell>
-                                <TableCell className="text-gray-400">{agent.lga}</TableCell>
-                                <TableCell className="flex items-center gap-1"><BiPhoneIncoming className="text-blue-400"/>{agent.phone_number}</TableCell>
-                                <TableCell>
-                                    <div
-                                    className="cursor-pointer text-destructive text-xs px-4 flex items-center gap-1"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDelete(agent.id);
-                                    }}
-                                    >
-                                        <TrashIcon /> 
-                                    </div>
-                                </TableCell>
-                            </TableRow>))}
+                            {paginatedData?.map((agent: agentsProps) => (
+                                <TableRow
+                                    key={agent.id}
+                                    onClick={() => navigate(`agent-info/${agent.id}`)}
+                                >
+                                    <TableCell className="text-xs font-medium uppercase flex items-center gap-1">
+                                        <div
+                                            className={`w-6 h-6 grid place-items-center text-white rounded-md bg-purple-600`}
+                                        >
+                                            {agent.agentName.slice(0, 2)}
+                                        </div>
+                                        <span>{agent.agentName}</span>
+                                    </TableCell>
+                                    <TableCell className='text-purple-600'>{agent.accessCode}</TableCell>
+                                    <TableCell className="text-gray-400">{agent.email}</TableCell>
+                                    <TableCell className="text-gray-400">{agent.state}</TableCell>
+                                    <TableCell className="text-gray-400">{agent.lga}</TableCell>
+                                    <TableCell className="flex items-center gap-1"><BiPhoneIncoming className="text-blue-400" />{agent.phone_number}</TableCell>
+                                    <TableCell>
+                                        <div
+                                            className="cursor-pointer text-destructive text-xs px-4 flex items-center gap-1"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDelete(agent.id);
+                                            }}
+                                        >
+                                            <TrashIcon />
+                                        </div>
+                                    </TableCell>
+                                </TableRow>))}
                         </TableBody>
                     </Table>
 
                 )}
                 {/* Pagination Controls */}
-                <div className="flex items-center justify-center w-full gap-3 py-3 border-t-[1px]">
-                    <Button
-                      size="sm"
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      variant="outline"
-                      className="bg-green-600 text-white hover:bg-green-500"
-                    >
-                      <ThickArrowLeftIcon/>
-                    </Button>
-                    <p>
-                      Page <span className="font-bold">{currentPage}</span> of <span className="font-bold text-blue-700">{totalPages}</span>
-                    </p>
-                    <Button
-                      size="sm"
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      variant="outline"
-                      className="bg-green-600 text-white hover:bg-green-500"
-                    >
-                      <ThickArrowRightIcon/>
-                    </Button>
-                </div>
+                <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
             </div>
         </div>
     );

@@ -1,5 +1,3 @@
-// import { Button } from "@/components/ui/button";
-// import { TrashIcon } from "@radix-ui/react-icons";
 import {
   Accordion,
   AccordionContent,
@@ -36,7 +34,6 @@ export default function Personnel() {
   const { state } = location;
   const [findings, setFindings] = useState<"" | any>("");
   const [verdicts, setVerdicts] = useState<"" | any>("");
-  const [ expiryDate, setExpiryDate ] = useState<any | null>(null);
   const { fetchForm } = useFetchForm();
   const { fetchFinding } = useFetchFinding();
   const params = useParams();
@@ -61,22 +58,9 @@ export default function Personnel() {
         }
       };
 
-      const getForm = async () => {
-        try {
-          const data = await fetchForm(params.verification_id as string);
-          setExpiryDate(data.data.expiryDate);
-        } catch (error) {
-          console.error("Failed to fetch Form:", error);
-        }
-      };
-  
-      getForm();
       getFinding();
       getVerdict();
   }, [fetchFinding, state.id, fetchVerdict, fetchForm, params.verification_id]);
-
-  const today = new Date();
-  const expDate = new Date(expiryDate);
   
   const headers = [
     {
@@ -116,12 +100,6 @@ export default function Personnel() {
         </div>
       </div>
 
-      {(expDate > today) && (
-        <div className="h-[300px] flex items-center justify-center bg-white rounded-lg shadow-lg">
-          <h3>The Verification will start on <span className="text-blue-600">{expiryDate && moment(expiryDate).format("dddd MMMM YYYY")}</span>.</h3>
-        </div>
-      )}
-      {(expDate <= today) && <div>
       <div className="w-full bg-white rounded-xl flex items-center justify-between overflow-hidden border-[1px] border-stroke-clr mb-6">
         {headers.map((header, idx) => (
           <div
@@ -475,7 +453,6 @@ export default function Personnel() {
           </div>
         )}
       </Accordion>
-      </div>}
 
       {/* <div className="flex gap-3">
         <Button className="red-gradient">Download Data</Button>

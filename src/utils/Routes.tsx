@@ -190,11 +190,11 @@ export const routes = [
         element: <Batches />,
       },
       {
-        path: "/back-office/verification-batch/:id/personnels/:id",
+        path: "/back-office/verification-batch/:id/personnels/:verification_id",
         element: <VerificationsBatch />,
       },
       {
-        path: "/back-office/verification/:verification_id/personnel/:personnel_id",
+        path: "/back-office/verification-batch/:id/personnels/:verification_id/personnel-info/:id",
         element: <PersonnelInfo />,
       },
       {

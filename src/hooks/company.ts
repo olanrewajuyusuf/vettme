@@ -266,7 +266,7 @@ export const useFetchChart= () => {
   return {fetchChart};
 };
 
-// Getting Chart data
+// Getting Verification findings data
 export const useFetchFinding = () => {
   const fetchFinding = useCallback(async (id: string) => {
     try {

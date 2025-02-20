@@ -1,7 +1,6 @@
-import DeleteVerification from "@/components/modals/DeleteVerification";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { CopyIcon, TrashIcon } from "@radix-ui/react-icons";
+import { CopyIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import {
   Table,
@@ -17,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { useFetchBatchesResponse, useFetchBatchesResponseCards } from "@/hooks/company";
 import moment from "moment";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
+import { usePagination } from "@/hooks/usePagination";
+import Pagination from "@/components/pagination";
 
 interface ResponseProps {
   id: string,
@@ -106,6 +107,9 @@ const filteredBatches = batchesResponse
         : "No Verification Batch available."
       : null;
 
+  //Pagination Logic
+  const { currentPage, totalPages, paginatedData, handlePageChange } = usePagination(filteredBatches);
+  
   const headers = [
     {
       title: "Status",
@@ -129,17 +133,9 @@ const filteredBatches = batchesResponse
       text: "60% Completed",
     },
   ];
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   return (
     <>
-      {deleteModalOpen && (
-        <DeleteVerification
-          isOpen={deleteModalOpen}
-          setIsOpen={setDeleteModalOpen}
-        />
-      )}
-
       <div className="mb-[30px] flex justify-between items-center">
         <div>
           <h2>{cards?.title}</h2>
@@ -157,13 +153,13 @@ const filteredBatches = batchesResponse
           >
             <CopyIcon /> Copy Form Link
           </Button>
-          <Button
+          {/* <Button
             variant="outline"
             className="gap-2 border-red-clr text-red-clr hover:text-red-clr hover:bg-red-50"
             onClick={() => setDeleteModalOpen(true)}
           >
             <TrashIcon /> Delete
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -221,7 +217,7 @@ const filteredBatches = batchesResponse
             <h3>{noBatchesMessage}</h3>
           </div>
         )}
-        {filteredBatches && filteredBatches.length > 0 && (
+        {paginatedData && paginatedData.length > 0 && (
         <Table>
           <TableHeader className="bg-stroke-clr">
             <TableRow>
@@ -231,11 +227,10 @@ const filteredBatches = batchesResponse
               <TableHead>Nationality</TableHead>
               <TableHead>Date Submitted</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredBatches?.map((item: any) => (
+            {paginatedData?.map((item: any) => (
               <TableRow
                 key={item.id}
                 onClick={() =>
@@ -266,13 +261,13 @@ const filteredBatches = batchesResponse
                     {item.status}
                   </Badge>
                 </TableCell>
-                <TableCell>
-                  <TrashIcon />
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>)}
+
+        {/* Pagination Controls */}
+        <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
       </div>
     </>
   );

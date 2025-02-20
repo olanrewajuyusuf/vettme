@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ClipboardIcon, TrashIcon } from "@radix-ui/react-icons"; //, TrashIcon useNavigate
+import { ClipboardIcon } from "@radix-ui/react-icons"; //, TrashIcon useNavigate
 import { Input } from "@/components/ui/input";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -15,12 +15,15 @@ import { useFetchBatches } from "@/hooks/company";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
+import { usePagination } from "@/hooks/usePagination";
+import Pagination from "@/components/pagination";
 
 interface BatchesProps {
   id: string,
   title: string,
   status: string,
   createdAt: string,
+  expiryDate: string,
   max: string,
 }
 
@@ -79,6 +82,9 @@ export default function Verifications() {
         : "No Verification Batch available."
       : null;
 
+  //Pagination Logic
+  const { currentPage, totalPages, paginatedData, handlePageChange } = usePagination(filteredBatches);  
+
   return (
     <>
       <div className="mb-[30px] flex justify-between items-center">
@@ -135,19 +141,19 @@ export default function Verifications() {
             <h3>{noBatchesMessage}</h3>
           </div>
         )}
-        {filteredBatches && filteredBatches.length > 0 && (
+        {paginatedData && paginatedData.length > 0 && (
         <Table>
           <TableHeader className="bg-stroke-clr">
             <TableRow>
               <TableHead>Title</TableHead>
-              <TableHead>Personnels</TableHead>
+              <TableHead>No of Personnel</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date Created</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead>Exp Date</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredBatches?.map((item) => (
+            {paginatedData?.map((item) => (
               <TableRow 
                 key={item.id} 
                 onClick={() => navigate(item.id)}
@@ -170,18 +176,14 @@ export default function Verifications() {
                   </Badge>
                 </TableCell>
                 <TableCell>{moment(item.createdAt).format("MMM DD, YYYY")}</TableCell>
-                <TableCell>
-                  <TrashIcon 
-                  className="cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  />
-                </TableCell>
+                <TableCell>{moment(item.expiryDate).format("MMM DD, YYYY")}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>)}
+
+        {/* Pagination Controls */}
+        <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
       </div>
     </>
   );

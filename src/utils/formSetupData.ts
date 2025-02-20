@@ -19,7 +19,7 @@ const guarantorInfoFields = [
     {id: 'giOccupation1', label: 'Occupation'},
     {id: 'giPhoneNumber1', label: 'Phone Number'},
     {id: 'giAddress1', label: 'Address'},
-    {id: 'giEmailAddress', label: 'Email Address'},
+    {id: 'giEmailAddress1', label: 'Email Address'},
     {id: 'giYearsKnown1', label: 'Years Known'},
     {id: 'giPhysicalAddressRequest1', label: 'Request for physical Address verification'},
 ];
