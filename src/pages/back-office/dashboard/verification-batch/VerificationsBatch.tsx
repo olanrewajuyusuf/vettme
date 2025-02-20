@@ -109,6 +109,26 @@ const filteredBatches = batchesResponse
 
   //Pagination Logic
   const { currentPage, totalPages, paginatedData, handlePageChange } = usePagination(filteredBatches);
+
+  //Form link copying logic
+  const url = window.location.hostname + `/forms/${verification_id}`;
+
+  const handleCopy = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+        toast({
+          title: "URL Copied!",
+          description: "The for URL has been copied to your clipboard",
+        });
+      });
+    } else {
+      toast({
+        variant: "destructive",
+        title: "That didn't work!",
+        description: "We need permission to write to your clipboard",
+      });
+    }
+  };
   
   const headers = [
     {
@@ -144,12 +164,7 @@ const filteredBatches = batchesResponse
         <div className="flex items-center gap-2">
           <Button
             className="gap-2 bg-gray-200 text-base-clr hover:bg-gray-300"
-            onClick={() => {
-              toast({
-                title: "Copied",
-                description: "Verification link copied to clipboard",
-              });
-            }}
+            onClick={handleCopy}
           >
             <CopyIcon /> Copy Form Link
           </Button>
