@@ -191,7 +191,7 @@ export default function Dashboard() {
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col items-end gap-3">
                   <small className="text-xs min-w-max">{formatTimeAgo(item.createdAt)}</small>
                   <small
                     className={`text-xs ${

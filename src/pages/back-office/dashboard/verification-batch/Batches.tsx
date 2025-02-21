@@ -150,6 +150,7 @@ import Pagination from "@/components/pagination";
               </div>
           )}
           {paginatedData && paginatedData.length > 0 && (
+          <>
           <Table>
             <TableHeader className="bg-stroke-clr">
               <TableRow>
@@ -195,10 +196,11 @@ import Pagination from "@/components/pagination";
                 </TableRow>
               ))}
             </TableBody>
-          </Table>)}
+          </Table>
 
           {/* Pagination Controls */}
           <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
+          </>)}
         </div>
       </>
     );

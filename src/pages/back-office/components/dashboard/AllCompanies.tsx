@@ -163,6 +163,7 @@ interface CompanyProps {
               </div>
           )}
           {paginatedData && paginatedData.length > 0 && (
+          <>
           <Table>
             <TableHeader className="bg-blue-700 h-8">
               <TableRow>
@@ -249,10 +250,11 @@ interface CompanyProps {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>)}
+          </Table>
 
           {/* Pagination Controls */}
           <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
+          </>)}
         </div>
       </>
     );

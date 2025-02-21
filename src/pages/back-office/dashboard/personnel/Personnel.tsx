@@ -93,8 +93,11 @@ export default function Personnel() {
       title: "Claims Rejected",
       text: "7/41",
     },
-  ];  
+  ];
+  //Claims id for the route 
+  const _id = claims && claims[0].id;  
   
+  //Incoming claim, finding and verdict
   const personalInformation = getFilteredObjects(claims && claims[0].responses, findings, personalInput, "pi", verdicts);
   const guarantorInformation = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput1, "gi", "1", verdicts);
   const guarantorInformation2 = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput2, 'gi', "2", verdicts);
@@ -115,7 +118,7 @@ export default function Personnel() {
 
         <Button
               className="gap-2 bg-gray-200 text-base-clr hover:bg-gray-300"
-              onClick={() => navigate("edit")}
+              onClick={() => navigate(`edit/${_id}`)}
             >
               Edit
         </Button>

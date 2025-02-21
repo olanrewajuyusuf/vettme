@@ -233,6 +233,7 @@ const filteredBatches = batchesResponse
           </div>
         )}
         {paginatedData && paginatedData.length > 0 && (
+        <>
         <Table>
           <TableHeader className="bg-stroke-clr">
             <TableRow>
@@ -277,10 +278,11 @@ const filteredBatches = batchesResponse
               </TableRow>
             ))}
           </TableBody>
-        </Table>)}
+        </Table>
 
         {/* Pagination Controls */}
         <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
+        </>)}
       </div>
     </>
   );

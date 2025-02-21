@@ -16,6 +16,7 @@ import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { MdAccountBalanceWallet } from "react-icons/md";
+import { FaPlusCircle } from "react-icons/fa";
 
 // const metrics = [
 //   {
@@ -89,6 +90,7 @@ export default function Wallet() {
           className="bg-white text-base-clr hover:bg-gray-100"
           onClick={() => setTopupModalOpen(true)}
         >
+          <FaPlusCircle className="mr-1 text-blue-800" />
           Add to Balance
         </Button>
       </div>

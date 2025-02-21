@@ -3,26 +3,48 @@ import { EditPersonnelInformation } from "../../components/editInfo/edit";
 import { EditGuarantorInformation } from "../../components/editInfo/editGuarantorInfo";
 import { EditProffessionalInformation } from "../../components/editInfo/editProffessionalInfo";
 import { EditMentalHealth } from "../../components/editInfo/editMentalHealth";
-import Nav from "../../components/nav";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useFetchBatchesResponse } from "@/hooks/backOffice";
 
 const EditPersonnelInfo = () => {
+  const [claims, setClaims] = useState<any | "">("");
+  const {fetchBatchesResponse} = useFetchBatchesResponse();
+  const params = useParams();
+  console.log(params);
+
+  useEffect(() => {
+      const getResponse = async () => {
+        try {
+          const data = await fetchBatchesResponse(params.verification_id as string);
+          console.log(data);
+          
+          const resp = data.data.filter((item: any)=> item.id === params.id);
+          setClaims(resp);
+        } catch (error) {
+          console.error("Failed to get batches response:", error);
+        }
+      };
+      getResponse();
+  }, [fetchBatchesResponse, params.verification_id, params.id])
+
   return (
     <div>
-      <Nav title='Admin' />
-      <div className="max-w-[775px] mx-auto px-5">
+      <div className="">
           <div>
-              <h2>Christy Blabber</h2>
-              <p className="text-sm">Date Created: 23/01/2024 at 07:23 PM</p>
+              <h1>Edit {claims && claims[0].responses.piFullname} Information here.</h1>
           </div>
 
-          <EditPersonnelInformation />
-          <EditGuarantorInformation />
-          <EditProffessionalInformation />
-          <EditMentalHealth />
+          <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => e.preventDefault()}>
+            <EditPersonnelInformation />
+            <EditGuarantorInformation />
+            <EditProffessionalInformation />
+            <EditMentalHealth />
 
-          <div className="flex gap-3">
-            <Button className="red-gradient">Save changes</Button>
-          </div>
+            <div className="flex gap-3">
+              <Button className="red-gradient">Save changes</Button>
+            </div>
+          </form>
       </div>
     </div>
   )

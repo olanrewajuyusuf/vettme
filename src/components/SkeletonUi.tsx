@@ -46,12 +46,11 @@ export function NotificationSkeleton() {
                     </div>
                 </div>
                 <div className="bg-white p-5 h-80 rounded-xl flex flex-col gap-2">
-                        <Skeleton className="h-3 w-full" />
-                        <Skeleton className="h-3 w-full" />
-                        <Skeleton className="h-3 w-full" />
-                        <Skeleton className="h-3 w-full" />
-                        <Skeleton className="h-3 w-full" />
-                        <Skeleton className="h-3 w-full" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-full" />
+                        <Skeleton className="h-4 w-full" />
                 </div>
             </div>
         </div>
@@ -104,15 +103,13 @@ export function NavSkeleton() {
     return (
         <div className="w-full bg-white h-[70px] flex items-center justify-between px-[30px] border-b-[1px] border-stroke-clr">
             <div className="flex items-center justify-end gap-2">
-                <Skeleton className="w-10 h-10 rounded-full" />
-                <hr className="h-7 w-[1px] bg-stroke-clr" />
-                <Skeleton className="w-20 h-5" />
+                <Skeleton className="w-40 h-7" />
             </div>
             <Skeleton className="w-40 h-7" />
             <div className="flex items-center justify-end gap-2">
-                <Skeleton className="w-20 h-5" />
-                <hr className="h-7 w-[1px] bg-stroke-clr" />
-                <Skeleton className="w-20 h-5" />
+                <Skeleton className="w-36 h-7" />
+                <Skeleton className="w-10 h-7" />
+                <Skeleton className="w-10 h-10 rounded-full" />
             </div>
         </div>
     )

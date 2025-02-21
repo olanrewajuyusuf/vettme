@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import axios from "axios";
+import { baseUrl } from "@/api/baseUrl";
 
 interface DialogModal {
   isOpen: boolean;
@@ -22,7 +23,7 @@ export default function TopupModal({ isOpen, setIsOpen }: DialogModal) {
   const topUp = async(e: React.FormEvent) => {
     e.preventDefault()
     try{
-      const {data} = await axios.post("https://vettme-pro.onrender.com/api/pro/payment/create", {
+      const {data} = await axios.post(`${baseUrl}/payment/create`, {
         amount
       }, {
         headers: {
@@ -33,6 +34,7 @@ export default function TopupModal({ isOpen, setIsOpen }: DialogModal) {
       window.location.href = `${data.data.authorization_url}`
 
     } catch(err){
+      console.error(err)
       alert("Payment couldn't go through")
     }
   }

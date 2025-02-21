@@ -221,16 +221,11 @@ export const routes = [
         path: "all-agents/agent-info/:id",
         element: <AgentInfo />,
       },
+      {
+        path: "/back-office/verification-batch/:id/personnels/:verification_id/personnel-info/:id/edit/:id",
+        element: <EditPersonnelInfo  />,
+      },
     ]
-  },
-
-  {
-    path: "/back-office/verification/:verification_id/personnel/:personnel_id/edit",
-    element: (
-      <Suspense fallback={<Skeleton />}>
-        <EditPersonnelInfo />
-      </Suspense>
-    ),
   },
 
   {

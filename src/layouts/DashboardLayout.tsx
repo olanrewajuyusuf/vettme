@@ -11,7 +11,7 @@ import {
   ReaderIcon,
   SpeakerModerateIcon,
 } from "@radix-ui/react-icons";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import { MdAccountBalanceWallet } from "react-icons/md";
@@ -19,6 +19,7 @@ import { useNotification } from "@/utils/context/useNotification";
 import { FaPlusCircle } from "react-icons/fa";
 import { HiIdentification } from "react-icons/hi2";
 import { IoMedal } from "react-icons/io5";
+import TopupModal from "@/components/modals/TopupModal";
 
 interface LayoutProps {
   children: ReactNode;
@@ -57,6 +58,7 @@ const navLinks = [
 ];
 export default function DashboardLayout({ children }: LayoutProps) {
   const { company } = useUser();
+  const [topupModalOpen, setTopupModalOpen] = useState(false);
   const { unreadCount } = useNotification();
   const navigate = useNavigate(); 
 
@@ -71,6 +73,7 @@ export default function DashboardLayout({ children }: LayoutProps) {
       <div className="small-screen-notice">
         <ScreenNotice />
       </div>
+      {<TopupModal isOpen={topupModalOpen} setIsOpen={setTopupModalOpen} />}
       <div className="flex h-screen overflow-hidden">
         <div className="w-[250px] border-r-[1px] border-stroke-clr bg-white h-full">
           <div className="h-[70px] flex items-center justify-center border-b-[1px] border-stroke-clr">
@@ -118,7 +121,10 @@ export default function DashboardLayout({ children }: LayoutProps) {
               <div className="bg-green-600 rounded-full px-2 py-4 h-7 flex items-center overflow-hidden">
                 <span className="text-white text-xl"><MdAccountBalanceWallet /></span>
                 <span className="text-white mx-2">{company?.balance.toLocaleString()}</span>
-                <FaPlusCircle className="text-white text-xl ml-2"/>
+                <FaPlusCircle 
+                onClick={() => setTopupModalOpen(true)}
+                className="text-white text-xl ml-2 cursor-pointer"
+                />
               </div>
               <div className="relative">
                 <IoMdNotificationsOutline className="text-3xl"/>

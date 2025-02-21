@@ -39,7 +39,6 @@ export default function DashboardChart() {
     const getChartData = async() => {
       try{
         const res = await axios.get(`${baseUrl}/verification/month/${companyId}`)
-        console.log(res)
         setChartData(res.data.data)
       } catch(err){
         console.error(err);
