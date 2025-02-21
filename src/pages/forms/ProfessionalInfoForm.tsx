@@ -31,12 +31,12 @@ interface formData2 {
 function ProfessionalInfo() {
     const { id, personnelName, organizationId } = useParams<{ organizationId: string, id: string, personnelName: string }>();
     const [claim, setClaim] = useState({
-        priOrganizationName: "",
-        priOrganizationEmail: "",
-        priEmploymentStartDate: "",
-        priEmploymentType: "",
-        priProfessionalSkills: "",
-        priProfessionalReferenceName: "",
+        priOrganizationName1: "",
+        priOrganizationEmail1: "",
+        priEmploymentStartDate1: "",
+        priEmploymentType1: "",
+        priProfessionalSkills1: "",
+        priProfessionalReferenceName1: "",
         priOrganizationName2: "",
         priOrganizationEmail2: "",
         priEmploymentStartDate2: "",
@@ -139,10 +139,10 @@ function ProfessionalInfo() {
                 </h2>
 
                 <form onSubmit={handleSubmit}>
-                {claim.priOrganizationName && (
+                {claim.priOrganizationName1 && (
                 <fieldset className="mb-5">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
-                        Did Mr/Mrs {personnelName} work in your Organization ({claim.priOrganizationName})?
+                        Did Mr/Mrs {personnelName} work in your Organization ({claim.priOrganizationName1})?
                     </legend>
                     <ul className="flex items-center gap-4">
                         <li className="flex items-center">
@@ -167,10 +167,10 @@ function ProfessionalInfo() {
                 </fieldset>
                 )}
 
-                {claim.priOrganizationEmail && (
+                {claim.priOrganizationEmail1 && (
                 <fieldset className="mb-5">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
-                        Is this your organization's email ({claim.priOrganizationEmail})?
+                        Is this your organization's email ({claim.priOrganizationEmail1})?
                     </legend>
                     
                     <ul className="flex items-center gap-4">
@@ -196,11 +196,11 @@ function ProfessionalInfo() {
                 </fieldset>
                 )}
 
-                {claim.priEmploymentStartDate && (
+                {claim.priEmploymentStartDate1 && (
                 <fieldset className="mb-5">
                     
                     <legend className="text-gray-700 text-sm font-medium mb-2">
-                        Did Mr/Mrs {personnelName} start working in your Organization on {claim.priEmploymentStartDate }?
+                        Did Mr/Mrs {personnelName} start working in your Organization on {claim.priEmploymentStartDate1}?
                     </legend>
                     <ul className="flex items-center gap-4">
                         <li className="flex items-center">
@@ -226,10 +226,10 @@ function ProfessionalInfo() {
                 )}
 
 
-                {claim.priEmploymentType && (
+                {claim.priEmploymentType1 && (
                 <fieldset className="mb-5">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
-                        Was the employment type of Mr/Mrs {personnelName} {claim.priEmploymentType}?
+                        Was the employment type of Mr/Mrs {personnelName} {claim.priEmploymentType1}?
                     </legend>
                     <ul className="flex items-center gap-4">
                         <li className="flex items-center">
@@ -254,10 +254,10 @@ function ProfessionalInfo() {
                 </fieldset>
                 )}
 
-                {claim.priProfessionalSkills && (
+                {claim.priProfessionalSkills1 && (
                 <fieldset className="mb-5">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
-                        Would you say that Mr/Mrs {personnelName} possesses these skills: {claim.priProfessionalSkills}?
+                        Would you say that Mr/Mrs {personnelName} possesses these skills: {claim.priProfessionalSkills1}?
                     </legend>
                     <ul className="flex items-center gap-4">
                         <li className="flex items-center">
@@ -282,10 +282,10 @@ function ProfessionalInfo() {
                 </fieldset>
                 )}
 
-                {claim.priProfessionalReferenceName && (  
+                {claim.priProfessionalReferenceName1 && (  
                 <fieldset className="mb-5">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
-                        Mr/Mrs {personnelName} used Mr/Mrs {claim.priProfessionalReferenceName} as a reference. Have you worked with them, and would you consider them a good referral?
+                        Mr/Mrs {personnelName} used Mr/Mrs {claim.priProfessionalReferenceName1} as a reference. Have you worked with them, and would you consider them a good referral?
                     </legend>
                     <ul className="flex items-center gap-4">
                         <li className="flex items-center">

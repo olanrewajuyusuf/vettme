@@ -62,7 +62,7 @@ interface PaymentProps {
 export default function Wallet() {
   const [payments, setPayments] = useState<PaymentProps[] | []>([]);
   const { fetchPayment } = useFetchPayment();
-  const { company } = useUser();
+  const { balance } = useUser();
   const [topupModalOpen, setTopupModalOpen] = useState(false);
 
   useEffect(()=> {
@@ -84,7 +84,7 @@ export default function Wallet() {
       <div className="w-full mb-6 rounded-xl wallet py-4 px-6 flex justify-between items-center text-white">
         <div>
           <p className="text-sm">Available Balance</p>
-          <h1 className="flex items-center gap-1"><MdAccountBalanceWallet />{company?.balance.toLocaleString()}</h1>
+          <h1 className="flex items-center gap-1"><MdAccountBalanceWallet />{balance.toLocaleString()}</h1>
         </div>
         <Button
           className="bg-white text-base-clr hover:bg-gray-100"

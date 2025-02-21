@@ -20,6 +20,8 @@ import { FaPlusCircle } from "react-icons/fa";
 import { HiIdentification } from "react-icons/hi2";
 import { IoMedal } from "react-icons/io5";
 import TopupModal from "@/components/modals/TopupModal";
+import { ChevronDown, ChevronUp, PlusIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface LayoutProps {
   children: ReactNode;
@@ -57,8 +59,9 @@ const navLinks = [
   },
 ];
 export default function DashboardLayout({ children }: LayoutProps) {
-  const { company } = useUser();
+  const { company, balance } = useUser();
   const [topupModalOpen, setTopupModalOpen] = useState(false);
+  const [toggleArrow, setToggleArrow] = useState(true);
   const { unreadCount } = useNotification();
   const navigate = useNavigate(); 
 
@@ -120,7 +123,7 @@ export default function DashboardLayout({ children }: LayoutProps) {
             <div className="flex items-center gap-1">
               <div className="bg-green-600 rounded-full px-2 py-4 h-7 flex items-center overflow-hidden">
                 <span className="text-white text-xl"><MdAccountBalanceWallet /></span>
-                <span className="text-white mx-2">{company?.balance.toLocaleString()}</span>
+                <span className="text-white mx-2">{balance.toLocaleString()}</span>
                 <FaPlusCircle 
                 onClick={() => setTopupModalOpen(true)}
                 className="text-white text-xl ml-2 cursor-pointer"
@@ -134,9 +137,29 @@ export default function DashboardLayout({ children }: LayoutProps) {
                 {unreadCount}
                 </div>}
               </div>
-              <span className="w-[40px] h-[40px] ml-2 rounded-full grid place-items-center text-white border-[1px] bg-blue-400">
-                  {company?.companyName.slice(0, 2).toUpperCase()}
-              </span>
+              <Popover>
+                <PopoverTrigger>
+                  <div 
+                  onClick={()=> setToggleArrow(!toggleArrow)}
+                  className="hover:shadow-md cursor-pointer rounded-md flex items-start gap-1 p-2 ml-2"
+                  >
+                    <span className="w-[35px] h-[35px] rounded-full grid place-items-center text-white border-[1px] bg-blue-400">
+                        {company?.companyName.slice(0, 2).toUpperCase()}
+                    </span>
+                    {toggleArrow && <ChevronUp className="text-blue-500 w-5" />}
+                    {!toggleArrow && <ChevronDown className="text-blue-500 w-5" />}
+                  </div>
+                </PopoverTrigger>
+                <PopoverContent className="bg-white p-5 shadow-lg rounded-md mr-5 text-sm text-gray-600">
+                  <h3 className="border-b-[1px] border-stroke-clr pb-2 mb-2 text-black">My Account</h3>
+                  <span 
+                  onClick={() => navigate('/auth/register')}
+                  className="flex items-center gap-1 hover:text-black cursor-pointer"
+                  >
+                    <PlusIcon className="w-4"/> Create another account
+                  </span>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>)}
           <div className="w-full overflow-y-scroll p-[30px]">{children}</div>

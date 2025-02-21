@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useFetchCompany } from "@/hooks/company";
 
 // Define the structure of the context
@@ -17,6 +17,8 @@ interface UserContextType {
     phone_number: string;
     updatedAt: string;
   } | null;
+  balance: number;
+  setBalance: (balance: number) => void;
 }
 
 // Create the UserContext
@@ -29,6 +31,7 @@ interface UserProviderProps {
 // Define the UserProvider component
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [company, setCompany] = useState<UserContextType["company"]>(null);
+  const [balance, setBalance] = useState<number>(0);
   const navigate = useNavigate();
   const { fetchCompany } = useFetchCompany();
 
@@ -62,7 +65,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     const getCompany = async () => {
       try {
         const data = await fetchCompany();
+        console.log(data.result.company.balance);
         setCompany(data.result.company);
+        setBalance(data.result.company.balance);
       } catch (error) {
         console.error("Failed to fetch company info:", error);
       }
@@ -72,7 +77,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }, [navigate, fetchCompany]);
 
   return (
-    <UserContext.Provider value={{ company }}>
+    <UserContext.Provider value={{ company, balance, setBalance }}>
       {children}
     </UserContext.Provider>
   );
