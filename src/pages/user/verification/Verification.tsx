@@ -13,7 +13,7 @@ import {
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useFetchBatchesResponse, useFetchBatchesResponseCards } from "@/hooks/company";
+import { useFetchBatchesResponse, useFetchBatchesResponseCards, useFetchCompletionPercentage } from "@/hooks/company";
 import moment from "moment";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
 import { usePagination } from "@/hooks/usePagination";
@@ -44,8 +44,10 @@ export default function Verification() {
   const [ cards, setCards ] = useState<CardsProps | null>(null);
   const { fetchBatchesResponse } = useFetchBatchesResponse();
   const { fetchBatchesResponseCards } = useFetchBatchesResponseCards();
+  const { fetchCompletionPercentage } = useFetchCompletionPercentage();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [percentage, setPercentage] = useState<any | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = searchParams.get("filter") || "all";
   const navigate = useNavigate();
@@ -74,8 +76,18 @@ export default function Verification() {
       }
     };
 
+    const getPercentage = async () => {
+      try {
+        const data = await fetchCompletionPercentage(id as string);
+        setPercentage(data.percentage);
+      } catch (error) {
+        console.error("Failed to get batches response:", error);
+      }
+    };
+
+    getPercentage();
     getResponseCards();
-}, [fetchBatchesResponse, id, fetchBatchesResponseCards]);
+}, [fetchBatchesResponse, id, fetchBatchesResponseCards, fetchCompletionPercentage]);
 
 const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
   const selectedFilter = event.target.value;
@@ -150,10 +162,10 @@ const filteredBatches = batchesResponse
     },
     {
       title: "Completion",
-      text: "60% Completed",
+      text: percentage +" "+ "Completed",
     },
   ];
-
+  
   return (
     <>
       <div className="mb-[30px] flex justify-between items-center">

@@ -333,6 +333,60 @@ export const useFetchForm = () => {
   }, []);
   return {fetchForm};
 };
+
+//Getting completion percentage
+export const useFetchCompletionPercentage = () => {
+  const fetchCompletionPercentage = useCallback(async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification/completion/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching completion percentage:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get completion percentage");
+    }
+  }, []);
+  return {fetchCompletionPercentage};
+};
+
+//Getting completion percentage
+export const useFetchVerificationRating = () => {
+  const fetchVerificationRating = useCallback(async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/verification-result/stats/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error("Error fetching verification rating:", error);
+      throw new Error(error?.response?.data?.message || "Cannot get verification rating");
+    }
+  }, []);
+  return {fetchVerificationRating};
+};
 // export const useFetchCompany = (id: string) => {
 //   const fetchCompany = async () => {
 //     try {

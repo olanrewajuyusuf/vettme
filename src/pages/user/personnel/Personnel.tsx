@@ -16,7 +16,7 @@ import {
 import { useLocation, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
-import { useFetchFinding, useFetchForm, useFetchVerdict } from "@/hooks/company";
+import { useFetchFinding, useFetchVerdict, useFetchVerificationRating } from "@/hooks/company";
 import { getFilteredObjects } from "@/lib/filteredObjects";
 import { 
   academicInput, 
@@ -34,8 +34,8 @@ export default function Personnel() {
   const { state } = location;
   const [findings, setFindings] = useState<"" | any>("");
   const [verdicts, setVerdicts] = useState<"" | any>("");
-  const { fetchForm } = useFetchForm();
   const { fetchFinding } = useFetchFinding();
+  const { fetchVerificationRating } = useFetchVerificationRating();
   const params = useParams();
   const { fetchVerdict } = useFetchVerdict();
 
@@ -58,9 +58,24 @@ export default function Personnel() {
         }
       };
 
+      const getRating = async () => {
+        try {
+          const data = await fetchVerificationRating(params.personnel_id as string);
+          // setVerdicts(data.results);
+          console.log(data);
+          
+        } catch (error) {
+          console.error("Failed to get Rating:", error);
+        }
+      };
+
       getFinding();
       getVerdict();
-  }, [fetchFinding, state.id, fetchVerdict, fetchForm, params.verification_id]);
+      getRating();
+  }, [fetchFinding, state.id, fetchVerdict, fetchVerificationRating, params.personnel_id]);
+
+  console.log(state.id, params);
+  
   
   const headers = [
     {

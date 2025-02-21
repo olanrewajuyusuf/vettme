@@ -1,581 +1,375 @@
-// import { Input } from "@/components/ui/input";
-// import { TriangleDownIcon, TriangleRightIcon } from "@radix-ui/react-icons";
-// import { useState } from "react";
-// import { Button } from "@/components/ui/button";
-// import FormCreation from "@/components/modals/FormCreation";
-// import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { TriangleDownIcon, TriangleRightIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import FormCreation from "@/components/modals/FormCreation";
+import {
+  personalInfoFields,
+  guarantorInfoFields,
+  academicInfoFields,
+  professionalInfoFields,
+  mentalHealthFields,
+} from "@/utils/formSetupData";
+import { CreateForm } from "@/api/form";
+import Spinner from "@/components/Spinner";
+import { useFetchCompany } from "@/hooks/company";
+import { useUser } from "@/utils/context/useUser";
 
-// export default function FormSetup() {
-//   const [activeTab, setActiveTab] = useState<1 | 2 | 3 | 4 | 5>(1);
-//   const [creationModalActive, setCreationModalActive] = useState(false);
+const fieldGroups: { [key: string]: { fields: string[]; cost: number } } = {
+  PersonalInformationGroup: {
+    fields: [
+      "piFullname",
+      "piDateOfBirth",
+      "piGender",
+      "piAddress",
+      "piNationality",
+      "piNextofKinName",
+      "piNextofKinRelationship",
+      "piNextofKinPhoneNumber",
+      "piPhoneNumber",
+      "piEmailAddress",
+      "piMaritalStatus",
+    ],
+    cost: 500,
+  },
+  PersonalAddressGroup: {
+    fields: [ "piPhysicalAddressRequest" ],
+    cost: 7000,
+  },
 
-//   const [setupData, setSetupData] = useState({
-//     title: "",
-//     personal_information: [] as string[],
-//     academic_information: [] as string[],
-//     guarantor_information: [] as string[],
-//     professional_information: [] as string[],
-//     mental_information: [] as string[],
-//   });
+  GuarantorInformationGroup: {
+    fields: [
+      "giFullName1",
+      "giRelationshiptoPersonnel1",
+      "giOccupation1",
+      "giAddress1",
+      "giPhoneNumberPhone1",
+      "giEmailAddress1",
+      "giYearsKnown1",
+    ],
+    cost: 500,
+  },
+  GuarantorAddressGroup: {
+    fields: [ "giPhysicalAddressRequest1" ],
+    cost: 7000,
+  },
 
-//   const setInfo = (
-//     type:
-//       | "personal_information"
-//       | "academic_information"
-//       | "guarantor_information"
-//       | "professional_information"
-//       | "mental_information",
-//     name: string
-//   ) => {
-//     const currentInfo = setupData[type];
+  AcademicInformationGroup: {
+    fields: [
+      "aiHighestQualification",
+      "aiNameofInstitution",
+      "aiYearofGraduation",
+      "aiDegreeOrCertificationUpload",
+      "aiProfessionalCertifications",
+    ],
+    cost: 15000,
+  },
 
-//     // Check if the item is already selected
-//     if (currentInfo.includes(name)) {
-//       // Remove the item if it's already selected
-//       const newData = currentInfo.filter((item) => item !== name);
-//       setSetupData((prevData) => ({
-//         ...prevData,
-//         [type]: newData,
-//       }));
-//     } else {
-//       // Otherwise, add the item
-//       setSetupData((prevData) => ({
-//         ...prevData,
-//         [type]: [...currentInfo, name],
-//       }));
-//     }
-//   };
+  ProfessionalInformationGroup: {
+    fields: [
+      "priOrganizationName1",
+      "priEmploymentStartDate1",
+      "priEmploymentType1",
+      "priProfessionalSkills1",
+      "priProfessionalReferenceName1",
+      "priOrganizationEmail",
+      "priProfessionalReferencePhoneNumber1",
+    ],
+    cost: 1000,
+  },
+};
 
-//   const setPersonalInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setInfo("personal_information", e.target.id);
-//   };
+const Form = () => {
+  const [selectedGroups, setSelectedGroups] = useState<{
+    [key: string]: number;
+  }>({});
+  const [activeTab, setActiveTab] = useState<1 | 2 | 3 | 4 | 5>(1);
+  const [creationModalActive, setCreationModalActive] = useState(false);
+  const [createdForm, setCreatedForm] = useState<any | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const companyId = localStorage.getItem("companyId");
+  const [selectedFields, setSelectedFields] = useState<string[]>([]);
+  const [totalCost, setTotalCost] = useState(0);
+  const { fetchCompany } = useFetchCompany();
+  const { setBalance } = useUser();
 
-//   const setAcademicInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setInfo("academic_information", e.target.id);
-//   };
- 
-//   const setMentalInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setInfo("mental_information", e.target.id);
-//   };
+  const [formData, setFormData] = useState<{
+    [key: string]: string | boolean | number;
+  }>({
+    title: "",
+    verificationType: "",
+    max: 0,
+    giNumberofGuarantors: 0,
+    priNumberofProfessionalReferences: 0,
+    cost: totalCost,
+    status: "PENDING",
+    companyId: `${companyId}`,
+  });
 
-//   const setGuarantorInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setInfo("guarantor_information", e.target.id);
-//   };
+  // Function to update cost dynamically
+  const updateCost = (updatedFields: string[]) => {
+    let cost = 0;
+    const newSelectedGroups: { [key: string]: number } = {};
 
-//   const setProfessionalInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setInfo("professional_information", e.target.id);
-//   };
+    // Loop through each group and apply cost only once if at least one field is selected
+    Object.entries(fieldGroups).forEach(([groupName, group]) => {
+      if (group.fields.some((field) => updatedFields.includes(field))) {
+        cost += group.cost;
+        newSelectedGroups[groupName] = group.cost; // Store cost breakdown
+      }
+    });
 
-//   const handleSetup = (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     console.log(setupData);
-    
-//     setCreationModalActive(true);
-//   };
+    setTotalCost(cost);
+    setSelectedGroups(newSelectedGroups);
+  };
 
-//   return (
-//     <>
-//       {creationModalActive && <FormCreation isOpen={creationModalActive} />}
-//       <div className="mb-[30px] ">
-//         <h2>Create Verification Form</h2>
-//         <p className="text-sm">
-//           Enter form title and select the fields that you want your employee to
-//           fill in the options below. The defaults cannot be deselected.
-//         </p>
-//       </div>
-//       <div className="flex items-start gap-4">
-//         <form onSubmit={handleSetup} className="basis-2/3">
-//           <div className="w-full py-5 px-7 rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px] flex gap-6">
-//             <label htmlFor="title" className="block w-full">
-//               <p className="text-[16px] font-medium">Form Title</p>
-//               <Input
-//                 type="text"
-//                 id="title"
-//                 onChange={(e) =>
-//                   setSetupData({
-//                     ...setupData,
-//                     title: e.target.value,
-//                   })
-//                 }
-//               />
-//             </label>
-//             <label htmlFor="verificationType">
-//               <p className="text-[16px]">Verification Type</p>
-//               <select id="verificationType" className="btn px-2">
-//                 <option value="">Choose Verification Type</option>
-//                 <option value="personnelVerification">Personnel Verification</option>
-//                 <option value="loanVerification">Loan Verification Type</option>
-//                 <option value="criminalVerification">Criminal Record Verification</option>
-//                 <option value="other">Other Verification</option>
-//               </select>
-//             </label>
-//           </div>
+  // Handle changes for inputs and checkboxes
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
 
-//           <div className="w-full rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px]">
-//             <div
-//               className={`py-5 px-7 ${
-//                 activeTab === 1 && "border-b-[1px]"
-//               } border-stroke-clr flex justify-between items-center cursor-pointer`}
-//               onClick={() => setActiveTab(1)}
-//             >
-//               <p className="text-[16px] font-medium">Personal Information</p>
-//               {activeTab === 1 ? <TriangleDownIcon /> : <TriangleRightIcon />}
-//             </div>
+    if (type === "checkbox" && e.target instanceof HTMLInputElement) {
+      const checked = e.target.checked;
+      setFormData((prev) => ({ ...prev, [name]: checked }));
 
-//             {activeTab === 1 && (
-//               <div className="flex py-5 px-7 flex-wrap gap-x-6 gap-y-2">
-//                 <label htmlFor="full_name" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     id="full_name"
-//                     name="fullname"
-//                     // onChange={setPersonalInfo}
-//                   />
-//                   <p className="text-sm">Full Name</p>
-//                 </label>
-//                 <label htmlFor="dob" className="flex gap-2">
-//                   <input type="checkbox" id="dob" onChange={setPersonalInfo} />
-//                   <p className="text-sm">Date of Birth</p>
-//                 </label>
-//                 <label htmlFor="gender" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     name="dob"
-//                     // onChange={setPersonalInfo}
-//                     id="gender"
-//                   />
-//                   <p className="text-sm">Gender</p>
-//                 </label>
-//                 <label htmlFor="nationaliy" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     name="gender"
-//                     // onChange={setPersonalInfo}
-//                     id="nationaliy"
-//                   />
-//                   <p className="text-sm">Nationality</p>
-//                 </label>
-//                 <label htmlFor="address" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     // onChange={setPersonalInfo}
-//                     id="address"
-//                   />
-//                   <p className="text-sm">Residential Address</p>
-//                 </label>
-//                 <label htmlFor="phone" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setPersonalInfo}
-//                     id="phone"
-//                   />
-//                   <p className="text-sm">Phone Number</p>
-//                 </label>
-//                 <label htmlFor="email" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setPersonalInfo}
-//                     id="email"
-//                   />
-//                   <p className="text-sm">Email Address</p>
-//                 </label>
-//                 <label htmlFor="id" className="flex gap-2">
-//                   <input type="checkbox" onChange={setPersonalInfo} id="id" />
-//                   <p className="text-sm">
-//                     National Identification Number (NIN)
-//                   </p>
-//                 </label>
-//                 <label htmlFor="marital_status" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setPersonalInfo}
-//                     id="marital_status"
-//                   />
-//                   <p className="text-sm">Marital Status</p>
-//                 </label>
-//                 <label htmlFor="next_of_kin_name" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setPersonalInfo}
-//                     id="next_of_kin_name"
-//                   />
-//                   <p className="text-sm">Next of Kin Name</p>
-//                 </label>
-//                 <label
-//                   htmlFor="next_of_kin_relationship"
-//                   className="flex gap-2"
-//                 >
-//                   <input
-//                     type="checkbox"
-//                     onChange={setPersonalInfo}
-//                     id="next_of_kin_relationship"
-//                   />
-//                   <p className="text-sm">Next of Kin Relationship</p>
-//                 </label>
-//                 <label htmlFor="next_of_kin_phone" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setPersonalInfo}
-//                     id="next_of_kin_phone"
-//                   />
-//                   <p className="text-sm">Next of Kin Phone Number</p>
-//                 </label>
-//               </div>
-//             )}
-//           </div>
+      const updatedFields = checked
+        ? [...selectedFields, name]
+        : selectedFields.filter((field) => field !== name);
 
-//           <div className="w-full rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px]">
-//             <div
-//               className={`py-5 px-7 ${
-//                 activeTab === 2 && "border-b-[1px]"
-//               } border-stroke-clr flex justify-between items-center cursor-pointer`}
-//               onClick={() => setActiveTab(2)}
-//             >
-//               <p className="text-[16px] font-medium">Guarantor's Information</p>
-//               {activeTab === 2 ? <TriangleDownIcon /> : <TriangleRightIcon />}
-//             </div>
+      setSelectedFields(updatedFields);
+      updateCost(updatedFields);
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]:
+          type === "number" && e.target instanceof HTMLInputElement
+            ? value === ""
+              ? ""
+              : parseFloat(value)
+            : value,
+      }));
+    }
+  };
 
-//             {activeTab === 2 && (
-//               <div className="flex py-5 px-7 flex-wrap gap-x-6 gap-y-2">
-//                 <label htmlFor="guarantor_full_name" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="guarantor_full_name"
-//                   />
-//                   <p className="text-sm">Full Name</p>
-//                 </label>
-//                 <label htmlFor="guarantor_relationship" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="guarantor_relationship"
-//                   />
-//                   <p className="text-sm">Relationship to Personnel</p>
-//                 </label>
-//                 <label htmlFor="guarantor_occupation" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="guarantor_occupation"
-//                   />
-//                   <p className="text-sm">Occupation</p>
-//                 </label>
-//                 <label htmlFor="guarantor_phone" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="guarantor_phone"
-//                   />
-//                   <p className="text-sm">Phone Number</p>
-//                 </label>
-//                 <label htmlFor="guarantor_address" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="guarantor_address"
-//                   />
-//                   <p className="text-sm">Residential Address</p>
-//                 </label>
-//                 <label htmlFor="guarantor_email" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="guarantor_email"
-//                   />
-//                   <p className="text-sm">Email Address</p>
-//                 </label>
-//                 <label htmlFor="email" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="email"
-//                   />
-//                   <p className="text-sm">Email Address</p>
-//                 </label>
-//                 <label htmlFor="guarantor_known_since" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="guarantor_known_since"
-//                   />
-//                   <p className="text-sm">Years Known</p>
-//                 </label>
-//                 <label htmlFor="guarantor_nin" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setGuarantorInfo}
-//                     id="guarantor_nin"
-//                   />
-//                   <p className="text-sm">National Idenification Number (NIN)</p>
-//                 </label>
-//               </div>
-//             )}
-//           </div>
+  // Handle form submission
+const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-//           <div className="w-full rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px]">
-//             <div
-//               className={`py-5 px-7 ${
-//                 activeTab === 3 && "border-b-[1px]"
-//               } border-stroke-clr flex justify-between items-center cursor-pointer`}
-//               onClick={() => setActiveTab(3)}
-//             >
-//               <p className="text-[16px] font-medium">Academic Information</p>
-//               {activeTab === 3 ? <TriangleDownIcon /> : <TriangleRightIcon />}
-//             </div>
+    const calculatedCost = Math.floor(totalCost * Number(formData.max)); // Calculate cost before submission
 
-//             {activeTab === 3 && (
-//               <div className="flex py-5 px-7 flex-wrap gap-x-6 gap-y-2">
-//                 <label htmlFor="highest_qualification" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setAcademicInfo}
-//                     id="highest_qualification"
-//                   />
-//                   <p className="text-sm">Highest Qualification</p>
-//                 </label>
-//                 <label htmlFor="name_of_insitution" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setAcademicInfo}
-//                     id="name_of_insitution"
-//                   />
-//                   <p className="text-sm">Name of Institution</p>
-//                 </label>
-//                 <label htmlFor="year_of_graduation" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setAcademicInfo}
-//                     id="year_of_graduation"
-//                   />
-//                   <p className="text-sm">Year of Graduation</p>
-//                 </label>
-//                 <label htmlFor="certification" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setAcademicInfo}
-//                     id="certification"
-//                   />
-//                   <p className="text-sm">Degree / Certification Upload</p>
-//                 </label>
-//                 <label
-//                   htmlFor="professional_certification"
-//                   className="flex gap-2"
-//                 >
-//                   <input
-//                     type="checkbox"
-//                     onChange={setAcademicInfo}
-//                     id="professional_certification"
-//                   />
-//                   <p className="text-sm">Professional Certifications</p>
-//                 </label>
-//               </div>
-//             )}
-//           </div>
+    const newFormData = {
+        ...formData,
+        cost: calculatedCost, // ✅ Update cost dynamically
+    };
 
-//           <div className="w-full rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px]">
-//             <div
-//               className={`py-5 px-7 ${
-//                 activeTab === 4 && "border-b-[1px]"
-//               } border-stroke-clr flex justify-between items-center cursor-pointer`}
-//               onClick={() => setActiveTab(4)}
-//             >
-//               <p className="text-[16px] font-medium">
-//                 Professional Information
-//               </p>
-//               {activeTab === 4 ? <TriangleDownIcon /> : <TriangleRightIcon />}
-//             </div>
+    console.log("Payload before sending:", newFormData);
 
-//             {activeTab === 4 && (
-//               <div className="flex py-5 px-7 flex-wrap gap-x-6 gap-y-2">
-//                 <label htmlFor="current_job" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="current_job"
-//                   />
-//                   <p className="text-sm">Current Job</p>
-//                 </label>
-//                 <label htmlFor="organization" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="organization"
-//                   />
-//                   <p className="text-sm">Organization Name</p>
-//                 </label>
-//                 <label htmlFor="start_date" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="start_date"
-//                   />
-//                   <p className="text-sm">Employment Start Date</p>
-//                 </label>
-//                 <label htmlFor="empolyment_type" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="empolyment_type"
-//                   />
-//                   <p className="text-sm">
-//                     Employment type (fulltime, hybrid, remote)
-//                   </p>
-//                 </label>
-//                 <label htmlFor="organization_role" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="organization_role"
-//                   />
-//                   <p className="text-sm">Job Responsibility</p>
-//                 </label>
-//                 <label htmlFor="skills" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="skills"
-//                   />
-//                   <p className="text-sm">Professional Skills</p>
-//                 </label>
-//                 <label htmlFor="linkedin" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="linkedin"
-//                   />
-//                   <p className="text-sm">LinkedIn Profile</p>
-//                 </label>
-//                 <label htmlFor="referee_name" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="referee_name"
-//                   />
-//                   <p className="text-sm">Professional Reference Name</p>
-//                 </label>
-//                 <label htmlFor="referee_phone" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="referee_phone"
-//                   />
-//                   <p className="text-sm">Professional Reference Phone Number</p>
-//                 </label>
-//                 <label htmlFor="current_salary" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="current_salary"
-//                   />
-//                   <p className="text-sm">Current Salary</p>
-//                 </label>
-//                 <label htmlFor="expected_salary" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setProfessionalInfo}
-//                     id="expected_salary"
-//                   />
-//                   <p className="text-sm">Expected Salary Range</p>
-//                 </label>
-//               </div>
-//             )}
-//           </div>
+    const createdForm = await CreateForm(newFormData, setCreationModalActive, setIsLoading);
 
-//           <div className="w-full rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px]">
-//             <div
-//               className={`py-5 px-7 ${
-//                 activeTab === 5 && "border-b-[1px]"
-//               } border-stroke-clr flex justify-between items-center cursor-pointer`}
-//               onClick={() => setActiveTab(5)}
-//             >
-//               <p className="text-[16px] font-medium">
-//                 Mental Health Assessment
-//               </p>
-//               {activeTab === 5 ? <TriangleDownIcon /> : <TriangleRightIcon />}
-//             </div>
+    if (createdForm) {
+        console.log("Created form:", createdForm);
+        setCreatedForm(createdForm);
+        // Fetch company data
+    const getCompany = async () => {
+      try {
+        const data = await fetchCompany();
+        setBalance(data.result.company.balance);
+      } catch (error) {
+        console.error("Failed to fetch company info:", error);
+      }
+    };
 
-//             {activeTab === 5 && (
-//               <div className="flex py-5 px-7 flex-wrap gap-x-6 gap-y-2">
-//                 <label htmlFor="current_mental_health" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setMentalInfo}
-//                     id="current_mental_health"
-//                   />
-//                   <p className="text-sm">Current Mental Health Condition</p>
-//                 </label>
-//                 <label htmlFor="mental_health_history" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setMentalInfo}
-//                     id="mental_health_history"
-//                   />
-//                   <p className="text-sm">History of Mental Health Conditions</p>
-//                 </label>
-//                 <label htmlFor="is_under_treatment" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setMentalInfo}
-//                     id="is_under_treatment"
-//                   />
-//                   <p className="text-sm">
-//                     Are you currently under any medication or treatment?
-//                   </p>
-//                 </label>
-//                 <label htmlFor="was_psychiatric" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setMentalInfo}
-//                     id="was_psychiatric"
-//                   />
-//                   <p className="text-sm">
-//                     Have you had any previous psychiatric consultations?
-//                   </p>
-//                 </label>
-//                 <label htmlFor="was_traumatic" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setMentalInfo}
-//                     id="was_traumatic"
-//                   />
-//                   <p className="text-sm">
-//                     Have you experienced any major trauma in the past year?
-//                   </p>
-//                 </label>
-//                 <label htmlFor="emotional_wellbeing" className="flex gap-2">
-//                   <input
-//                     type="checkbox"
-//                     onChange={setMentalInfo}
-//                     id="emotional_wellbeing"
-//                   />
-//                   <p className="text-sm">
-//                     Emotional Well-being (describe briefly)
-//                   </p>
-//                 </label>
-//               </div>
-//             )}
-//           </div>
-//           <div className="flex gap-3">
-//             <Link to="/forms/1234" target="_blank">
-//               <Button type="button" className="bg-gray-400 hover:bg-gray-500">
-//                 Preview Form
-//               </Button>
-//             </Link>
-//             <Button type="submit" className="red-gradient">
-//               Complete Form Setup
-//             </Button>
-//           </div>
-//         </form>
+    getCompany();
+    } else {
+        console.error("Form creation failed or no data returned.");
+    }
+};
 
-//         <div className="basis-1/3 sticky top-0 bg-white py-4 px-7 rounded-xl border-[1px] border-stroke-clr">
-//           <h3>Order Summary</h3>
-//           <p>
-//             Total cost of services chosen. Cost is calculated per form
-//             submission
-//           </p>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
+
+  return (
+    <>
+      {creationModalActive && createdForm && (
+        <FormCreation isOpen={creationModalActive} createdForm={createdForm} />
+      )}
+      <div className="mb-[30px]">
+        <h2>Create Verification Form</h2>
+        <p className="text-sm">
+          Enter form title and select the fields that you want your employee to
+          fill in the options below. The defaults cannot be deselected.
+        </p>
+      </div>
+      <div className="flex items-start gap-4">
+        <form onSubmit={handleSetup} className="basis-2/3">
+          <div className="w-full py-5 px-7 rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px]">
+            <div className="mb-5">
+              <label htmlFor="title" className="w-full">
+                <p className="text-[16px] font-medium">Form Title</p>
+                <Input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title as string}
+                  onChange={handleChange}
+                  className="w-full"
+                  required
+                />
+              </label>
+            </div>
+            <div className="w-full flex items-center gap-5 mb-5">
+              <label htmlFor="max" className="block w-full">
+                <p className="font-semibold">
+                  Number of expected Personnel
+                </p>
+                <Input
+                  type="number"
+                  id="max"
+                  name="max"
+                  min='0'
+                  value={formData.max as number}
+                  onChange={handleChange}
+                  className="w-full"
+                  required
+                />
+              </label>
+              <label htmlFor="verificationType" className="w-full">
+                <p className="font-semibold">Verification Type</p>
+                <select
+                  id="verificationType"
+                  name="verificationType"
+                  className="btn px-2 w-full"
+                  value={formData.verificationType as string}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Choose Verification Type</option>
+                  <option value="PERSONNEL">Professional Verification</option>
+                  <option value="LOAN">Loan Verification</option>
+                  <option value="CRIMINALRECORD">
+                    Logistics Driver Verification
+                  </option>
+                </select>
+              </label>
+            </div>
+            <div className="w-full flex items-center gap-5">
+              <label htmlFor="giNumberofGuarantors" className="w-full">
+                <p className="font-semibold">Number of Guarantors</p>
+                <Input
+                  type="number"
+                  id="giNumberofGuarantors"
+                  name="giNumberofGuarantors"
+                  min='0'
+                  max='4'
+                  value={formData.giNumberofGuarantors as number}
+                  onChange={handleChange}
+                  className="w-full"
+                  required
+                />
+              </label>
+              <label htmlFor="priNumberofProfessionalReferences" className="w-full">
+                <p className="font-semibold">Number of Professional References</p>
+                <Input
+                  type="number"
+                  id="priNumberofProfessionalReferences"
+                  name="priNumberofProfessionalReferences"
+                  min='0'
+                  max='2'
+                  value={formData.priNumberofProfessionalReferences as number}
+                  onChange={handleChange}
+                  className="w-full"
+                  required
+                />
+              </label>
+            </div>
+          </div>
+
+          {/* Sections for each information category */}
+          {[
+            { title: "Personal Information", fields: personalInfoFields },
+            { title: "Guarantor's Information", fields: guarantorInfoFields },
+            { title: "Academic Information", fields: academicInfoFields },
+            {
+              title: "Professional Information",
+              fields: professionalInfoFields,
+            },
+            { title: "Mental Health Assessment", fields: mentalHealthFields },
+          ].map((section, index) => (
+            <div
+              key={index}
+              className="w-full rounded-xl border-[1px] border-stroke-clr bg-white mb-[30px]"
+            >
+              <div
+                className="py-5 px-7 border-b-[1px] border-stroke-clr flex justify-between items-center cursor-pointer"
+                // onClick={() => setActiveTab(index + 1)}>
+                onClick={() => setActiveTab((index + 1) as 1 | 2 | 3 | 4 | 5)}
+              >
+                <p className="text-[16px] font-medium">{section.title}</p>
+                {activeTab === index + 1 ? (
+                  <TriangleDownIcon />
+                ) : (
+                  <TriangleRightIcon />
+                )}
+              </div>
+              {activeTab === index + 1 && (
+                <div className="flex py-5 px-7 flex-wrap gap-x-6 gap-y-2">
+                  {section.fields.map((field) => (
+                    <label
+                      htmlFor={field.id}
+                      className="flex gap-2"
+                      key={field.id}
+                    >
+                      <input
+                        type="checkbox"
+                        id={field.id}
+                        name={field.id}
+                        checked={!!formData[field.id]}
+                        onChange={handleChange}
+                      />
+                      <p className="text-sm">{field.label}</p>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+
+          <div className="flex gap-3">
+            <Link to="/forms/1234" target="_blank">
+              <Button type="button" className="bg-gray-400 hover:bg-gray-500">
+                Preview Form
+              </Button>
+            </Link>
+            <Button
+              type="submit"
+              className="red-gradient flex items-center justify-center"
+            >
+              {isLoading ? <Spinner /> : "Complete Form Setup"}
+            </Button>
+          </div>
+        </form>
+
+        <div className="basis-1/3 sticky top-0 bg-white py-4 px-7 rounded-xl border-[1px] border-stroke-clr">
+          <h3>Order Summary</h3>
+          <p>Breakdown of selected services:</p>
+          <ul className="mt-2">
+            {Object.entries(selectedGroups).map(([groupName, cost]) => (
+              <li key={groupName} className="text-sm">
+                ✅ {groupName.replace(/Group$/, "")}: <strong>₦{cost}</strong>
+              </li>
+            ))}
+            <li>
+              ✅ Number of forms: <strong>{formData.max}</strong>
+            </li>
+          </ul>
+          <p className="mt-3 text-lg font-semibold">
+            Total:{" "}
+            <strong>₦{Math.floor(totalCost * Number(formData.max))}</strong>
+          </p>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Form;
