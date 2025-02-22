@@ -74,8 +74,7 @@ export default function Personnel() {
       getRating();
   }, [fetchFinding, state.id, fetchVerdict, fetchVerificationRating, params.personnel_id]);
 
-  console.log(state.id, params);
-  
+  // console.log(state.id, params);
   
   const headers = [
     {
@@ -170,7 +169,7 @@ export default function Personnel() {
           <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
             <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">1st Guarantor's Information</p>
+                <p className="text-[16px] font-medium">{guarantorInformation2.length > 0 ? "1st Guarantor Information" : "Guarantor Information"}</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>
@@ -360,7 +359,7 @@ export default function Personnel() {
           <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
             <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">Professional Information</p>
+                <p className="text-[16px] font-medium">{professionalInformation2.length > 0 ? "1st Professional Information" : "Professional Information"}</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>
