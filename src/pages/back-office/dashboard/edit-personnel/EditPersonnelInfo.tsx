@@ -1,8 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { EditPersonnelInformation } from "../../components/editInfo/edit";
-import { EditGuarantorInformation } from "../../components/editInfo/editGuarantorInfo";
-import { EditProffessionalInformation } from "../../components/editInfo/editProffessionalInfo";
-import { EditMentalHealth } from "../../components/editInfo/editMentalHealth";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFetchBatchesResponse } from "@/hooks/backOffice";
@@ -49,7 +46,6 @@ const EditPersonnelInfo = () => {
 
   console.log(personalInformation, guarantorInformation, guarantorInformation2, guarantorInformation3, guarantorInformation4, academicInformation, professionalInformation, professionalInformation2, mentalInformation);
   
-
   return (
     <div>
       <div className="">
@@ -58,11 +54,15 @@ const EditPersonnelInfo = () => {
           </div>
 
           <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => e.preventDefault()}>
-            <EditPersonnelInformation />
-            <EditGuarantorInformation />
-            <EditProffessionalInformation />
-            <EditMentalHealth />
-
+            {personalInformation.length > 0 && <EditPersonnelInformation data={personalInformation} title="Personnel Information" />}
+            {guarantorInformation.length > 0 && <EditPersonnelInformation data={guarantorInformation} title={guarantorInformation2.length > 0 ? "1st Guarantor Information" : "Guarantor Information"} />}
+            {guarantorInformation2.length > 0 && <EditPersonnelInformation data={guarantorInformation2} title="2nd Guarantor Information" />}
+            {guarantorInformation3.length > 0 && <EditPersonnelInformation data={guarantorInformation3} title="3rd Guarantor Information" />}
+            {guarantorInformation4.length > 0 && <EditPersonnelInformation data={guarantorInformation4} title="4th Guarantor Information" />}
+            {academicInformation.length > 0 && <EditPersonnelInformation data={academicInformation} title="Academic Information" />}
+            {professionalInformation.length > 0 && <EditPersonnelInformation data={professionalInformation} title={professionalInformation2.length > 0 ? "1st Professional Information" : "Professional Information"} />}
+            {professionalInformation2.length > 0 && <EditPersonnelInformation data={professionalInformation2} title="2nd Professional Information" />}
+            {mentalInformation.length > 0 && <EditPersonnelInformation data={mentalInformation} title="Mental Health Information" />}
             <div className="flex gap-3">
               <Button className="red-gradient">Save changes</Button>
             </div>
