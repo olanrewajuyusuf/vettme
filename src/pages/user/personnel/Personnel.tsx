@@ -34,6 +34,7 @@ export default function Personnel() {
   const { state } = location;
   const [findings, setFindings] = useState<"" | any>("");
   const [verdicts, setVerdicts] = useState<"" | any>("");
+  const [ratings, setRatings] = useState<"" | any>(0);
   const { fetchFinding } = useFetchFinding();
   const { fetchVerificationRating } = useFetchVerificationRating();
   const params = useParams();
@@ -61,9 +62,7 @@ export default function Personnel() {
       const getRating = async () => {
         try {
           const data = await fetchVerificationRating(params.personnel_id as string);
-          // setVerdicts(data.results);
-          console.log(data);
-          
+          setRatings(data);          
         } catch (error) {
           console.error("Failed to get Rating:", error);
         }
@@ -74,7 +73,7 @@ export default function Personnel() {
       getRating();
   }, [fetchFinding, state.id, fetchVerdict, fetchVerificationRating, params.personnel_id]);
 
-  // console.log(state.id, params);
+  const rating = ratings && ratings.rating;
   
   const headers = [
     {
@@ -83,27 +82,27 @@ export default function Personnel() {
     },
     {
       title: "Verification Rating",
-      text: "9.8/10",
+      text: !ratings ? "" : rating.toFixed(1) + "/10",
     },
     {
       title: "Claims Verified",
-      text: "34/41",
+      text: !ratings ? "" : `${ratings.trueCount}/${ratings.total}`,
     },
     {
       title: "Claims Rejected",
-      text: "7/41",
+      text: !ratings ? "" : `${ratings.falseCount}/${ratings.total}`,
     },
   ];
   
   const personalInformation = getFilteredObjects(state.responses, findings, personalInput, "pi", verdicts);
-  const guarantorInformation = getFilteredObjects(state.responses, findings, guarantorInput1, "gi", "1", verdicts);
-  const guarantorInformation2 = getFilteredObjects(state.responses, findings, guarantorInput2, 'gi', "2", verdicts);
-  const guarantorInformation3 = getFilteredObjects(state.responses, findings, guarantorInput3, "gi", '3', verdicts);
-  const guarantorInformation4 = getFilteredObjects(state.responses, findings, guarantorInput4, "gi", '4', verdicts);
+  const guarantorInformation = getFilteredObjects(state.responses, findings, guarantorInput1, "gi", verdicts, "1");
+  const guarantorInformation2 = getFilteredObjects(state.responses, findings, guarantorInput2, 'gi', verdicts, "2");
+  const guarantorInformation3 = getFilteredObjects(state.responses, findings, guarantorInput3, "gi", verdicts, '3');
+  const guarantorInformation4 = getFilteredObjects(state.responses, findings, guarantorInput4, "gi", verdicts, '4');
   const academicInformation = getFilteredObjects(state.responses, findings, academicInput, "ai", verdicts);
-  const professionalInformation = getFilteredObjects(state.responses, findings, professionalInput1, "pri", "1", verdicts);
-  const professionalInformation2 = getFilteredObjects(state.responses, findings, professionalInput2, "pri", '2', verdicts);
-  const mentalInformation = getFilteredObjects(state.responses, findings, mentalHealthInput, "mhi", verdicts);  
+  const professionalInformation = getFilteredObjects(state.responses, findings, professionalInput1, "pri", verdicts, "1");
+  const professionalInformation2 = getFilteredObjects(state.responses, findings, professionalInput2, "pri", verdicts, '2');
+  const mentalInformation = getFilteredObjects(state.responses, findings, mentalHealthInput, "mhi", verdicts);   
   
   return (
     <>

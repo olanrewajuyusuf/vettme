@@ -29,16 +29,17 @@ import {
   professionalInput1, 
   professionalInput2 } from "@/utils/field";
 import { Button } from "@/components/ui/button";
-import { useFetchBatchesResponse } from "@/hooks/backOffice";
+import { useFetchBatchesResponse, useFetchVerificationRating } from "@/hooks/backOffice";
 
 export default function Personnel() {
   const [claims, setClaims] = useState<"" | any>("");
   const [findings, setFindings] = useState<"" | any>("");
   const [verdicts, setVerdicts] = useState<"" | any>("");
-  // const { fetchForm } = useFetchForm();
+  const [ratings, setRatings] = useState<"" | any>(0);
   const { fetchFinding } = useFetchFinding();
   const { fetchVerdict } = useFetchVerdict();
   const {fetchBatchesResponse} = useFetchBatchesResponse();
+  const { fetchVerificationRating } = useFetchVerificationRating();
   const params = useParams();
   const navigate = useNavigate();
 
@@ -71,11 +72,23 @@ export default function Personnel() {
         }
     };
 
+    const getRating = async () => {
+      try {
+        const data = await fetchVerificationRating(params.id as string);
+        setRatings(data);          
+      } catch (error) {
+        console.error("Failed to get Rating:", error);
+      }
+    };
+
     getResponse();
     getFinding();
     getVerdict();
-  }, [fetchFinding, params.id, fetchVerdict, params.verification_id, fetchBatchesResponse]);
+    getRating();
+  }, [fetchFinding, params.id, fetchVerdict, params.verification_id, fetchBatchesResponse, fetchVerificationRating]);
   
+  const rating = ratings && ratings.rating;
+
   const headers = [
     {
       title: "Status",
@@ -83,15 +96,15 @@ export default function Personnel() {
     },
     {
       title: "Verification Rating",
-      text: "9.8/10",
+      text: !ratings ? "" : rating.toFixed(1) + "/10",
     },
     {
       title: "Claims Verified",
-      text: "34/41",
+      text: !ratings ? "" : `${ratings.trueCount}/${ratings.total}`,
     },
     {
       title: "Claims Rejected",
-      text: "7/41",
+      text: !ratings ? "" : `${ratings.falseCount}/${ratings.total}`,
     },
   ];
   //Claims id for the route 
@@ -99,13 +112,13 @@ export default function Personnel() {
   
   //Incoming claim, finding and verdict
   const personalInformation = getFilteredObjects(claims && claims[0].responses, findings, personalInput, "pi", verdicts);
-  const guarantorInformation = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput1, "gi", "1", verdicts);
-  const guarantorInformation2 = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput2, 'gi', "2", verdicts);
-  const guarantorInformation3 = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput3, "gi", '3', verdicts);
-  const guarantorInformation4 = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput4, "gi", '4', verdicts);
+  const guarantorInformation = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput1, "gi", verdicts, "1");
+  const guarantorInformation2 = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput2, 'gi', verdicts, "2");
+  const guarantorInformation3 = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput3, "gi", verdicts, '3');
+  const guarantorInformation4 = getFilteredObjects(claims && claims[0].responses, findings, guarantorInput4, "gi", verdicts, '4');
   const academicInformation = getFilteredObjects(claims && claims[0].responses, findings, academicInput, "ai", verdicts);
-  const professionalInformation = getFilteredObjects(claims && claims[0].responses, findings, professionalInput1, "pri", "1", verdicts);
-  const professionalInformation2 = getFilteredObjects(claims && claims[0].responses, findings, professionalInput2, "pri", '2', verdicts);
+  const professionalInformation = getFilteredObjects(claims && claims[0].responses, findings, professionalInput1, "pri", verdicts, "1");
+  const professionalInformation2 = getFilteredObjects(claims && claims[0].responses, findings, professionalInput2, "pri", verdicts, '2');
   const mentalInformation = getFilteredObjects(claims && claims[0].responses, findings, mentalHealthInput, "mhi", verdicts);
 
   return (
@@ -179,7 +192,7 @@ export default function Personnel() {
           <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
             <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">1st Guarantor's Information</p>
+                <p className="text-[16px] font-medium">{guarantorInformation2.length > 0 ? '1st Guarantor Information' : 'Guarantor Information'}</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>
@@ -217,7 +230,7 @@ export default function Personnel() {
           <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
             <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">2nd Guarantor's Information</p>
+                <p className="text-[16px] font-medium">2nd Guarantor Information</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>
@@ -255,7 +268,7 @@ export default function Personnel() {
           <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
             <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">3rd Guarantor's Information</p>
+                <p className="text-[16px] font-medium">3rd Guarantor Information</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>
@@ -293,7 +306,7 @@ export default function Personnel() {
           <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
             <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">4th Guarantor's Information</p>
+                <p className="text-[16px] font-medium">4th Guarantor Information</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>
@@ -369,7 +382,7 @@ export default function Personnel() {
           <div className="w-full rounded-xl bg-white border-[1px] border-stroke-clr overflow-hidden mb-[30px]">
             <AccordionItem value='personal information'>
               <AccordionTrigger className="px-7">
-                <p className="text-[16px] font-medium">Professional Information</p>
+                <p className="text-[16px] font-medium">{professionalInformation2.length > 0 ? '1st Professional Information' : 'Professional Information'}</p>
               </AccordionTrigger>
               <AccordionContent>
                 <Table>

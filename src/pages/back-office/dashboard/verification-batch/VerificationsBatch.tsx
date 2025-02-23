@@ -13,7 +13,7 @@ import {
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { useFetchBatchesResponse, useFetchBatchesResponseCards } from "@/hooks/backOffice";
+import { useFetchBatchesResponse, useFetchBatchesResponseCards, useFetchCompletionPercentage } from "@/hooks/backOffice";
 import moment from "moment";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
 import { usePagination } from "@/hooks/usePagination";
@@ -44,6 +44,8 @@ export default function VerificationsBatch() {
   const [ cards, setCards ] = useState<CardsProps | null>(null);
   const { fetchBatchesResponse } = useFetchBatchesResponse();
   const { fetchBatchesResponseCards } = useFetchBatchesResponseCards();
+  const { fetchCompletionPercentage } = useFetchCompletionPercentage();
+  const [percentage, setPercentage] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -74,8 +76,18 @@ export default function VerificationsBatch() {
       }
     };
 
+    const getPercentage = async () => {
+      try {
+        const data = await fetchCompletionPercentage(verification_id as string);
+        setPercentage(data.percentage);
+      } catch (error) {
+        console.error("Failed to get batches response:", error);
+      }
+    };
+
+    getPercentage();
     getResponseCards();
-}, [fetchBatchesResponse, verification_id, fetchBatchesResponseCards]);
+}, [fetchBatchesResponse, verification_id, fetchBatchesResponseCards, fetchCompletionPercentage]);
 
 const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
   const selectedFilter = event.target.value;
@@ -150,7 +162,7 @@ const filteredBatches = batchesResponse
     },
     {
       title: "Completion",
-      text: "60% Completed",
+      text: !percentage ? '' : percentage +" "+ "Completed",
     },
   ];
 

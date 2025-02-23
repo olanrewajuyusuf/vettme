@@ -162,7 +162,7 @@ const filteredBatches = batchesResponse
     },
     {
       title: "Completion",
-      text: percentage +" "+ "Completed",
+      text: !percentage ? '' : percentage +" "+ "Completed",
     },
   ];
   

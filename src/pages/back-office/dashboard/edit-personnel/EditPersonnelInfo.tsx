@@ -6,19 +6,27 @@ import { EditMentalHealth } from "../../components/editInfo/editMentalHealth";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFetchBatchesResponse } from "@/hooks/backOffice";
+import { getFilteredData } from "@/lib/filteredObjects";
+import { 
+  academicInput, 
+  guarantorInput1, 
+  guarantorInput2, 
+  guarantorInput3, 
+  guarantorInput4, 
+  mentalHealthInput, 
+  personalInput, 
+  professionalInput1, 
+  professionalInput2 } from "@/utils/field";
 
 const EditPersonnelInfo = () => {
   const [claims, setClaims] = useState<any | "">("");
   const {fetchBatchesResponse} = useFetchBatchesResponse();
   const params = useParams();
-  console.log(params);
 
   useEffect(() => {
       const getResponse = async () => {
         try {
-          const data = await fetchBatchesResponse(params.verification_id as string);
-          console.log(data);
-          
+          const data = await fetchBatchesResponse(params.verification_id as string);          
           const resp = data.data.filter((item: any)=> item.id === params.id);
           setClaims(resp);
         } catch (error) {
@@ -27,6 +35,20 @@ const EditPersonnelInfo = () => {
       };
       getResponse();
   }, [fetchBatchesResponse, params.verification_id, params.id])
+
+  //Incoming claim, finding and verdict
+  const personalInformation = getFilteredData(claims && claims[0].responses, personalInput, "pi");
+  const guarantorInformation = getFilteredData(claims && claims[0].responses, guarantorInput1, "gi", "1");
+  const guarantorInformation2 = getFilteredData(claims && claims[0].responses, guarantorInput2, 'gi', "2");
+  const guarantorInformation3 = getFilteredData(claims && claims[0].responses, guarantorInput3, "gi", '3');
+  const guarantorInformation4 = getFilteredData(claims && claims[0].responses, guarantorInput4, "gi", '4');
+  const academicInformation = getFilteredData(claims && claims[0].responses, academicInput, "ai");
+  const professionalInformation = getFilteredData(claims && claims[0].responses, professionalInput1, "pri", "1");
+  const professionalInformation2 = getFilteredData(claims && claims[0].responses, professionalInput2, "pri", '2');
+  const mentalInformation = getFilteredData(claims && claims[0].responses, mentalHealthInput, "mhi");
+
+  console.log(personalInformation, guarantorInformation, guarantorInformation2, guarantorInformation3, guarantorInformation4, academicInformation, professionalInformation, professionalInformation2, mentalInformation);
+  
 
   return (
     <div>
