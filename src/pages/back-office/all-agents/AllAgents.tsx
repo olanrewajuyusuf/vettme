@@ -88,7 +88,7 @@ const AllAgents = () => {
         <div>
             <h1 className="font-normal">All Registered Agents</h1>
             <p className="mb-10">Manage all Field Agent information here.</p>
-            <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
+            <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr overflow-hidden">
                 <div className="py-4 border-b-[1px] border-stroke-clr px-5">
                     <div className="relative w-[33%]">
                         <Input
@@ -120,6 +120,7 @@ const AllAgents = () => {
                     </div>
                 )}
                 {paginatedData && paginatedData.length > 0 && (
+                <>
                     <Table>
                         <TableHeader className="bg-blue-700 h-8">
                             <TableRow>
@@ -165,10 +166,9 @@ const AllAgents = () => {
                                 </TableRow>))}
                         </TableBody>
                     </Table>
-
-                )}
                 {/* Pagination Controls */}
                 <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
+                </>)}
             </div>
         </div>
     );

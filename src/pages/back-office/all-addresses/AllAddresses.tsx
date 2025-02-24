@@ -101,7 +101,7 @@ const AllAddresses = () => {
         <div>
             <h1 className="font-normal">All personnel's addresses</h1>
             <p className="mb-10">Manage all Personnel's addresses to be verified or already verified.</p>
-            <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
+            <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr overflow-hidden">
                 {/* Filter and Search */}
                 <div className="flex justify-between items-center py-4 border-b-[1px] border-stroke-clr px-5">
                     <div className="flex items-center gap-3">
@@ -153,6 +153,7 @@ const AllAddresses = () => {
 
                 {/* Table of Addresses */}
                 {paginatedData && paginatedData.length > 0 && (
+                <>
                     <Table>
                         <TableHeader className="bg-blue-700 h-8">
                             <TableRow>
@@ -198,10 +199,10 @@ const AllAddresses = () => {
                             ))}
                         </TableBody>
                     </Table>
-                )}
 
                 {/* Pagination Controls */}
                 <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
+                </>)}
             </div>
         </div>
     );

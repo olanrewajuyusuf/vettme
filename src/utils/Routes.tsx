@@ -14,6 +14,7 @@ import AllChats from "@/pages/back-office/all-chats/AllChats";
 import SupportAdmin from "@/pages/back-office/support/SupportAdmin";
 import UserProvider from "./context/UserProvider";
 import { NotificationProvider } from "./context/NotificationContext";
+import GenForms from "@/pages/user/forms/GenForm";
 
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
@@ -163,7 +164,8 @@ export const routes = [
     path: "/forms/:form_id",
     element: (
       <Suspense fallback={<Skeleton />}>
-        <Forms />
+        {/* <Forms /> */}
+        <GenForms />
       </Suspense>
     ),
   },

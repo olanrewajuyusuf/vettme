@@ -50,7 +50,7 @@ const EditPersonnelInfo = () => {
     <div>
       <div className="">
           <div>
-              <h1>Edit {claims && claims[0].responses.piFullname} Information here.</h1>
+              <h1 className="font-normal">Edit {claims && claims[0].responses.piFullname} Information here.</h1>
           </div>
 
           <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => e.preventDefault()}>

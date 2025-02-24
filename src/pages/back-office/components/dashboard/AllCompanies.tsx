@@ -115,7 +115,7 @@ interface CompanyProps {
 
     return (
       <>
-        <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr">
+        <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr overflow-hidden">
           {/* Filter and Search */}
           <div className="flex justify-between items-center py-4 border-b-[1px] border-stroke-clr px-5">
               <div className="flex items-center gap-3">
