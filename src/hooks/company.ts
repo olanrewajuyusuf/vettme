@@ -1,6 +1,3 @@
-import { axiosInstance } from "@/api/axiosConfig";
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import React, { SetStateAction } from "react";
 import toast from "react-hot-toast";
 import { baseUrl } from "@/api/baseUrl";
 import axios from "axios";
