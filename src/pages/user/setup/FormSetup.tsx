@@ -111,15 +111,30 @@ const Form = () => {
   const updateCost = (updatedFields: string[]) => {
     let cost = 0;
     const newSelectedGroups: { [key: string]: number } = {};
-
+  
     // Loop through each group and apply cost only once if at least one field is selected
     Object.entries(fieldGroups).forEach(([groupName, group]) => {
       if (group.fields.some((field) => updatedFields.includes(field))) {
-        cost += group.cost;
-        newSelectedGroups[groupName] = group.cost; // Store cost breakdown
+        let groupCost = group.cost;
+  
+        // Multiply cost by giNumberofGuarantors if GuarantorInformationGroup or GuarantorAddressGroup is selected
+        if (
+          groupName === "GuarantorInformationGroup" ||
+          groupName === "GuarantorAddressGroup"
+        ) {
+          groupCost *= (formData.giNumberofGuarantors as number) || 1;
+        }
+  
+        // Multiply cost by priNumberofProfessionalReferences if ProfessionalInformationGroup is selected
+        if (groupName === "ProfessionalInformationGroup") {
+          groupCost *= (formData.priNumberofProfessionalReferences as number) || 1;
+        }
+  
+        cost += groupCost;
+        newSelectedGroups[groupName] = groupCost; // Store cost breakdown
       }
     });
-
+  
     setTotalCost(cost);
     setSelectedGroups(newSelectedGroups);
   };
@@ -129,15 +144,15 @@ const Form = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
-
+  
     if (type === "checkbox" && e.target instanceof HTMLInputElement) {
       const checked = e.target.checked;
       setFormData((prev) => ({ ...prev, [name]: checked }));
-
+  
       const updatedFields = checked
         ? [...selectedFields, name]
         : selectedFields.filter((field) => field !== name);
-
+  
       setSelectedFields(updatedFields);
       updateCost(updatedFields);
     } else {
@@ -150,11 +165,19 @@ const Form = () => {
               : parseFloat(value)
             : value,
       }));
+  
+      // Recalculate cost if giNumberofGuarantors or priNumberofProfessionalReferences changes
+      if (
+        name === "giNumberofGuarantors" ||
+        name === "priNumberofProfessionalReferences"
+      ) {
+        updateCost(selectedFields);
+      }
     }
   };
 
   // Handle form submission
-const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const calculatedCost = Math.floor(totalCost * Number(formData.max)); // Calculate cost before submission

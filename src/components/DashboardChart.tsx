@@ -13,13 +13,17 @@ export const description = "An area chart with gradient fill";
 
 
 const chartConfig = {
-  desktop: {
+  success: {
     label: "Successful Verifications",
-    color: "hsl(var(--chart-2))",
+    color: "green)",
   },
-  mobile: {
+  failed: {
     label: "Failed Verifications",
-    color: "hsl(var(--chart-1))",
+    color: "red",
+  },
+  ongoing: {
+    label: "Ongoing Verifications",
+    color: "purple",
   },
   total: {
     label: "Total Verifications",
@@ -27,7 +31,7 @@ const chartConfig = {
   },
   pending: {
     label: "Pending Verifications",
-    color: "var(--sroke-clr)",
+    color: "yellow",
   },
 } satisfies ChartConfig;
 
@@ -40,6 +44,8 @@ export default function DashboardChart() {
       try{
         const res = await axios.get(`${baseUrl}/verification/month/${companyId}`)
         setChartData(res.data.data)
+        console.log(res);
+        
       } catch(err){
         console.error(err);
       }
@@ -78,14 +84,14 @@ export default function DashboardChart() {
           stroke="var(--stroke-clr)"
         />
         <Area
-          dataKey="desktop"
+          dataKey="success"
           type="linear"
           fill="var(--color-desktop)"
           fillOpacity={0.4}
           stroke="var(--color-desktop)"
         />
         <Area
-          dataKey="mobile"
+          dataKey="failed"
           type="linear"
           fill="var(--color-mobile)"
           fillOpacity={0.4}
@@ -93,6 +99,13 @@ export default function DashboardChart() {
         />
         <Area
           dataKey="pending"
+          type="linear"
+          fill="var(--color-pending)"
+          fillOpacity={0.4}
+          stroke="var(--color-pending)"
+        />
+        <Area
+          dataKey="ongoing"
           type="linear"
           fill="var(--color-pending)"
           fillOpacity={0.4}

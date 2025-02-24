@@ -48,8 +48,8 @@ const GuarantorForm = () => {
       try {
         const formData = new FormData()
         formData.append('file', file)
-        formData.append('upload_preset', 'upload') // Replace with your upload preset
-        const response = await axios.post('https://api.cloudinary.com/v1_1/personal-projectdonaldnjokanma/image/upload', formData)
+        formData.append('upload_preset', 'vettmepro') // Replace with your upload preset
+        const response = await axios.post('https://api.cloudinary.com/v1_1/ijm-global-limited/image/upload', formData)
         setIdCardUrl(response.data.secure_url)
       } catch (err) {
         console.error('Error uploading image:', err)
@@ -64,8 +64,8 @@ const GuarantorForm = () => {
       try {
         const formData = new FormData()
         formData.append('file', file)
-        formData.append('upload_preset', 'upload') // Replace with your upload preset
-        const response = await axios.post('https://api.cloudinary.com/v1_1/personal-projectdonaldnjokanma/image/upload', formData)
+        formData.append('upload_preset', 'vettmepro') // Replace with your upload preset
+        const response = await axios.post('https://api.cloudinary.com/v1_1/ijm-global-limited/image/upload', formData)
         setBankStatementUrl(response.data.secure_url)
       } catch (err) {
         console.error('Error uploading image:', err)

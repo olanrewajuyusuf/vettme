@@ -169,7 +169,6 @@ interface CompanyProps {
               <TableRow>
                 <TableHead className="text-white">Name</TableHead>
                 <TableHead className="text-white">Company ID</TableHead>
-                <TableHead className="text-white">Email</TableHead>
                 <TableHead className="text-white">Status</TableHead>
                 <TableHead></TableHead>
                 <TableHead className="text-white">Date Initiated</TableHead>
@@ -182,17 +181,14 @@ interface CompanyProps {
                   key={company.id}
                   onClick={() => navigate(`verification-batch/${company.id}`)}
                 >
-                  <TableCell className="text-xs font-medium uppercase flex items-center gap-1">
-                  <div className={`w-6 h-6 grid place-items-center text-white rounded-sm bg-purple-600`}>
-                      {company.companyName.slice(0, 2)}
-                  </div>
-                  <span>{company.companyName}</span>
+                  <TableCell>
+                    <p className="font-bold text-sm">{company.companyName}</p>
+                    <span className="text-gray-400 italic">{company.email}</span>
                   </TableCell>
-                  <TableCell className="text-blue-400">{company.companyId}</TableCell>
-                  <TableCell className="text-gray-400">{company.email}</TableCell>
-                  <TableCell className="text-xs">
+                  <TableCell className="text-blue-500">{company.companyId}</TableCell>
+                  <TableCell className="text-sm">
                     <div
-                      className={`pointer-events-none w-2 h-2 ${
+                      className={`pointer-events-none w-2 h-2 rounded-sm ${
                         company.isVerified
                           ? "bg-green-400"
                           : "bg-red-500"
@@ -201,9 +197,9 @@ interface CompanyProps {
                     </div>
                     {company.isVerified? "Verified" : "Not Verified"}
                   </TableCell>
-                  <TableCell className="text-xs">
+                  <TableCell className="text-sm">
                     <div
-                      className={`pointer-events-none w-2 h-2 ${
+                      className={`pointer-events-none w-2 h-2 rounded-full ${
                         company.isActive
                           ? "bg-green-400"
                           : "bg-red-500"

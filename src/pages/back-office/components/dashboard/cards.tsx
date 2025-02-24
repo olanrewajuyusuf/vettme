@@ -1,6 +1,9 @@
 import { useFetchCardsData } from "@/hooks/backOffice";
-import { FileMinusIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
+import { FaRegTimesCircle } from "react-icons/fa";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { MdPendingActions } from "react-icons/md";
+import { PiClockUserBold } from "react-icons/pi";
 
 interface Cards {
   verified: number,
@@ -58,15 +61,22 @@ const DashboardCards = () => {
               <span
                 className={`min-w-10 min-h-10 rounded-full flex items-center justify-center text-white ${
                   card.bg === 1
-                  ? "bg-[#006400]"
-                  : card.bg === 2
-                  ? "bg-[#e2a32e]"
-                  : card.bg === 3
-                  ? "bg-[#BE6AF2]"
-                  : "bg-[#992929]"
+                    ? "bg-green-600"
+                    : card.bg === 2
+                    ? "bg-yellow-500"
+                    : card.bg === 3
+                    ? "bg-purple-700"
+                    : "bg-red-600"
                 }`}
               >
-                <FileMinusIcon />
+                {card.bg === 1
+                ? <IoMdCheckmarkCircleOutline />
+                : card.bg === 2
+                ? <MdPendingActions />
+                : card.bg === 3
+                ? <PiClockUserBold />
+                : <FaRegTimesCircle />
+                }
               </span>
               <p className="font-medium">{card.title}</p>
             </div>

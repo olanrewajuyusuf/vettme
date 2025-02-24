@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const DOJAH_API_KEY = 'test_sk_kLU0YAOjST30y2g7U8Qk2y7a1';
+const DOJAH_API_KEY = 'prod_sk_yFpQKxR0fZHuXu8XvEr9TAwty';
 const DOJAH_APP_ID = '67ae738fff00e407ada3a507';
-const DOJAH_BASE_URL = 'https://sandbox.dojah.io';
+const DOJAH_BASE_URL = 'https://api.dojah.io';
 
 interface LivenessCheckResponse {
   entity: {

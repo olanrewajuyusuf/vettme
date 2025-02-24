@@ -33,6 +33,7 @@ export default function GenForms() {
     formId: `${url}`,
     responses: {},
   });
+  const [file, setFile] = useState<string | null>(null);
 
   // Handle change function
   const handleChange = (
@@ -58,10 +59,46 @@ export default function GenForms() {
     }));
   };
 
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('upload_preset', 'vettmepro') // Replace with your upload preset
+        const response = await axios.post('https://api.cloudinary.com/v1_1/ijm-global-limited/image/upload', formData)
+        setFile(response.data.secure_url)
+      } catch (err) {
+        console.error('Error uploading image:', err)
+        alert('Failed to upload image')
+      }
+    }
+  }
+
   // Handle response submission
   const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newFormData = { ...formData };
+
+    // Function to format date
+    const formatDate = (dateString: string) => {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = date.toLocaleString("default", { month: "short" });
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    };
+
+    // Iterate through formData.responses to check for dates
+    for (const key in formData.responses) {
+      const value = formData.responses[key];
+
+      // Check if the value is a date string and format it
+      if (typeof value === "string" && !isNaN(Date.parse(value))) {
+        formData.responses[key] = formatDate(value);
+      }
+    }
+    const newFormData = { ...formData, responses: {...formData.responses, "aiDegreeOrCertificationUpload": file} };
+
     console.log("Payload before sending: ", newFormData);
 
     const createdResponse = await createFormResponse(newFormData, setIsLoading);
@@ -235,7 +272,7 @@ export default function GenForms() {
                 </TabsContent>
 
                 <TabsContent value="academic">
-                  <FormComponent data={filteredAcademic} formData={formData} handleChange={handleChange}/>
+                  <FormComponent data={filteredAcademic} formData={formData} handleChange={handleChange} handleFile={handleFile}/>
                 </TabsContent>
 
                 <TabsContent value="professional">

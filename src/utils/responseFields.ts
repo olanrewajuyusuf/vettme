@@ -209,7 +209,7 @@ const professionalInfoResponse: Field[] = [
   {
     id: "priEmploymentStartDate1",
     label: "Employment Start Date",
-    type: "text",
+    type: "date",
   },
   {
     id: "priEmploymentType1",
@@ -236,7 +236,7 @@ const professionalInfoResponse2: Field[] = [
   {
     id: "priEmploymentStartDate2",
     label: "Employment Start Date",
-    type: "text",
+    type: "date",
   },
   {
     id: "priEmploymentType2",

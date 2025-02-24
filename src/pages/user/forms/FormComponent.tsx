@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 interface FormComponentProps {
     data: any[];
     formData: any;
-    handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    handleChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    handleFile?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     country?: string,
     state?: string,
     lga?: string,
 }
 
-const FormComponent = ({ data, formData, handleChange, country, state, lga }: FormComponentProps) => {
+const FormComponent = ({ data, formData, handleChange, handleFile, country, state, lga }: FormComponentProps) => {
     const [countries, setCountries] = useState<any[]>([]);
 
     useEffect(() => {
@@ -80,7 +81,7 @@ const FormComponent = ({ data, formData, handleChange, country, state, lga }: Fo
                             type="file"
                             id={field.id}
                             name={field.id}
-                            onChange={handleChange}
+                            onChange={handleFile}
                             required
                         />
                     )}

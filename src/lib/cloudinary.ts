@@ -1,9 +1,9 @@
 export const uploadToCloudinary = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'vettme'); // Replace with your actual preset
+    formData.append('upload_preset', 'vettmepro'); // Replace with your actual preset
   
-    const response = await fetch('https://api.cloudinary.com/v1_1/dabw2mzbf/video/upload', {
+    const response = await fetch('https://api.cloudinary.com/v1_1/ijm-global-limited/video/upload', {
       method: 'POST',
       body: formData,
     });

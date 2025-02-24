@@ -10,6 +10,7 @@ import { createFormResponse } from "@/api/form";
 import Spinner from "@/components/Spinner";
 import { baseUrl } from "@/api/baseUrl";
 import { academicInfoResponse, guarantorInfoResponse, guarantorInfoResponse2, guarantorInfoResponse3, guarantorInfoResponse4, mentalHealthResponse, personalInfoResponse, professionalInfoResponse, professionalInfoResponse2 } from "@/utils/responseFields";
+import FormComponent from "./FormComponent";
 
 interface FormData {
   formId: string;
@@ -18,7 +19,7 @@ interface FormData {
   };
 }
 
-export default function Forms() {
+export default function GenForms() {
   const [modalOpen, setModalOpen] = useState(false);
   const token = localStorage.getItem("token");
   const [isLoading, setIsLoading] = useState(false);
@@ -129,7 +130,7 @@ export default function Forms() {
 
   const filteredMentalHealth = mentalHealthResponse.filter((field) =>
     visibleFields.includes(field.id)
-  );
+  );  
 
   return (
     <>
@@ -214,537 +215,35 @@ export default function Forms() {
 
               <div className="p-3 pb-0">
                 <TabsContent value="personal">
-                  {filteredFields.map((field) => (
-                    <label
-                      htmlFor={field.id}
-                      key={field.id}
-                      className="block mb-4"
-                    >
-                      <p>{field.label}</p>
-
-                      {field.type === "text" && (
-                        <Input
-                          type="text"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter your ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "number" && (
-                        <Input
-                          type="number"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "date" && (
-                        <Input
-                          type="date"
-                          id={field.id}
-                          name={field.id}
-                          value={
-                            formData.responses[field.id]
-                              ? String(formData.responses[field.id])
-                              : ""
-                          }
-                          onChange={handleChange}
-                          required
-                        />
-                      )}
-
-                      {field.type === "select" && field.options && (
-                        <select
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          required
-                          className="btn w-full bg-transparent"
-                        >
-                          <option value="">Select {field.label}</option>
-                          {field.options.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+                  <FormComponent data={filteredFields} formData={formData} handleChange={handleChange} country="piCountry" state="piState" lga="piLGA"/>
                 </TabsContent>
 
                 <TabsContent value="guarantor">
-                  {filteredGuarantor.map((field) => (
-                    <label
-                      htmlFor={field.id}
-                      key={field.id}
-                      className="block mb-4"
-                    >
-                      <p>{field.label}</p>
-
-                      {field.type === "text" && (
-                        <Input
-                          type="text"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter your ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "number" && (
-                        <Input
-                          type="number"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "date" && (
-                        <Input
-                          type="date"
-                          id={field.id}
-                          name={field.id}
-                          value={
-                            formData.responses[field.id]
-                              ? String(formData.responses[field.id])
-                              : ""
-                          }
-                          onChange={handleChange}
-                          required
-                        />
-                      )}
-
-                      {field.type === "select" && field.options && (
-                        <select
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          required
-                          className="btn w-full bg-transparent"
-                        >
-                          <option value="">Select {field.label}</option>
-                          {field.options.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+                    <FormComponent data={filteredGuarantor} formData={formData} handleChange={handleChange} country="giCountry1" state="giState1" lga="giLGA1"/>
                 </TabsContent>
 
                 <TabsContent value="guarantor2">
-                  {filteredGuarantor2.map((field) => (
-                    <label
-                      htmlFor={field.id}
-                      key={field.id}
-                      className="block mb-4"
-                    >
-                      <p>{field.label}</p>
-
-                      {field.type === "text" && (
-                        <Input
-                          type="text"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter your ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "number" && (
-                        <Input
-                          type="number"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "date" && (
-                        <Input
-                          type="date"
-                          id={field.id}
-                          name={field.id}
-                          value={
-                            formData.responses[field.id]
-                              ? String(formData.responses[field.id])
-                              : ""
-                          }
-                          onChange={handleChange}
-                          required
-                        />
-                      )}
-
-                      {field.type === "select" && field.options && (
-                        <select
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          required
-                          className="btn w-full bg-transparent"
-                        >
-                          <option value="">Select {field.label}</option>
-                          {field.options.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+                    <FormComponent data={filteredGuarantor2} formData={formData} handleChange={handleChange} country="giCountry2" state="giState2" lga="giLGA2"/>
                 </TabsContent>
 
                 <TabsContent value="guarantor3">
-                  {filteredGuarantor3.map((field) => (
-                    <label
-                      htmlFor={field.id}
-                      key={field.id}
-                      className="block mb-4"
-                    >
-                      <p>{field.label}</p>
-
-                      {field.type === "text" && (
-                        <Input
-                          type="text"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter your ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "number" && (
-                        <Input
-                          type="number"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "date" && (
-                        <Input
-                          type="date"
-                          id={field.id}
-                          name={field.id}
-                          value={
-                            formData.responses[field.id]
-                              ? String(formData.responses[field.id])
-                              : ""
-                          }
-                          onChange={handleChange}
-                          required
-                        />
-                      )}
-
-                      {field.type === "select" && field.options && (
-                        <select
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          required
-                          className="btn w-full bg-transparent"
-                        >
-                          <option value="">Select {field.label}</option>
-                          {field.options.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+                    <FormComponent data={filteredGuarantor3} formData={formData} handleChange={handleChange} country="giCountry3" state="giState3" lga="giLGA3"/>
                 </TabsContent>
 
                 <TabsContent value="guarantor4">
-                  {filteredGuarantor4.map((field) => (
-                    <label
-                      htmlFor={field.id}
-                      key={field.id}
-                      className="block mb-4"
-                    >
-                      <p>{field.label}</p>
-
-                      {field.type === "text" && (
-                        <Input
-                          type="text"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter your ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "number" && (
-                        <Input
-                          type="number"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "date" && (
-                        <Input
-                          type="date"
-                          id={field.id}
-                          name={field.id}
-                          value={
-                            formData.responses[field.id]
-                              ? String(formData.responses[field.id])
-                              : ""
-                          }
-                          onChange={handleChange}
-                          required
-                        />
-                      )}
-
-                      {field.type === "select" && field.options && (
-                        <select
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          required
-                          className="btn w-full bg-transparent"
-                        >
-                          <option value="">Select {field.label}</option>
-                          {field.options.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+                    <FormComponent data={filteredGuarantor4} formData={formData} handleChange={handleChange} country="giCountry4" state="giState4" lga="giLGA4"/>
                 </TabsContent>
 
                 <TabsContent value="academic">
-                  {filteredAcademic.map((field) => (
-                    <label
-                      htmlFor={field.id}
-                      key={field.id}
-                      className="block mb-4"
-                    >
-                      <p>{field.label}</p>
-
-                      {field.type === "text" && (
-                        <Input
-                          type="text"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter your ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "number" && (
-                        <Input
-                          type="number"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "file" && (
-                        <Input
-                          type="file"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "date" && (
-                        <Input
-                          type="date"
-                          id={field.id}
-                          name={field.id}
-                          value={
-                            formData.responses[field.id]
-                              ? String(formData.responses[field.id])
-                              : ""
-                          }
-                          onChange={handleChange}
-                          required
-                        />
-                      )}
-
-                      {field.type === "select" && field.options && (
-                        <select
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          required
-                          className="btn w-full bg-transparent"
-                        >
-                          <option value="">Select {field.label}</option>
-                          {field.options.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+                  <FormComponent data={filteredAcademic} formData={formData} handleChange={handleChange}/>
                 </TabsContent>
 
                 <TabsContent value="professional">
-                  {filteredProfessional.map((field) => (
-                    <label
-                      htmlFor={field.id}
-                      key={field.id}
-                      className="block mb-4"
-                    >
-                      <p>{field.label}</p>
-
-                      {field.type === "text" && (
-                        <Input
-                          type="text"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter your ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "number" && (
-                        <Input
-                          type="number"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "select" && field.options && (
-                        <select
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          required
-                          className="btn w-full bg-transparent"
-                        >
-                          <option value="">Select {field.label}</option>
-                          {field.options.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+                  <FormComponent data={filteredProfessional} formData={formData} handleChange={handleChange}/>
                 </TabsContent>
 
                 <TabsContent value="professional2">
-                  {filteredProfessional2.map((field) => (
-                    <label
-                      htmlFor={field.id}
-                      key={field.id}
-                      className="block mb-4"
-                    >
-                      <p>{field.label}</p>
-
-                      {field.type === "text" && (
-                        <Input
-                          type="text"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter your ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "number" && (
-                        <Input
-                          type="number"
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          placeholder={`Enter ${field.label.toLowerCase()}`}
-                          required
-                        />
-                      )}
-
-                      {field.type === "select" && field.options && (
-                        <select
-                          id={field.id}
-                          name={field.id}
-                          value={formData.responses[field.id] || ""}
-                          onChange={handleChange}
-                          required
-                          className="btn w-full bg-transparent"
-                        >
-                          <option value="">Select {field.label}</option>
-                          {field.options.map((option) => (
-                            <option key={option} value={option}>
-                              {option}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    </label>
-                  ))}
+                  <FormComponent data={filteredProfessional2} formData={formData} handleChange={handleChange}/>
                 </TabsContent>
 
                 <TabsContent value="mental">
