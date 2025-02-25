@@ -56,8 +56,10 @@ const AddressDetail = () => {
 
         const getFindings = async () => {
             try {
-                const data = await fetchAddress(id as string);  
-                setFindings(data.data);
+                const data = await fetchAddress(id as string);                  
+                setFindings(data.data.addressVerificationData);
+                console.log(data.data);
+                
             } catch (error) {
                 console.error("Failed to fetch company info:", error);
             } finally {
@@ -89,10 +91,7 @@ const AddressDetail = () => {
         };
     
         fetchCoordsAddress();
-    }, [findings?.initialLocation.lat, findings?.initialLocation.lon]);  
-
-    console.log(findings);
-    
+    }, [findings?.initialLocation.lat, findings?.initialLocation.lon]);      
 
     return (
         <>

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useFetchAgents } from "@/hooks/backOffice";
 import { baseUrl } from "@/api/baseUrl";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
+import Loader from "@/components/Loader";
 
 interface Address {
   id: string,
@@ -28,9 +29,9 @@ const PersonnelsList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const {fetchAgents} = useFetchAgents();
-  const fieldAgentId = localStorage.getItem("fieldAgentId");
 
   useEffect(() => {
+    const fieldAgentId = localStorage.getItem("fieldAgentId");
     const getAddresses = async () => {
       try {
         const res = await axios.get(
@@ -58,7 +59,7 @@ const PersonnelsList = () => {
 
     getAgent()
     getAddresses()
-  }, [fieldAgentId, fetchAgents]);  
+  }, [fetchAgents]);  
 
   const handleClick = (id: string): void => {
     getGeolocation(
@@ -94,10 +95,8 @@ const PersonnelsList = () => {
           <div className="rounded-lg bg-white p-2 md:pt-0 mb-10">
             <div className="md:hidden">
               {loading && (
-                <div className="flex flex-col gap-3">
-                  <VerificationSkeleton />
-                  <VerificationSkeleton />
-                  <VerificationSkeleton />
+                <div className="">
+                  <Loader />
                 </div>
               )}
               {error && (
@@ -110,13 +109,13 @@ const PersonnelsList = () => {
                   key={info.id}
                   className="mb-2 w-full rounded-md bg-gray-100 px-2 py-2"
                 >
-                  <div className="flex items-center justify-between border-b-2 border-white pb-2">
-                    <div className="w-[80%]">
-                      <div className="mb-2 flex items-center">
-                        <div className="rounded-full w-6 h-6 bg-white text-blue-500 mr-1 grid place-items-center">
+                  <div className="flex items-center justify-between border-b-2 border-white">
+                    <div>
+                      <div className="mb-2 flex flex-col gap-1">
+                        <div className="rounded-full w-6 h-6 bg-blue-500 text-white mr-1 grid place-items-center">
                           {info.personnelName.slice(0, 1)}
                         </div>
-                        <p className="uppercase text-blue-900">{info.personnelName}</p>
+                        <p className="uppercase text-blue-900 w-[200px]">{info.personnelName}</p>
                       </div>
                     </div>
                     <div className="">
@@ -134,6 +133,19 @@ const PersonnelsList = () => {
                 </div>
               ))}
             </div>
+            {loading && (
+                <div className="hidden md:flex flex-col gap-3">
+                  <VerificationSkeleton />
+                  <VerificationSkeleton />
+                  <VerificationSkeleton />
+                </div>
+            )}
+            {error && (
+                <div className="hidden w-full h-[300px] md:flex justify-center items-center">
+                  <h3>{error}</h3>
+                </div>
+            )}
+            {!loading && !error && (
             <table className="hidden min-w-full text-gray-700 md:table">
               <thead className="rounded-lg text-left text-sm font-normal">
                 <tr>
@@ -176,7 +188,7 @@ const PersonnelsList = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table>)}
           </div>
         </div>
       </div>

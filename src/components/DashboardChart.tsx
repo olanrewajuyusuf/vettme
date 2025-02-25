@@ -13,9 +13,9 @@ export const description = "An area chart with gradient fill";
 
 
 const chartConfig = {
-  success: {
+  successful: {
     label: "Successful Verifications",
-    color: "green)",
+    color: "green",
   },
   failed: {
     label: "Failed Verifications",
@@ -84,32 +84,32 @@ export default function DashboardChart() {
           stroke="var(--stroke-clr)"
         />
         <Area
-          dataKey="success"
+          dataKey="successful"
           type="linear"
-          fill="var(--color-desktop)"
+          fill="green"
           fillOpacity={0.4}
-          stroke="var(--color-desktop)"
+          stroke="green"
         />
         <Area
           dataKey="failed"
           type="linear"
-          fill="var(--color-mobile)"
+          fill="red"
           fillOpacity={0.4}
-          stroke="var(--color-mobile)"
-        />
-        <Area
-          dataKey="pending"
-          type="linear"
-          fill="var(--color-pending)"
-          fillOpacity={0.4}
-          stroke="var(--color-pending)"
+          stroke="red"
         />
         <Area
           dataKey="ongoing"
           type="linear"
-          fill="var(--color-pending)"
+          fill="purple"
           fillOpacity={0.4}
-          stroke="var(--color-pending)"
+          stroke="purple"
+        />
+        <Area
+          dataKey="pending"
+          type="linear"
+          fill="yellow"
+          fillOpacity={0.4}
+          stroke="yellow"
         />
       </AreaChart>
     </ChartContainer>

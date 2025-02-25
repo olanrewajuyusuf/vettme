@@ -76,7 +76,7 @@ const AllAddresses = () => {
             .filter((batch) =>
                 filter === "pending" ? batch.status === "PENDING" :
                 filter === "failed" ? batch.status === "FAILED" :
-                filter === "completed" ? batch.status === "COMPLETED" :
+                filter === "submitted" ? batch.status === "SUBMITTED" :
                 filter === "in_progress" ? batch.status === "INPROGRESS" :
                 true
             )
@@ -84,8 +84,8 @@ const AllAddresses = () => {
 
     const noAddressMessage =
         filteredAddresses && filteredAddresses.length === 0
-            ? filter === "completed"
-                ? "You have no completed Address."
+            ? filter === "Submitted"
+                ? "You have no submitted Address."
                 : filter === "pending"
                 ? "You have no pending Address."
                 : filter === "in_progress"
@@ -116,7 +116,7 @@ const AllAddresses = () => {
                             <option value="all">All</option>
                             <option value="pending">Pending</option>
                             <option value="in_progress">In Progress</option>
-                            <option value="completed">Completed</option>
+                            <option value="submitted">Submitted</option>
                             <option value="failed">Failed</option>
                         </select>
                     </div>
