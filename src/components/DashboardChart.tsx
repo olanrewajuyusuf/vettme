@@ -43,9 +43,7 @@ export default function DashboardChart() {
     const getChartData = async() => {
       try{
         const res = await axios.get(`${baseUrl}/verification/month/${companyId}`)
-        setChartData(res.data.data)
-        console.log(res);
-        
+        setChartData(res.data.data)        
       } catch(err){
         console.error(err);
       }
@@ -86,30 +84,30 @@ export default function DashboardChart() {
         <Area
           dataKey="successful"
           type="linear"
-          fill="green"
+          fill="var(--color-successful)"
           fillOpacity={0.4}
-          stroke="green"
+          stroke="var(--color-successful)"
         />
         <Area
           dataKey="failed"
           type="linear"
-          fill="red"
+          fill="var(--color-failed)"
           fillOpacity={0.4}
-          stroke="red"
-        />
-        <Area
-          dataKey="ongoing"
-          type="linear"
-          fill="purple"
-          fillOpacity={0.4}
-          stroke="purple"
+          stroke="var(--color-failed)"
         />
         <Area
           dataKey="pending"
           type="linear"
-          fill="yellow"
+          fill="var(--color-pending)"
           fillOpacity={0.4}
-          stroke="yellow"
+          stroke="var(--color-pending)"
+        />
+        <Area
+          dataKey="ongoing"
+          type="linear"
+          fill="var(--color-ongoing)"
+          fillOpacity={0.4}
+          stroke="var(--color-ongoing)"
         />
       </AreaChart>
     </ChartContainer>
