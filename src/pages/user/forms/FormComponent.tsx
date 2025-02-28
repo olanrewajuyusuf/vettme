@@ -116,7 +116,7 @@ const FormComponent = ({ data, formData, handleChange, handleFile, country, stat
                             <option value="">Select {field.label}</option>
                             {statesInNigeria.map((state) => (
                                 <option key={state} value={state}>
-                                    {state}
+                                    {state} State
                                 </option>
                             ))}
                         </select>

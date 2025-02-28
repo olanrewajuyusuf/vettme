@@ -104,6 +104,8 @@ interface CompanyProps {
 
     //Delete handler
     const handleDelete = async (companyId: string) => {
+      console.log("delete");
+      
       try {
           await deleteCompany(companyId);
           const updatedCompanies = await fetchCompany();

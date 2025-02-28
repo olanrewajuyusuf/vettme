@@ -99,6 +99,85 @@ export function CardSkeleton() {
     )
 }
 
+export function BackCardSkeleton() {
+    return (
+        <div className='grid grid-cols-4 gap-5 mb-6'>
+            <div className='p-5 bg-white rounded-xl border-[1px] border-stroke-clr'>
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                    </div>
+                </div>
+                <Skeleton className="h-6 w-10 mt-5 mx-auto" />
+             </div>
+             <div className='p-5 bg-white rounded-xl border-[1px] border-stroke-clr'>
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                    </div>
+                </div>
+                <Skeleton className="h-6 w-10 mt-5 mx-auto" />
+             </div>
+             <div className='p-5 bg-white rounded-xl border-[1px] border-stroke-clr'>
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                    </div>
+                </div>
+                <Skeleton className="h-6 w-10 mt-5 mx-auto" />
+             </div>
+             <div className='p-5 bg-white rounded-xl border-[1px] border-stroke-clr'>
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                    </div>
+                </div>
+                <Skeleton className="h-6 w-10 mt-5 mx-auto" />
+             </div>
+             <div className='p-5 bg-white rounded-xl border-[1px] border-stroke-clr'>
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                    </div>
+                </div>
+                <Skeleton className="h-6 w-10 mt-5" />
+             </div>
+             <div className='p-5 bg-white rounded-xl border-[1px] border-stroke-clr'>
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                    </div>
+                </div>
+                <Skeleton className="h-6 w-10 mt-5" />
+             </div>
+             <div className='p-5 bg-white rounded-xl border-[1px] border-stroke-clr'>
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                    </div>
+                </div>
+                <Skeleton className="h-6 w-10 mt-5" />
+             </div>
+             <div className='p-5 bg-white rounded-xl border-[1px] border-stroke-clr'>
+                <div className="flex items-center space-x-4">
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-4 w-20" />
+                    </div>
+                </div>
+                <Skeleton className="h-6 w-10 mt-5" />
+             </div>
+        </div>
+    )
+}
+
 export function NavSkeleton() {
     return (
         <div className="w-full bg-white h-[70px] flex items-center justify-between px-[30px] border-b-[1px] border-stroke-clr">

@@ -162,13 +162,13 @@ export const useFetchAddress = () => {
     const res = await axios.get(`${baseUrl}/address-verification/address/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
+      }, 
     });
     return res.data;
   } catch (error: any) {
-    console.error("Error fetching addresses:", error);
-    toast.error(error?.response?.data?.message || "Cannot fetch address");
-    throw new Error(error?.response?.data?.message || "Cannot fetch address");
+    console.error("Error fetching agent's addresses finding:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch agent's address finding");
+    throw new Error(error?.response?.data?.message || "Cannot fetch agent's address finding");
   }
   }, []);
   return { fetchAddress };

@@ -80,6 +80,10 @@ const fieldGroups: { [key: string]: { fields: string[]; cost: number } } = {
   },
 };
 
+function splitCamelCase(str: any) {
+  return str.replace(/([a-z])([A-Z])/g, '$1 $2'); // Adds space before uppercase letters
+}
+
 const Form = () => {
   const [selectedGroups, setSelectedGroups] = useState<{
     [key: string]: number;
@@ -111,12 +115,11 @@ const Form = () => {
   const updateCost = (updatedFields: string[]) => {
     let cost = 0;
     const newSelectedGroups: { [key: string]: number } = {};
-  
-    // Loop through each group and apply cost only once if at least one field is selected
+ 
     Object.entries(fieldGroups).forEach(([groupName, group]) => {
       if (group.fields.some((field) => updatedFields.includes(field))) {
         let groupCost = group.cost;
-  
+    
         // Multiply cost by giNumberofGuarantors if GuarantorInformationGroup or GuarantorAddressGroup is selected
         if (
           groupName === "GuarantorInformationGroup" ||
@@ -124,16 +127,17 @@ const Form = () => {
         ) {
           groupCost *= (formData.giNumberofGuarantors as number) || 1;
         }
-  
+    
         // Multiply cost by priNumberofProfessionalReferences if ProfessionalInformationGroup is selected
         if (groupName === "ProfessionalInformationGroup") {
           groupCost *= (formData.priNumberofProfessionalReferences as number) || 1;
         }
-  
+    
         cost += groupCost;
-        newSelectedGroups[groupName] = groupCost; // Store cost breakdown
+        newSelectedGroups[splitCamelCase(groupName)] = groupCost; // Store cost breakdown with readable names
       }
     });
+    
   
     setTotalCost(cost);
     setSelectedGroups(newSelectedGroups);

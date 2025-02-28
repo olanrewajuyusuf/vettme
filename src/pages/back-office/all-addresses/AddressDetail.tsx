@@ -37,6 +37,7 @@ const AddressDetail = () => {
     const [coordinates, setCoordinates] = useState<{ lat: number; lon: number } | null>(null);
     const [coordAddress, setCoordAddress] = useState<any | null>(null);
     const [ findings, setFindings ] = useState<findingsProps | null>(null);
+    const [ agent, setAgent ] = useState<any | null>(null);
     const [ isVideo, setIsVideo ] = useState(false);
     const [loading, setLoading] = useState(true);
     const { fetchAddresses } = useFetchAddresses();
@@ -47,6 +48,8 @@ const AddressDetail = () => {
         const getAddress = async () => {
             try {
                 const data = await fetchAddresses();  
+                console.log(data);
+                
                 const personnel = data.data.filter((person: addressesProps) => person.id === id)          
                 setAddress(personnel);
             } catch (error) {
@@ -57,11 +60,10 @@ const AddressDetail = () => {
         const getFindings = async () => {
             try {
                 const data = await fetchAddress(id as string);                  
-                setFindings(data.data.addressVerificationData);
-                console.log(data.data);
-                
+                setFindings(data.data.addressVerificationData);         
+                setAgent(data.data.agent);         
             } catch (error) {
-                console.error("Failed to fetch company info:", error);
+                console.error("Failed to fetch agent's findings:", error);
             } finally {
                 setLoading(false);
             }
@@ -128,7 +130,7 @@ const AddressDetail = () => {
                     <div>
                         <div className="bg-blue-600 rounded-lg text-white p-3 mb-3 shadow-md">
                             <h3>Agent Name</h3>
-                            <p>{address && address[0].personnelName}</p>
+                            <p>{agent.agentName}</p>
                         </div>
                         <div className="bg-pink-400 rounded-lg text-white p-3 mb-3 shadow-md">
                             <div className="border-b border-white mb-2 pb-2">

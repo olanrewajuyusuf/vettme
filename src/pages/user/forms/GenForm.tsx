@@ -80,24 +80,32 @@ export default function GenForms() {
     e.preventDefault();
 
     // Function to format date
-    const formatDate = (dateString: string) => {
-      const date = new Date(dateString);
-      const day = date.getDate();
-      const month = date.toLocaleString("default", { month: "short" });
-      const year = date.getFullYear();
-      return `${day}-${month}-${year}`;
+    // const formatDate = (dateString: string) => {
+    //   const date = new Date(dateString);
+    //   const day = date.getDate();
+    //   const month = date.toLocaleString("default", { month: "short" });
+    //   const year = date.getFullYear();
+    //   return `${day}-${month}-${year}`;
+    // };
+
+    // // Iterate through formData.responses to check for dates
+    // for (const key in formData.responses) {
+    //   const value = formData.responses[key];
+
+    //   // Check if the value is a date string and format it
+    //   if (typeof value === "string" && !isNaN(Date.parse(value))) {
+    //     formData.responses[key] = formatDate(value);
+    //   }
+    // }
+    const newFormData = {
+      ...formData,
+      responses: {
+        ...formData.responses,
+        ...(visibleFields.includes("aiDegreeOrCertificationUpload") && file
+          ? { aiDegreeOrCertificationUpload: file }
+          : {}),
+      },
     };
-
-    // Iterate through formData.responses to check for dates
-    for (const key in formData.responses) {
-      const value = formData.responses[key];
-
-      // Check if the value is a date string and format it
-      if (typeof value === "string" && !isNaN(Date.parse(value))) {
-        formData.responses[key] = formatDate(value);
-      }
-    }
-    const newFormData = { ...formData, responses: {...formData.responses, "aiDegreeOrCertificationUpload": file} };
 
     console.log("Payload before sending: ", newFormData);
 

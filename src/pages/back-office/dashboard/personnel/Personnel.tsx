@@ -16,7 +16,6 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
-import { useFetchFinding, useFetchVerdict } from "@/hooks/company";
 import { getFilteredObjects } from "@/lib/filteredObjects";
 import { 
   academicInput, 
@@ -29,7 +28,7 @@ import {
   professionalInput1, 
   professionalInput2 } from "@/utils/field";
 import { Button } from "@/components/ui/button";
-import { useFetchBatchesResponse, useFetchVerificationRating } from "@/hooks/backOffice";
+import { useFetchBatchesResponse, useFetchFinding, useFetchVerdict, useFetchVerificationRating } from "@/hooks/backOffice";
 
 export default function Personnel() {
   const [claims, setClaims] = useState<"" | any>("");

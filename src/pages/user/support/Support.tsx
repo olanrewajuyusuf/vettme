@@ -39,7 +39,7 @@ const Support = () => {
     const getConversation = async () => {
       try {
         const res = await axios.get(
-          `https://vettme-pro.onrender.com/api/pro/conversation/find/${companyId}/${adminId}`
+          `https://vettme-api-2h3d.onrender.com/conversation/find/${companyId}/${adminId}`
         );
         setConversationId(res.data.data.id);
         // console.log(res.data.data.id);
@@ -51,7 +51,7 @@ const Support = () => {
   }, [companyId]);
 
   useEffect(() => {
-    const newSocket = io("https://vettme-pro.onrender.com");
+    const newSocket = io("https://vettme-api-2h3d.onrender.com");
     setSocket(newSocket);
     return () => {
       newSocket.disconnect();
@@ -90,7 +90,7 @@ const Support = () => {
     const getMessages = async () => {
       try {
         const res = await axios.get(
-          `https://vettme-pro.onrender.com/api/pro/message/${conversationId}`
+          `https://vettme-api-2h3d.onrender.com/message/${conversationId}`
         );
         setMessages(res.data.data);
         console.log(res);
@@ -117,7 +117,7 @@ const Support = () => {
 
     try {
       const { data } = await axios.post(
-        "https://vettme-pro.onrender.com/api/pro/message",
+        "https://vettme-api-2h3d.onrender.com/message",
         {
           conversationId: conversationId,
           sender: companyId,
