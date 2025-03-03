@@ -481,3 +481,83 @@ export const useFetchVerificationRating = () => {
   }, []);
   return {fetchVerificationRating};
 };
+
+// Update Finding
+export const useUpdateFinding = () => {
+  const updateFinding = useCallback(
+    async (
+      data: any,
+      id: string,
+  ) => {
+      try {
+        const token = sessionStorage.getItem("adminToken");
+
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const res = await axios.put(
+          `${baseUrl}/verification-finding/${id}`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        toast.success("Finding Updated");
+        return res.data;
+      } catch (error: any) {
+        console.error("Error updating finding:", error);
+        toast.error(
+          error?.response?.data?.message || "Cannot update finding"
+        );
+        throw new Error(
+          error?.response?.data?.message || "Cannot update finding"
+        );
+      }
+    },[] 
+  );
+  return { updateFinding };
+};
+
+// Update Verdicts
+export const useUpdateVerdict = () => {
+  const updateVerdict = useCallback(
+    async (
+      data: any,
+      id: string,
+  ) => {
+      try {
+        const token = sessionStorage.getItem("adminToken");
+
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const res = await axios.put(
+          `${baseUrl}/verification-result/result/${id}`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        toast.success("Verdict Updated");
+        return res.data;
+      } catch (error: any) {
+        console.error("Error updating verdict:", error);
+        toast.error(
+          error?.response?.data?.message || "Cannot update verdict"
+        );
+        throw new Error(
+          error?.response?.data?.message || "Cannot update verdict"
+        );
+      }
+    },[] 
+  );
+  return { updateVerdict };
+};

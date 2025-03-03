@@ -6,8 +6,8 @@ const FaceIndicator = () => {
             top: 0,
             left: '50%',
             transform: 'translate(-50%)',
-            width: '110px',
-            height: '110px',
+            width: '100px',
+            height: '100px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -19,8 +19,8 @@ const FaceIndicator = () => {
         {/* Face Outline */}
         <div
             style={{
-                width: '107px',
-                height: '107px',
+                width: '98px',
+                height: '98px',
                 border: '1px dashed white',
                 borderRadius: '50%',
                 position: 'relative',

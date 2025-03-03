@@ -8,7 +8,7 @@ interface LivenessCheckResponse {
   entity: {
     liveness: {
       liveness_check: boolean;
-      confidence: number;
+      liveness_probability: number;
     };
     face: {
       face_detected: boolean;

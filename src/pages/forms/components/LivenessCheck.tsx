@@ -78,7 +78,7 @@ const LiveCameraCapture: React.FC = () => {
       try {
         // Send the captured image to Dojah for liveness verification
         const response = await performLivenessCheck(file);
-        const livenessConfidence = response.entity.liveness.confidence;
+        const livenessConfidence = response.entity.liveness.liveness_probability;
 
         if (livenessConfidence > 50) {
           setResult(`Liveness check successful! Confidence: ${livenessConfidence}`);
@@ -132,15 +132,17 @@ const LiveCameraCapture: React.FC = () => {
     <div className='text-center max-w-[500px] p-5 mx-auto'>
       <h1>Liveness Check</h1>
       <div className='w-[150px] h-[150px] relative rounded-lg bg-red-300 mt-8 mb-5 mx-auto overflow-hidden'>
-        <img src={images.avatar} alt="avatar"  className='w-full h-full'/>
-        <div className='w-[110px] h-[110px] rounded-full absolute top-0 left-1/2 -translate-x-1/2 bg-[#000000CC] overflow-hidden'>
+        <img src={images.avatar} alt="avatar"  className='w-full h-[170px]'/>
+        <div className='w-[100px] h-[100px] absolute top-0 left-1/2 -translate-x-1/2 rounded-full overflow-hidden'>
+          <div className='w-[230px] h-[230px] absolute -bottom-20% left-1/2 -translate-x-1/2 -mt-[95px]'>
             <video 
-            ref={videoRef} 
-            autoPlay 
-            playsInline 
-            muted
-            className='w-full h-full'
+              ref={videoRef} 
+              autoPlay 
+              playsInline 
+              muted
+              className='w-full h-full'
             />
+          </div>
         </div>
         {isCapturing && (
           <FaceIndicator />

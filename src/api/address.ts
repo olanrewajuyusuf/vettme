@@ -39,7 +39,7 @@ export const RegisterAgent = async (
   const toastId = toast.loading("Registering agent...", { id: "agentToast" });
 
   await axios
-    .post('https://vettme-pro.onrender.com/api/pro/field-agent/', data)
+    .post(`${baseUrl}/field-agent/`, data)
     .then((res) => {
       toast.success(res?.data?.message || "Registered Successfully", {
         id: toastId,
@@ -66,7 +66,7 @@ export const Login = async (
   const toastId = toast.loading("Signing in...", { id: "authToast" });
 
   await axios
-    .post('https://vettme-pro.onrender.com/api/pro/field-agent/login', data)
+    .post(`${baseUrl}/field-agent/login`, data)
     .then((res) => {
       toast.success(res?.data?.message || "Sign in successful", {
         id: toastId,

@@ -5,7 +5,14 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export const EditPersonnelInformation = ({ data, title }: { data: any[]; title: string }) => {
+export const EditPersonnelInformation = ({
+   data, title, handleInputChange, handleRadioChange 
+  }: { 
+    data: any[]; 
+    title: string;
+    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleRadioChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  }) => {
   return (
     <div className="mt-5">
         <Accordion type="single" collapsible>
@@ -24,15 +31,33 @@ export const EditPersonnelInformation = ({ data, title }: { data: any[]; title: 
                         </div>
                         <div className="col-span-2">
                             <label htmlFor={item.id} className="font-bold">Outcome</label>
-                            <input type="text" id={item.id} name={item.id} className="w-full h-[40px] rounded-md border-[1px] border-stroke-clr"/>
+                            <input 
+                            type="text" 
+                            id={item.id} 
+                            name={item.id} 
+                            onChange={handleInputChange}
+                            className="w-full h-[40px] rounded-md border-[1px] border-stroke-clr"
+                            />
                             <div className="flex justify-start items-center text-[12px] gap-5 mt-5">
                                 <span className="font-bold">Verdict:</span>
                                 <label htmlFor={`correct-${index}`} className="text-green-500 text-[12px]">
-                                    <input type="radio" id={`correct-${index}`} name={item.id} className="mr-2" />
+                                    <input 
+                                    type="radio" 
+                                    id={`correct-${index}`} 
+                                    name={item.id} 
+                                    className="mr-2" 
+                                    onChange={handleRadioChange}
+                                    />
                                     Correct
                                 </label>
                                 <label htmlFor={`wrong-${index}`} className="text-red-500 text-[12px]">
-                                    <input type="radio" id={`wrong-${index}`} name={item.id} className="mr-2" />
+                                    <input 
+                                    type="radio" 
+                                    id={`wrong-${index}`} 
+                                    name={item.id} 
+                                    className="mr-2"
+                                    onChange={handleRadioChange}
+                                    />
                                     Wrong
                                 </label>
                             </div>

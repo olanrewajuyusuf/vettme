@@ -265,7 +265,7 @@ const filteredBatches = batchesResponse
               >
                 <TableCell>
                   <span className="w-7 h-7 flex items-center justify-center bg-gray-400 font-medium rounded-lg text-xs">
-                    {item.responses.piFullname.slice(0, 2).toUpperCase()}
+                    {item.responses && item.responses.piFullname.slice(0, 2).toUpperCase()}
                   </span>
                 </TableCell>
                 <TableCell className="font-medium">{item.responses.piFullname}</TableCell>
