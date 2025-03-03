@@ -174,7 +174,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -212,7 +226,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -250,7 +278,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -288,7 +330,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -326,7 +382,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -364,7 +434,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -402,7 +486,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -440,7 +538,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -478,7 +590,21 @@ export default function Personnel() {
                         <TableCell className="w-2/6">{item.claim}</TableCell>
                         <TableCell className="w-2/6">{item.finding ? item.finding : "No data"}</TableCell>
                         <TableCell className="w-1/6">
-                          <Badge className={`${item.verdict ? "bg-green-600" : "bg-destructive"}`}>{item.verdict ? 'Correct' : 'Incorrect'}</Badge>
+                        <Badge
+                            className={`${
+                              item.verdict === true
+                                ? "bg-green-600"
+                                : item.verdict === false
+                                ? "bg-destructive"
+                                : "bg-black-600"
+                            }`}
+                          >
+                            {item.verdict === true
+                              ? "Correct"
+                              : item.verdict === false
+                              ? "Incorrect"
+                              : "No result"}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}

@@ -16,6 +16,7 @@ export default function Register() {
     company_id: "",
     email: "",
     password: "",
+    phone_number: ""
   });
 
   const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,6 +75,20 @@ export default function Register() {
             onChange={(e) => setCred({ ...cred, email: e.target.value })}
           />
         </label>
+
+        {/* <label htmlFor="phone_number" className="block">
+          <p className="text-sm">Phone Number</p>
+          <Input
+            type="text"
+            name="phone_number"
+            placeholder="e.g. 08000000000"
+            disabled={isLoading}
+            id="phone_number"
+            required
+            value={cred.phone_number}
+            onChange={(e) => setCred({ ...cred, phone_number: e.target.value })}
+          />
+        </label> */}
 
         <label htmlFor="password" className="block my-6">
           <p className="text-sm">Password</p>
