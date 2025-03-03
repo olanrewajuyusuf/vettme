@@ -9,7 +9,16 @@ import axios from "axios";
 import { createFormResponse } from "@/api/form";
 import Spinner from "@/components/Spinner";
 import { baseUrl } from "@/api/baseUrl";
-import { academicInfoResponse, guarantorInfoResponse, guarantorInfoResponse2, guarantorInfoResponse3, guarantorInfoResponse4, mentalHealthResponse, personalInfoResponse, professionalInfoResponse, professionalInfoResponse2 } from "@/utils/responseFields";
+import { 
+  academicInfoResponse, 
+  guarantorInfoResponse, 
+  guarantorInfoResponse2, 
+  guarantorInfoResponse3, 
+  guarantorInfoResponse4, 
+  mentalHealthResponse, 
+  personalInfoResponse, 
+  professionalInfoResponse, 
+  professionalInfoResponse2 } from "@/utils/responseFields";
 import FormComponent from "./FormComponent";
 
 interface FormData {
@@ -79,24 +88,6 @@ export default function GenForms() {
   const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Function to format date
-    // const formatDate = (dateString: string) => {
-    //   const date = new Date(dateString);
-    //   const day = date.getDate();
-    //   const month = date.toLocaleString("default", { month: "short" });
-    //   const year = date.getFullYear();
-    //   return `${day}-${month}-${year}`;
-    // };
-
-    // // Iterate through formData.responses to check for dates
-    // for (const key in formData.responses) {
-    //   const value = formData.responses[key];
-
-    //   // Check if the value is a date string and format it
-    //   if (typeof value === "string" && !isNaN(Date.parse(value))) {
-    //     formData.responses[key] = formatDate(value);
-    //   }
-    // }
     const newFormData = {
       ...formData,
       responses: {
@@ -140,6 +131,8 @@ export default function GenForms() {
   }, [url, token]);
 
 
+  console.log(visibleFields);
+  
   // Filter personalInfoFields based on visibleFields
   const filteredFields = personalInfoResponse.filter((field) =>
     visibleFields.includes(field.id)

@@ -124,7 +124,7 @@ export default function Personnel() {
     <>
       <div className="mb-[30px] flex justify-between items-center">
         <div>
-          <h2>{claims && claims[0].responses.piFullname}</h2>
+          <h2>{claims && claims[0].responses.piFullname ? claims && claims[0].responses.piFullname : `${claims && claims[0].responses.piFirstName} ${claims && claims[0].responses.piMiddleName} ${claims && claims[0].responses.piLastName}`}</h2>
           <p className="text-sm">Date Created: {moment(claims && claims[0].submittedAt).calendar()}</p>
         </div>
 

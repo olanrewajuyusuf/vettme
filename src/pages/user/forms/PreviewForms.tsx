@@ -1,45 +1,28 @@
 import images from "@/assets/Images";
-import UserFormSumitted from "@/components/modals/UserFormSumitted";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { createFormResponse } from "@/api/form";
-import Spinner from "@/components/Spinner";
-import { baseUrl } from "@/api/baseUrl";
 import { academicInfoResponse, guarantorInfoResponse, guarantorInfoResponse2, guarantorInfoResponse3, guarantorInfoResponse4, mentalHealthResponse, personalInfoResponse, professionalInfoResponse, professionalInfoResponse2 } from "@/utils/responseFields";
 import FormComponent from "./FormComponent";
+import { useState } from "react";
 
 interface FormData {
-  formId: string;
   responses: {
     [key: string]: string | number;
   };
 }
 
-export default function GenForms() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const token = localStorage.getItem("token");
-  const [isLoading, setIsLoading] = useState(false);
-  const [formInfo, setFormInfo] = useState({
-    title: "",
-  });
-  const url = window.location.href.split("/")[4];
-  const [visibleFields, setVisibleFields] = useState<string[]>([]);
-  // const [createdResponse, setCreatedResponse] = useState<any | null>(null);
-  const [formData, setFormData] = useState<FormData>({
-    formId: `${url}`,
-    responses: {},
-  });
+export default function PreviewForms() {
+  const data = localStorage.getItem('data')
+  const [formData, setFormData] = useState<FormData>({ responses: {} });
 
   // Handle change function
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
-
+  
     setFormData((prevData) => ({
       ...prevData,
       responses: {
@@ -58,92 +41,55 @@ export default function GenForms() {
     }));
   };
 
-  // Handle response submission
-  const handleSetup = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const newFormData = { ...formData };
-    console.log("Payload before sending: ", newFormData);
-
-    const createdResponse = await createFormResponse(newFormData, setIsLoading);
-
-    if (createdResponse) {
-      console.log("Created Form Response:", createdResponse);
-      // setCreatedResponse(createdResponse)
-      setModalOpen(true);
-    } else {
-      console.error("Response creaton failed or no data returned.");
-    }
-  };
-
-  useEffect(() => {
-    // Fetch the form visibility data from the backend
-    axios
-      .get(`${baseUrl}/verification/form/${url}`)
-      // Adjust the URL to your API endpoint
-      .then((response) => {
-        // Extract keys from the backend response where the value is true
-        const data = response.data.data;
-        setFormInfo(data);
-        const visibleFieldKeys = Object.keys(data.fields).filter(
-          (key) => response.data.data.fields[key] === true
-        );
-        setVisibleFields(visibleFieldKeys); // Set the visible fields in state
-      })
-      .catch((error) => {
-        console.error("Error fetching visibility data:", error);
-      });
-  }, [url, token]);
-
-
   // Filter personalInfoFields based on visibleFields
   const filteredFields = personalInfoResponse.filter((field) =>
-    visibleFields.includes(field.id)
+    data && data.includes(field.id)
   );
 
   const filteredGuarantor = guarantorInfoResponse.filter((field) =>
-    visibleFields.includes(field.id)
+    data && data.includes(field.id)
   );
 
   const filteredGuarantor2 = guarantorInfoResponse2.filter((field) =>
-    visibleFields.includes(field.id)
+    data && data.includes(field.id)
   );
 
   const filteredGuarantor3 = guarantorInfoResponse3.filter((field) =>
-    visibleFields.includes(field.id)
+    data && data.includes(field.id)
   );
 
   const filteredGuarantor4 = guarantorInfoResponse4.filter((field) =>
-    visibleFields.includes(field.id)
+    data && data.includes(field.id)
   );
 
   const filteredAcademic = academicInfoResponse.filter((field) =>
-    visibleFields.includes(field.id)
+    data && data.includes(field.id)
   );
 
   const filteredProfessional = professionalInfoResponse.filter((field) =>
-    visibleFields.includes(field.id)
+    data && data.includes(field.id)
   );
 
   const filteredProfessional2 = professionalInfoResponse2.filter((field) =>
-    visibleFields.includes(field.id)
+    data && data.includes(field.id)
   );
 
   const filteredMentalHealth = mentalHealthResponse.filter((field) =>
-    visibleFields.includes(field.id)
-  );  
+    data && data.includes(field.id)
+  );   
 
   return (
     <>
       <form
         className="max-w-screen-sm mx-auto px-[4vw] my-6"
-        onSubmit={handleSetup}
+        onSubmit={(e: React.FormEvent<HTMLFormElement>)=> e.preventDefault()}
       >
         <div className="w-full mb-6">
           <img src={images.logo} alt="Vettme" className="h-8" />
         </div>
         <div className="w-full bg-white rounded-2xl border-[1px] border-stroke-clr">
           <div className="p-4 border-b-[1px] border-stroke-clr">
-            <h2>{formInfo.title}</h2>
+            <h2>{JSON.parse(data as string).title}</h2>
             <p className="py-2">
               Please complete this form to provide accurate and up-to-date
               information for verification purposes. Ensure all details are
@@ -334,16 +280,11 @@ export default function GenForms() {
               </div>
             </Tabs>
           </div>
-          {/* <label htmlFor="email_copy" className="flex items-center gap-2 p-3">
-            <input type="checkbox" name="email_copy" id="email_copy" />
-            <p>Send a copy of my data to my email</p>
-          </label> */}
         </div>
-        <Button type="submit" className="red-gradient mt-3">
-          {isLoading ? <Spinner /> : "Submit Data for Verification"}
-        </Button>
+        {/* <Button type="submit" className="red-gradient mt-3">
+          Submit Data for Verification
+        </Button> */}
       </form>
-      {<UserFormSumitted isOpen={modalOpen} />}
     </>
   );
 }

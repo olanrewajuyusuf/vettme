@@ -14,7 +14,6 @@ import AllChats from "@/pages/back-office/all-chats/AllChats";
 import SupportAdmin from "@/pages/back-office/support/SupportAdmin";
 import UserProvider from "./context/UserProvider";
 import { NotificationProvider } from "./context/NotificationContext";
-import GenForms from "@/pages/user/forms/GenForm";
 
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
@@ -38,12 +37,12 @@ const Support = lazy(() => import("@/pages/user/support/Support"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
 const FormSetup = lazy(() => import("@/pages/user/setup/FormSetup"));
-// const Forms = lazy(() => import("@/pages/user/forms/Forms"));
+const GenForms = lazy(() => import("@/pages/user/forms/GenForm"));
+const PreviewForms = lazy(() => import("@/pages/user/forms/PreviewForms"));
 
 const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Dashboard"));
 const Batches  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/Batches"));
 const VerificationsBatch  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationsBatch"));
-// import VerificationsBatch from "@/pages/back-office/dashboard/verification-batch/VerificationsBatch";
 const PersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/personnel/Personnel"));
 const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-personnel/EditPersonnelInfo"));
 const AllAgents = lazy(() => import("@/pages/back-office/all-agents/AllAgents"));
@@ -164,8 +163,16 @@ export const routes = [
     path: "/forms/:form_id",
     element: (
       <Suspense fallback={<Skeleton />}>
-        {/* <Forms /> */}
         <GenForms />
+      </Suspense>
+    ),
+  },
+
+  {
+    path: "/preview-form",
+    element: (
+      <Suspense fallback={<Skeleton />}>
+        <PreviewForms />
       </Suspense>
     ),
   },

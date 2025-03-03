@@ -265,10 +265,12 @@ const filteredBatches = batchesResponse
               >
                 <TableCell>
                   <span className="w-7 h-7 flex items-center justify-center bg-gray-400 font-medium rounded-lg text-xs">
-                    {item.responses && item.responses.piFullname.slice(0, 2).toUpperCase()}
+                    {item.responses.piFullname ? item.responses.piFullname.slice(0, 2).toUpperCase() : item.responses.piFirstName.slice(0, 2).toUpperCase()}
                   </span>
                 </TableCell>
-                <TableCell className="font-medium">{item.responses.piFullname}</TableCell>
+                <TableCell className="font-medium">
+                  {item.responses.piFullname ? item.responses.piFullname : `${item.responses.piFirstName} ${item.responses.piMiddleName} ${item.responses.piLastName}`}
+                </TableCell>
                 <TableCell>{item.responses.piEmailAddress}</TableCell>
                 <TableCell>{item.responses.piNationality}</TableCell>
                 <TableCell>{moment(item.submittedAt).format("MMM DD, YYYY")}</TableCell>

@@ -1,5 +1,7 @@
 const personalInfoFields = [
-    {id: 'piFullname', label: 'Full Name'},
+    {id: "piFirstName", label: 'First Name'},
+    {id: "piMiddleName", label: 'Middle Name'},
+    {id: "piLastName", label: 'Last Name'},
     {id: 'piDateOfBirth', label: 'Date of Birth'},
     {id: 'piGender', label: 'Gender'},
     {id: 'piNationality', label: 'Nationality'},
@@ -14,7 +16,9 @@ const personalInfoFields = [
 ];
 
 const guarantorInfoFields = [
-    {id: 'giFullName1', label: 'Full Name'},
+    {id: "giFirstName1", label: 'First Name'},
+    {id: "giMiddleName1", label: 'Middle Name'},
+    {id: "giLastName1", label: 'Last Name'},
     {id: 'giRelationshiptoPersonnel1', label: 'Relationship to Personnel'},
     {id: 'giOccupation1', label: 'Occupation'},
     {id: 'giPhoneNumber1', label: 'Phone Number'},

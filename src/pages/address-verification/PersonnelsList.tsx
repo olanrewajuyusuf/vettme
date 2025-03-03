@@ -35,7 +35,7 @@ const PersonnelsList = () => {
     const getAddresses = async () => {
       try {
         const res = await axios.get(
-          `${baseUrl}/address/assigned/${fieldAgentId}`
+          `${baseUrl}/address/assigned/${fieldAgentId}?status=INPROGRESS`
         );
         setAddresses(res.data.data)
       } catch (err) {

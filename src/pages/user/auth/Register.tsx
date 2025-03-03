@@ -34,7 +34,7 @@ export default function Register() {
       <h1>Create your Account</h1>
 
       <form onSubmit={handleSignup} className="mt-[50px] w-full">
-        <label htmlFor="company_name" className="block">
+        <label htmlFor="company_name" className="block mb-3">
           <p className="text-sm">Company Name</p>
           <Input
             type="text"
@@ -48,7 +48,7 @@ export default function Register() {
           />
         </label>
 
-        <label htmlFor="company_id" className="block my-6">
+        <label htmlFor="company_id" className="block mb-3">
           <p className="text-sm">Company ID</p>
           <Input
             type="text"
@@ -62,7 +62,7 @@ export default function Register() {
           />
         </label>
 
-        <label htmlFor="email" className="block">
+        <label htmlFor="email" className="block mb-3">
           <p className="text-sm">Email Address</p>
           <Input
             type="email"
@@ -76,7 +76,7 @@ export default function Register() {
           />
         </label>
 
-        {/* <label htmlFor="phone_number" className="block">
+        <label htmlFor="phone_number" className="block mb-3">
           <p className="text-sm">Phone Number</p>
           <Input
             type="text"
@@ -88,9 +88,9 @@ export default function Register() {
             value={cred.phone_number}
             onChange={(e) => setCred({ ...cred, phone_number: e.target.value })}
           />
-        </label> */}
+        </label>
 
-        <label htmlFor="password" className="block my-6">
+        <label htmlFor="password" className="block mb-3">
           <p className="text-sm">Password</p>
           <div className="relative flex items-center">
             <Input
@@ -115,7 +115,7 @@ export default function Register() {
         </label>
 
         <Button
-          className="w-full red-gradient"
+          className="w-full red-gradient mt-5"
           disabled={
             isLoading || cred.email.length < 5 || cred.password.length < 8
           }
@@ -125,11 +125,11 @@ export default function Register() {
         </Button>
       </form>
 
-      <div className="absolute bottom-10 flex gap-2">
+      <div className="flex gap-2 mt-5">
         <p className="text-sm">
           Already have an account?{" "}
           <span className="text-red-clr font-medium">
-            <Link to="/auth/login">Sign in </Link>
+            <Link to="/auth/login">Sign in</Link>
           </span>
           instead
         </p>

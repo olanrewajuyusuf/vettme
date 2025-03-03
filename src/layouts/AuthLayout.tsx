@@ -15,7 +15,7 @@ export default function AuthLayout({ children }: AuthProps) {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="w-[450px] px-10">
+      <div className="w-[450px] px-10 pb-10 overflow-scroll">
         <img
           src={images.logo}
           alt="Vettme"

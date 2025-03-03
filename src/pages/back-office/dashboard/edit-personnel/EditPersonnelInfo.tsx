@@ -30,7 +30,7 @@ const EditPersonnelInfo = () => {
   };
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRadioData({ ...radioData, [e.target.name]: true });
+    setRadioData({ ...radioData, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
@@ -77,7 +77,15 @@ const EditPersonnelInfo = () => {
     <div>
       <div className="">
           <div>
-              <h1 className="font-normal">Edit {claims && claims[0].responses.piFullname} Information here.</h1>
+              <h1 className="font-normal">
+                Edit 
+                {' '}
+                <span className="text-purple-500">
+                  {claims && claims[0].responses.piFullname ? claims && claims[0].responses.piFullname : `${claims && claims[0].responses.piFirstName} ${claims && claims[0].responses.piMiddleName} ${claims && claims[0].responses.piLastName}`}
+                </span>
+                {' '}
+                Information here.
+              </h1>
           </div>
 
           <form onSubmit={handleSubmit}>
