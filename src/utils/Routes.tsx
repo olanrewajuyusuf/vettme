@@ -265,7 +265,12 @@ export const routes = [
   },
   {
     path: "/guarantor-form/:personnelName/:verificatonType/:id/:guarantorId/liveness-check",
-    element: <LiveCameraCapture />,
+    
+    element: 
+      <Suspense fallback={<Skeleton />}>
+        <LiveCameraCapture />
+      </Suspense>
+    
   },
   {
     path: "/agent-form",
