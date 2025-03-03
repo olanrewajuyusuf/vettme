@@ -1,7 +1,7 @@
 import images from "@/assets/Images";
 import { useNavigate, useParams } from "react-router-dom";
 import { PiRecordFill } from "react-icons/pi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/api/baseUrl";
 
@@ -22,11 +22,9 @@ interface GuarantorForm {
 
 const GuarantorForm = () => {
   const navigate = useNavigate();
-  const livenessRating = localStorage.getItem("livenessConfidence")
 
   const { 
     id, 
-    // verificationType, 
     personnelName, 
     guarantorId 
   } = useParams();
@@ -39,77 +37,133 @@ const GuarantorForm = () => {
     awarenessQuestion: false,
     liabilityQuestion: false,
     guarantorId: `${guarantorId}`,
-    livenessCheck: `${livenessRating}`
+    livenessCheck: ''
   });
+
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('guarantorFormData');
+    if (savedFormData) {
+      setFormData(JSON.parse(savedFormData));
+    }
+  }, []);
   
-    const handleIdCardUrl = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+  const handleIdCardUrl = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       try {
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('upload_preset', 'vettmepro') // Replace with your upload preset
-        const response = await axios.post('https://api.cloudinary.com/v1_1/ijm-global-limited/image/upload', formData)
-        setIdCardUrl(response.data.secure_url)
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "vettmepro"); // Replace with your upload preset
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/ijm-global-limited/image/upload",
+          formData
+        );
+        const uploadedIdCardUrl = response.data.secure_url;
+        setIdCardUrl(uploadedIdCardUrl);
+  
+        // Retrieve current form data from localStorage
+        const storedFormData = localStorage.getItem("guarantorFormData");
+        let updatedFormData = storedFormData ? JSON.parse(storedFormData) : {};
+  
+        // Add the new idCard URL to the existing form data
+        updatedFormData = { ...updatedFormData, idCard: uploadedIdCardUrl };
+  
+        // Save the updated form data back to localStorage
+        localStorage.setItem("guarantorFormData", JSON.stringify(updatedFormData));
       } catch (err) {
-        console.error('Error uploading image:', err)
-        alert('Failed to upload image')
+        console.error("Error uploading image:", err);
+        alert("Failed to upload image");
       }
     }
-  }
-
+  };
+  
   const handleBankStatementUrl = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
     if (file) {
       try {
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('upload_preset', 'vettmepro') // Replace with your upload preset
-        const response = await axios.post('https://api.cloudinary.com/v1_1/ijm-global-limited/image/upload', formData)
-        setBankStatementUrl(response.data.secure_url)
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "vettmepro"); // Replace with your upload preset
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/ijm-global-limited/image/upload",
+          formData
+        );
+        const uploadedBankStatementUrl = response.data.secure_url;
+        setBankStatementUrl(uploadedBankStatementUrl);
+  
+        // Retrieve current form data from localStorage
+        const storedFormData = localStorage.getItem("guarantorFormData");
+        let updatedFormData = storedFormData ? JSON.parse(storedFormData) : {};
+  
+        // Add the new bankStatement URL to the existing form data
+        updatedFormData = { ...updatedFormData, bankStatement: uploadedBankStatementUrl };
+  
+        // Save the updated form data back to localStorage
+        localStorage.setItem("guarantorFormData", JSON.stringify(updatedFormData));
       } catch (err) {
-        console.error('Error uploading image:', err)
-        alert('Failed to upload image')
+        console.error("Error uploading image:", err);
+        alert("Failed to upload image");
       }
     }
-  }
-
+  };
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
   
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "number"
-        ? value === "" ? "" : Number(value) // ✅ Allows empty input
-        : type === "radio"
-        ? value === "true"
-        : value,
-    }));
+    // Update the form data state
+    setFormData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        [name]: type === "number"
+          ? value === "" ? "" : Number(value) // ✅ Allows empty input
+          : type === "radio"
+          ? value === "true"
+          : value,
+      };
+  
+      // Save to localStorage
+      localStorage.setItem('guarantorFormData', JSON.stringify(updatedData));
+  
+      return updatedData;
+    });
   };
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try{
-      await axios.post(`${baseUrl}/guarantor-form`, {
-        personnelName: formData.personnelName,           
-        responseId: formData.responseId,
-        awarenessQuestion: formData.awarenessQuestion,
-        liabilityQuestion: formData.liabilityQuestion,
-        carQuestion: formData.carQuestion,
-        carValue: formData.carValue, 
-        propertyQuestion: formData.propertyQuestion,
-        propertyValue: formData.propertyValue, 
-        idCard: idCardUrl, 
-        bankStatement: bankStatementUrl, 
-        guarantorId: formData.guarantorId,
-        livenessCheck: formData.livenessCheck
-      })
+
+    // Retrieve the form data from localStorage
+    const storedFormData = localStorage.getItem("guarantorFormData");
+    let updatedFormData = storedFormData ? JSON.parse(storedFormData) : {};
+
+    const livenessConfidence = localStorage.getItem("livenessConfidence");
+
+    // Ensure all form data is included
+    const formToSubmit = {
+      ...formData,
+      idCard: idCardUrl || updatedFormData.idCard,  // Use the latest idCard if available
+      bankStatement: bankStatementUrl || updatedFormData.bankStatement,  // Use the latest bankStatement if available
+      livenessCheck: livenessConfidence || formData.livenessCheck
+    };
+
+    try {
+      // Submit the form data to the server
+      await axios.post(`${baseUrl}/guarantor-form`, formToSubmit);
+  
       alert("Form submitted successfully!");
-    }catch(err){
-      console.error(err)
+  
+      // Optionally clear localStorage after successful submission
+      localStorage.removeItem("guarantorFormData");
+      localStorage.removeItem("livenessConfidence");
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      alert("Failed to submit form.");
     }
-    // navigate('/')
-  }
+
+    // Redirect to another page after form submission (adjust this as needed)
+    navigate('/');
+};
+
+  
   return (
     <div className="min-h-[100svh] py-10 grid place-content-center">
         <form onSubmit={handleSubmit} className="address w-[90%] max-w-[500px] rounded-2xl mx-auto border-[1px] border-destructive overflow-hidden">
