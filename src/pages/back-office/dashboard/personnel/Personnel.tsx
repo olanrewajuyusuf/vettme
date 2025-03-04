@@ -120,6 +120,9 @@ export default function Personnel() {
   const professionalInformation2 = getFilteredObjects(claims && claims[0].responses, findings, professionalInput2, "pri", verdicts, '2');
   const mentalInformation = getFilteredObjects(claims && claims[0].responses, findings, mentalHealthInput, "mhi", verdicts);
 
+  console.log(personalInformation);
+  
+
   return (
     <>
       <div className="mb-[30px] flex justify-between items-center">

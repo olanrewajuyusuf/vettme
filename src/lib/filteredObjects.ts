@@ -26,15 +26,14 @@ export function getFilteredObjects(
       return aPriority - bPriority || keyA.localeCompare(keyB);
     });
 
-  // Step 2: Extract values from all parameters
+  // Step 2: Extract values from all parameters in the same order as resultEntries
   const resultValues = resultEntries.map(([_, value]) => value);
-  const filteredSValues = resultEntries.map(([key]) => s[key]).filter(val => val !== undefined);
-  const filteredTValues = resultEntries.map(([key]) => t[key]).filter(val => val !== undefined);
-  const filteredUValues = resultEntries.map(([key]) => u[key]).filter(val => val !== undefined);
+  const filteredSValues = resultEntries.map(([key]) => s[key]);
+  const filteredTValues = resultEntries.map(([key]) => t[key]);
+  const filteredUValues = resultEntries.map(([key]) => u[key]);
 
-  // Step 3: Create array of objects with claim, findings, data, and extra
-  const maxLength = Math.max(resultValues.length, filteredSValues.length, filteredTValues.length, filteredUValues.length);
-  const items = Array.from({ length: maxLength }, (_, i) => ({
+  // Step 3: Create array of objects with claim, findings, data, and verdict
+  const items = resultEntries.map((_, i) => ({
     claim: resultValues[i] ?? null,
     finding: filteredSValues[i] ?? null,
     data: filteredTValues[i] ?? null,
