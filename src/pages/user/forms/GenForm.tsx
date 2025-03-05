@@ -129,9 +129,6 @@ export default function GenForms() {
         console.error("Error fetching visibility data:", error);
       });
   }, [url, token]);
-
-
-  console.log(visibleFields);
   
   // Filter personalInfoFields based on visibleFields
   const filteredFields = personalInfoResponse.filter((field) =>

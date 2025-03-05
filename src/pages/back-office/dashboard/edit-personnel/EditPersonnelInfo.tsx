@@ -14,6 +14,8 @@ import {
   personalInput, 
   professionalInput1, 
   professionalInput2 } from "@/utils/field";
+import Spinner from "@/components/Spinner";
+import { EditInfoSkeleton } from "@/components/SkeletonUi";
 
 const EditPersonnelInfo = () => {
   const [claims, setClaims] = useState<any | "">("");
@@ -21,6 +23,9 @@ const EditPersonnelInfo = () => {
   const params = useParams();
   const [formData, setFormData] = useState({});
   const [radioData, setRadioData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isError, setIsError] = useState('');
   const { updateFinding } = useUpdateFinding();
   const { updateVerdict } = useUpdateVerdict();
   const navigate = useNavigate();
@@ -39,8 +44,10 @@ const EditPersonnelInfo = () => {
           const data = await fetchBatchesResponse(params.verification_id as string);          
           const resp = data.data.filter((item: any)=> item.id === params.id);
           setClaims(resp);
+          setLoading(false);
         } catch (error) {
           console.error("Failed to get batches response:", error);
+          setIsError("Failed to fetch data");
         }
       };
       getResponse();
@@ -59,6 +66,7 @@ const EditPersonnelInfo = () => {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
     const verdict = {
       results: radioData,
@@ -70,11 +78,16 @@ const EditPersonnelInfo = () => {
       navigate(-1);
     } catch (error: any) {
       console.error("Error submitting data:", error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div>
+      {loading && <EditInfoSkeleton />}
+      {isError && <div>{isError}</div>}
+      {!loading && (
       <div className="">
           <div>
               <h1 className="font-normal">
@@ -99,10 +112,14 @@ const EditPersonnelInfo = () => {
             {professionalInformation2.length > 0 && <EditPersonnelInformation data={professionalInformation2} title="2nd Professional Information" handleInputChange={handleInputChange} handleRadioChange={handleRadioChange} />}
             {mentalInformation.length > 0 && <EditPersonnelInformation data={mentalInformation} title="Mental Health Information" handleInputChange={handleInputChange} handleRadioChange={handleRadioChange} />}
             <div className="flex gap-3">
-              <Button className="red-gradient">Save changes</Button>
+              <Button 
+              className="red-gradient" 
+              disabled={isLoading} >
+                {isLoading ? <Spinner /> : "Save changes"}
+              </Button>
             </div>
           </form>
-      </div>
+      </div>)}
     </div>
   )
 }

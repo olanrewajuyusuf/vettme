@@ -3,17 +3,32 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Loader from "@/components/Loader";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { baseUrl } from "@/api/baseUrl";
+import toast from "react-hot-toast";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
 
-  const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(false);
-    navigate("/auth/confirm-mail", { state: { type: "account-recovery" } });
+    setIsLoading(true);
+    const formData = {data: email};
+    
+    try{
+      await axios.post(`${baseUrl}/auth/forgot-password`, formData)
+      navigate("/auth/confirm-mail");
+    } catch(err){
+        console.error(err)
+        toast.error("Can not submit form")
+    } 
+    finally {
+        setIsLoading(false);
+    }
   };
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h1>Let's find your Account</h1>

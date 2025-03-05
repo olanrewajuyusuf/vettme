@@ -204,3 +204,70 @@ export function VerificationSkeleton() {
         </div>
     )
 }
+
+export function PersonnelInfoSkeleton() {
+    return (
+        <div className="">
+            <div className='flex justify-between items-center my-5'>
+                <div>
+                    <Skeleton className="w-64 h-5 bg-white" />
+                    <Skeleton className="w-64 h-5 bg-white mt-2" />
+                </div>
+                <Skeleton className="w-20 h-12 bg-white" />
+            </div>
+            <div className='grid grid-cols-4 border-[1px] border-stroke-clr mb-5 rounded-lg bg-white'>
+                <div className='border-r-[1px] border-stroke-clr p-5'>
+                    <Skeleton className="w-40 h-5" />
+                    <Skeleton className="w-20 h-5 mt-2" />
+                </div>
+                <div className='border-r-[1px] border-stroke-clr p-5'>
+                    <Skeleton className="w-40 h-5" />
+                    <Skeleton className="w-20 h-5 mt-2" />
+                </div>
+                <div className='border-r-[1px] border-stroke-clr p-5'>
+                    <Skeleton className="w-40 h-5" />
+                    <Skeleton className="w-20 h-5 mt-2" />
+                </div>
+                <div className=' p-5'>
+                    <Skeleton className="w-40 h-5" />
+                    <Skeleton className="w-20 h-5 mt-2" />
+                </div>
+            </div>
+
+            <div className='border-[1px] border-stroke-clr p-5 mb-5 rounded-lg bg-white'>
+                <Skeleton className="w-40 h-5" />
+            </div>
+            <div className='border-[1px] border-stroke-clr p-5 mb-5 rounded-lg bg-white'>
+                <Skeleton className="w-40 h-5" />
+            </div>
+            <div className='border-[1px] border-stroke-clr p-5 mb-5 rounded-lg bg-white'>
+                <Skeleton className="w-40 h-5" />
+            </div>
+            
+        </div>
+    )
+}
+
+export function EditInfoSkeleton() {
+    return (
+        <div className="">
+            <Skeleton className="w-96 h-7 bg-white my-5" />
+
+            <div className='border-[1px] border-stroke-clr p-5 mb-5 rounded-lg bg-white'>
+                <Skeleton className="w-40 h-5" />
+            </div>
+            <div className='border-[1px] border-stroke-clr p-5 mb-5 rounded-lg bg-white'>
+                <Skeleton className="w-40 h-5" />
+            </div>
+            <div className='border-[1px] border-stroke-clr p-5 mb-5 rounded-lg bg-white'>
+                <Skeleton className="w-40 h-5" />
+            </div>
+            <div className='border-[1px] border-stroke-clr p-5 mb-5 rounded-lg bg-white'>
+                <Skeleton className="w-40 h-5" />
+            </div>
+
+            <Skeleton className="w-40 h-14 bg-white" />
+            
+        </div>
+    )
+}

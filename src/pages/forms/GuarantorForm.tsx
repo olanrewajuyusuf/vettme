@@ -4,6 +4,9 @@ import { PiRecordFill } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/api/baseUrl";
+import Spinner from "@/components/Spinner";
+import toast from "react-hot-toast";
+import FormSubmissionModal from "@/components/modals/FormSubmissionModal";
 
 interface GuarantorForm {
     personnelName: string,           
@@ -30,6 +33,8 @@ const GuarantorForm = () => {
   } = useParams();
 
   const [idCardUrl, setIdCardUrl] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [bankStatementUrl, setBankStatementUrl] = useState<string>('');
   const [formData, setFormData] = useState<GuarantorForm>({
     personnelName: `${personnelName}`,
@@ -130,10 +135,11 @@ const GuarantorForm = () => {
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
     // Retrieve the form data from localStorage
     const storedFormData = localStorage.getItem("guarantorFormData");
-    let updatedFormData = storedFormData ? JSON.parse(storedFormData) : {};
+    const updatedFormData = storedFormData ? JSON.parse(storedFormData) : {};
 
     const livenessConfidence = localStorage.getItem("livenessConfidence");
 
@@ -149,22 +155,22 @@ const GuarantorForm = () => {
       // Submit the form data to the server
       await axios.post(`${baseUrl}/guarantor-form`, formToSubmit);
   
-      alert("Form submitted successfully!");
+      setModalOpen(true)
   
       // Optionally clear localStorage after successful submission
       localStorage.removeItem("guarantorFormData");
       localStorage.removeItem("livenessConfidence");
     } catch (err) {
       console.error("Error submitting form:", err);
-      alert("Failed to submit form.");
+      toast.error("Failed to submit form.");
+    } finally {
+      setIsLoading(false);
     }
-
-    // Redirect to another page after form submission (adjust this as needed)
-    navigate('/');
 };
 
-  
   return (
+    <>
+    {<FormSubmissionModal isOpen={modalOpen} />}
     <div className="min-h-[100svh] py-10 grid place-content-center">
         <form onSubmit={handleSubmit} className="address w-[90%] max-w-[500px] rounded-2xl mx-auto border-[1px] border-destructive overflow-hidden">
             <div className="h-[70px] flex justify-between items-center bg-destructive gap-10 pr-5">
@@ -281,13 +287,15 @@ const GuarantorForm = () => {
               </div>
 
                  <button type="submit"
-                  className="w-full bg-destructive py-4 mt-2 rounded-xl text-white font-bold hover:bg-red-700"
+                  className="grid place-items-center w-full bg-destructive py-4 mt-2 rounded-xl text-white font-bold hover:bg-red-700"
+                  disabled={isLoading}
                  >
-                  Submit
+                  {isLoading ? <Spinner /> : "Submit"}
                 </button>
             </div>
         </form>
     </div>
+    </>
   )
 }
 

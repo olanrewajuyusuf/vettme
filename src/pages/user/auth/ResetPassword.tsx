@@ -3,6 +3,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EyeNoneIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import { baseUrl } from "@/api/baseUrl";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function ResetPassword() {
   const [cred, setCred] = useState({
@@ -11,11 +15,31 @@ export default function ResetPassword() {
   });
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleReset = (e: React.FormEvent<HTMLFormElement>) => {
+  const params = useParams();
+  const navigate = useNavigate();
+  
+  const handleReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(false);
+    setIsLoading(true);
+    const formData = {
+      token: params.token,
+      newPassword: cred.pass_1,
+    }
+    
+    try{
+      await axios.post(`${baseUrl}/auth/reset-password2`, formData);
+      toast.success("Password reset successfully!");
+      navigate("/auth/login");
+    } catch(err){
+        console.error(err)        
+        toast.error("Can not reset your password, Kindly resend your email");
+        navigate("/auth/forgot-password");
+    } 
+    finally {
+        setIsLoading(false);
+    }
   };
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h1>Reset your Password</h1>

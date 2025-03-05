@@ -33,6 +33,7 @@ import {
   professionalInput1,
   professionalInput2,
 } from "@/utils/field";
+import { PersonnelInfoSkeleton } from "@/components/SkeletonUi";
 
 export default function Personnel() {
   const location = useLocation();
@@ -40,6 +41,8 @@ export default function Personnel() {
   const [findings, setFindings] = useState<"" | any>("");
   const [verdicts, setVerdicts] = useState<"" | any>("");
   const [ratings, setRatings] = useState<"" | any>(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState('');
   const { fetchFinding } = useFetchFinding();
   const { fetchVerificationRating } = useFetchVerificationRating();
   const params = useParams();
@@ -71,8 +74,10 @@ export default function Personnel() {
           params.personnel_id as string
         );
         setRatings(data);
+        setIsLoading(false)
       } catch (error) {
         console.error("Failed to get Rating:", error);
+        setIsError("Failed to fetch data");
       }
     };
 
@@ -179,6 +184,10 @@ export default function Personnel() {
   );
 
   return (
+    <>
+    {isLoading && <PersonnelInfoSkeleton />}
+    {isError && <div>{isError}</div>}
+    {!isLoading && (
     <>
       <div className="mb-[30px] flex justify-between items-center">
         <div>
@@ -708,6 +717,7 @@ export default function Personnel() {
       {/* <div className="flex gap-3">
         <Button className="red-gradient">Download Data</Button>
       </div> */}
+      </>)}
     </>
   );
 }
