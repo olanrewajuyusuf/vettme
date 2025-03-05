@@ -29,7 +29,6 @@ import {
   professionalInput2 } from "@/utils/field";
 import { Button } from "@/components/ui/button";
 import { useFetchBatchesResponse, useFetchFinding, useFetchVerdict, useFetchVerificationRating } from "@/hooks/backOffice";
-import { Divide } from "lucide-react";
 import { PersonnelInfoSkeleton } from "@/components/SkeletonUi";
 
 export default function Personnel() {

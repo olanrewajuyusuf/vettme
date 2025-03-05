@@ -164,7 +164,7 @@ function ProfessionalInfo() {
 
                 <form onSubmit={handleSubmit}>
                 {claim.priOrganizationName1 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr/Mrs {personnelName} work in your Organization ({claim.priOrganizationName1})?
                     </legend>
@@ -173,7 +173,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="organizationNameYes" className="hidden peer" name="organizationName" value="true" checked={formData.organizationName === true} onChange={handleChange} />
                             <label
                                 htmlFor="organizationNameYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -182,17 +182,17 @@ function ProfessionalInfo() {
                             <input type="radio" id="organizationNameNo"  className="hidden peer" name="organizationName" value="false" checked={formData.organizationName === false} onChange={handleChange}/>
                             <label
                                 htmlFor="organizationNameNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 {claim.priEmploymentStartDate1 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr/Mrs {personnelName} start working in your Organization on {claim.priEmploymentStartDate1}?
                     </legend>
@@ -201,7 +201,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="employmentStartDateYes" className="hidden peer" name="employmentStartDate" value="true" checked={formData.employmentStartDate === true} onChange={handleChange} />
                             <label
                                 htmlFor="employmentStartDateYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -210,16 +210,16 @@ function ProfessionalInfo() {
                             <input type="radio" id="employmentStartDateNo" className="hidden peer" name="employmentStartDate" value="false" checked={formData.employmentStartDate === false} onChange={handleChange} />
                             <label
                                 htmlFor="employmentStartDateNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} demonstrate strong communication skills during their time at your organization?
                     </legend>
@@ -228,7 +228,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="communicationSkillsYes" className="hidden peer" name="communicationSkills" value="true" checked={formData.communicationSkills === true} onChange={handleChange} />
                             <label
                                 htmlFor="communicationSkillsYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -237,15 +237,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="communicationSkillsNo" className="hidden peer" name="communicationSkills" value="false" checked={formData.communicationSkills === false} onChange={handleChange} />
                             <label
                                 htmlFor="communicationSkillsNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} meet performance targets and deadlines in their role?
                     </legend>
@@ -254,7 +254,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="performanceTargetsYes" className="hidden peer" name="performanceTargets" value="true" checked={formData.performanceTargets === true} onChange={handleChange} />
                             <label
                                 htmlFor="performanceTargetsYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -263,15 +263,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="performanceTargetsNo" className="hidden peer" name="performanceTargets" value="false" checked={formData.performanceTargets === false} onChange={handleChange} />
                             <label
                                 htmlFor="performanceTargetsNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} show a willingness to learn and adapt to new tasks or technologies?
                     </legend>
@@ -280,7 +280,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="willingnessYes" className="hidden peer" name="willingness" value="true" checked={formData.willingness === true} onChange={handleChange} />
                             <label
                                 htmlFor="willingnessYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -289,15 +289,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="willingnessNo" className="hidden peer" name="willingness" value="false" checked={formData.willingness === false} onChange={handleChange} />
                             <label
                                 htmlFor="willingnessNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Would you say that Mr./Mrs. {personnelName} demonstrated leadership qualities or potential during their time at your organization?
                     </legend>
@@ -306,7 +306,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="leaderShipQualitiesYes" className="hidden peer" name="leaderShipQualities" value="true" checked={formData.leaderShipQualities === true} onChange={handleChange} />
                             <label
                                 htmlFor="leaderShipQualitiesYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -315,15 +315,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="leaderShipQualitiesNo" className="hidden peer" name="leaderShipQualities" value="false" checked={formData.leaderShipQualities === false} onChange={handleChange} />
                             <label
                                 htmlFor="leaderShipQualitiesNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Would you say Mr./Mrs. {personnelName} possessed problem-solving skills?
                     </legend>
@@ -332,7 +332,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="problemSolvingYes" className="hidden peer" name="problemSolving" value="true" checked={formData.problemSolving === true} onChange={handleChange} />
                             <label
                                 htmlFor="problemSolvingYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -341,15 +341,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="problemSolvingNo" className="hidden peer" name="problemSolving" value="false" checked={formData.problemSolving === false} onChange={handleChange} />
                             <label
                                 htmlFor="problemSolvingNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} take initiative in improving processes or contributing to the success of the organization?
                     </legend>
@@ -358,7 +358,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="initiativeYes" className="hidden peer" name="initiative" value="true" checked={formData.initiative === true} onChange={handleChange} />
                             <label
                                 htmlFor="initiativeYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -367,15 +367,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="initiativeNo" className="hidden peer" name="initiative" value="false" checked={formData.initiative === false} onChange={handleChange} />
                             <label
                                 htmlFor="initiativeNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} have any disciplinary issues during their employment?
                     </legend>
@@ -384,7 +384,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="disciplinaryIssuesYes" className="hidden peer" name="disciplinaryIssues" value="true" checked={formData.disciplinaryIssues === true} onChange={handleChange} />
                             <label
                                 htmlFor="disciplinaryIssuesYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -393,16 +393,16 @@ function ProfessionalInfo() {
                             <input type="radio" id="disciplinaryIssuesNo" className="hidden peer" name="disciplinaryIssues" value="false" checked={formData.disciplinaryIssues === false} onChange={handleChange} />
                             <label
                                 htmlFor="disciplinaryIssuesNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
                 {claim.priOrganizationEmail1 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Is this your organization's email ({claim.priOrganizationEmail1})?
                     </legend>
@@ -412,7 +412,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="organizationEmailYes" className="hidden peer" name="organizationEmail" value="true" checked={formData.organizationEmail === true} onChange={handleChange} />
                             <label
                                 htmlFor="organizationEmailYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -421,17 +421,17 @@ function ProfessionalInfo() {
                             <input type="radio" id="organizationEmailNo" className="hidden peer" name="organizationEmail" value="false" checked={formData.organizationEmail === false} onChange={handleChange}/>
                             <label
                                 htmlFor="organizationEmailNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 {claim.priEmploymentType1 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Was the employment type of Mr/Mrs {personnelName} {claim.priEmploymentType1}?
                     </legend>
@@ -440,7 +440,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="employmentTypeYes" className="hidden peer" name="employmentType" value="true" checked={formData.employmentType === true} onChange={handleChange}/>
                             <label
                                 htmlFor="employmentTypeYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -449,17 +449,17 @@ function ProfessionalInfo() {
                             <input type="radio" id="employmentTypeNo" className="hidden peer" name="employmentType" value="false" checked={formData.employmentType === false} onChange={handleChange}/>
                             <label
                                 htmlFor="employmentTypeNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 {claim.priProfessionalSkills1 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Would you say that Mr/Mrs {personnelName} possesses these skills: <span className="font-bold">{claim.priProfessionalSkills1}</span>?
                     </legend>
@@ -468,7 +468,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="professionalSkillsYes" className="hidden peer" name="professionalSkills" value="true" checked={formData.professionalSkills === true} onChange={handleChange}/>
                             <label
                                 htmlFor="professionalSkillsYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -477,17 +477,17 @@ function ProfessionalInfo() {
                             <input type="radio" id="professionalSkillsNo" className="hidden peer" name="professionalSkills" value="false" checked={formData.professionalSkills === false} onChange={handleChange}/>
                             <label
                                 htmlFor="professionalSkillsNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 {claim.priProfessionalReferenceName1 && (  
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Mr/Mrs {personnelName} used Mr/Mrs {claim.priProfessionalReferenceName1} as a reference. Have you worked with them, and would you consider them a good referral?
                     </legend>
@@ -496,7 +496,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="referenceNameYes" className="hidden peer" name="referenceName" value="true" checked={formData.referenceName === true} onChange={handleChange}/>
                             <label
                                 htmlFor="referenceNameYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -505,13 +505,13 @@ function ProfessionalInfo() {
                             <input type="radio" id="referenceNameYes" className="hidden peer" name="referenceName" value="false" checked={formData.referenceName === false} onChange={handleChange}/>
                             <label
                                 htmlFor="referenceNameYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
                 <button 
                 className="grid place-items-center w-full mt-6 bg-blue-600 text-white py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition" 
@@ -533,7 +533,7 @@ function ProfessionalInfo() {
 
                 <form onSubmit={handleSubmit2}>
                 {claim.priOrganizationName2 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr/Mrs {personnelName} work in your Organization ({claim.priOrganizationName2})?
                     </legend>
@@ -542,7 +542,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="organizationNameYes" className="hidden peer" name="organizationName" value="true" checked={formData2.organizationName === true} onChange={handleChange2} />
                             <label
                                 htmlFor="organizationNameYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -551,17 +551,17 @@ function ProfessionalInfo() {
                             <input type="radio" id="organizationNameNo"  className="hidden peer" name="organizationName" value="false" checked={formData2.organizationName === false} onChange={handleChange2}/>
                             <label
                                 htmlFor="organizationNameNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 {claim.priEmploymentStartDate2 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr/Mrs {personnelName} start working in your Organization on {claim.priEmploymentStartDate2}?
@@ -571,7 +571,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="employmentStartDateYes" className="hidden peer" name="employmentStartDate" value="true" checked={formData2.employmentStartDate === true} onChange={handleChange2} />
                             <label
                                 htmlFor="employmentStartDateYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -580,16 +580,16 @@ function ProfessionalInfo() {
                             <input type="radio" id="employmentStartDateNo" className="hidden peer" name="employmentStartDate" value="false" checked={formData2.employmentStartDate === false} onChange={handleChange2} />
                             <label
                                 htmlFor="employmentStartDateNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} demonstrate strong communication skills during their time at your organization?
                     </legend>
@@ -598,7 +598,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="communicationSkillsYes" className="hidden peer" name="communicationSkills" value="true" checked={formData.communicationSkills === true} onChange={handleChange} />
                             <label
                                 htmlFor="communicationSkillsYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -607,15 +607,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="communicationSkillsNo" className="hidden peer" name="communicationSkills" value="false" checked={formData.communicationSkills === false} onChange={handleChange} />
                             <label
                                 htmlFor="communicationSkillsNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} meet performance targets and deadlines in their role?
                     </legend>
@@ -624,7 +624,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="performanceTargetsYes" className="hidden peer" name="performanceTargets" value="true" checked={formData.performanceTargets === true} onChange={handleChange} />
                             <label
                                 htmlFor="performanceTargetsYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -633,15 +633,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="performanceTargetsNo" className="hidden peer" name="performanceTargets" value="false" checked={formData.performanceTargets === false} onChange={handleChange} />
                             <label
                                 htmlFor="performanceTargetsNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} show a willingness to learn and adapt to new tasks or technologies?
                     </legend>
@@ -650,7 +650,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="willingnessYes" className="hidden peer" name="willingness" value="true" checked={formData.willingness === true} onChange={handleChange} />
                             <label
                                 htmlFor="willingnessYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -659,15 +659,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="willingnessNo" className="hidden peer" name="willingness" value="false" checked={formData.willingness === false} onChange={handleChange} />
                             <label
                                 htmlFor="willingnessNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Would you say that Mr./Mrs. {personnelName} demonstrated leadership qualities or potential during their time at your organization?
                     </legend>
@@ -676,7 +676,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="leaderShipQualitiesYes" className="hidden peer" name="leaderShipQualities" value="true" checked={formData.leaderShipQualities === true} onChange={handleChange} />
                             <label
                                 htmlFor="leaderShipQualitiesYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -685,15 +685,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="leaderShipQualitiesNo" className="hidden peer" name="leaderShipQualities" value="false" checked={formData.leaderShipQualities === false} onChange={handleChange} />
                             <label
                                 htmlFor="leaderShipQualitiesNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Would you say Mr./Mrs. {personnelName} possessed problem-solving skills?
                     </legend>
@@ -702,7 +702,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="problemSolvingYes" className="hidden peer" name="problemSolving" value="true" checked={formData.problemSolving === true} onChange={handleChange} />
                             <label
                                 htmlFor="problemSolvingYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -711,15 +711,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="problemSolvingNo" className="hidden peer" name="problemSolving" value="false" checked={formData.problemSolving === false} onChange={handleChange} />
                             <label
                                 htmlFor="problemSolvingNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} take initiative in improving processes or contributing to the success of the organization?
                     </legend>
@@ -728,7 +728,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="initiativeYes" className="hidden peer" name="initiative" value="true" checked={formData.initiative === true} onChange={handleChange} />
                             <label
                                 htmlFor="initiativeYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -737,15 +737,15 @@ function ProfessionalInfo() {
                             <input type="radio" id="initiativeNo" className="hidden peer" name="initiative" value="false" checked={formData.initiative === false} onChange={handleChange} />
                             <label
                                 htmlFor="initiativeNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
-                <fieldset className="mb-5">  
+                <section className="mb-5 flex items-center gap-2">  
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Did Mr./Mrs. {personnelName} have any disciplinary issues during their employment?
                     </legend>
@@ -754,7 +754,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="disciplinaryIssuesYes" className="hidden peer" name="disciplinaryIssues" value="true" checked={formData.disciplinaryIssues === true} onChange={handleChange} />
                             <label
                                 htmlFor="disciplinaryIssuesYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -763,16 +763,16 @@ function ProfessionalInfo() {
                             <input type="radio" id="disciplinaryIssuesNo" className="hidden peer" name="disciplinaryIssues" value="false" checked={formData.disciplinaryIssues === false} onChange={handleChange} />
                             <label
                                 htmlFor="disciplinaryIssuesNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
 
                 {claim.priOrganizationEmail2 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Is this your organization's email ({claim.priOrganizationEmail2})?
                     </legend>
@@ -782,7 +782,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="organizationEmailYes" className="hidden peer" name="organizationEmail" value="true" checked={formData2.organizationEmail === true} onChange={handleChange2} />
                             <label
                                 htmlFor="organizationEmailYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -791,17 +791,17 @@ function ProfessionalInfo() {
                             <input type="radio" id="organizationEmailNo" className="hidden peer" name="organizationEmail" value="false" checked={formData2.organizationEmail === false} onChange={handleChange2}/>
                             <label
                                 htmlFor="organizationEmailNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 {claim.priEmploymentType2 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Was the employment type of Mr/Mrs {personnelName} {claim.priEmploymentType2}?
                     </legend>
@@ -810,7 +810,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="employmentTypeYes" className="hidden peer" name="employmentType" value="true" checked={formData2.employmentType === true} onChange={handleChange2}/>
                             <label
                                 htmlFor="employmentTypeYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -819,17 +819,17 @@ function ProfessionalInfo() {
                             <input type="radio" id="employmentTypeNo" className="hidden peer" name="employmentType" value="false" checked={formData2.employmentType === false} onChange={handleChange2}/>
                             <label
                                 htmlFor="employmentTypeNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 {claim.priProfessionalSkills2 && (
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Would you say that Mr/Mrs {personnelName} possesses these skills: <span className="font-bold">{claim.priProfessionalSkills2}</span>?
                     </legend>
@@ -838,7 +838,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="professionalSkillsYes" className="hidden peer" name="professionalSkills" value="true" checked={formData2.professionalSkills === true} onChange={handleChange2}/>
                             <label
                                 htmlFor="professionalSkillsYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -847,17 +847,17 @@ function ProfessionalInfo() {
                             <input type="radio" id="professionalSkillsNo" className="hidden peer" name="professionalSkills" value="false" checked={formData2.professionalSkills === false} onChange={handleChange2}/>
                             <label
                                 htmlFor="professionalSkillsNo"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 {claim.priProfessionalReferenceName2 && (  
-                <fieldset className="mb-5">
+                <section className="mb-5 flex items-center gap-2">
                     <legend className="text-gray-700 text-sm font-medium mb-2">
                         Mr/Mrs {personnelName} used Mr/Mrs {claim.priProfessionalReferenceName2} as a reference. Have you worked with them, and would you consider them a good referral?
                     </legend>
@@ -866,7 +866,7 @@ function ProfessionalInfo() {
                             <input type="radio" id="referenceNameYes" className="hidden peer" name="referenceName" value="true" checked={formData2.referenceName === true} onChange={handleChange2}/>
                             <label
                                 htmlFor="referenceNameYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-green-500 peer-checked:text-white"
                             >
                                 Yes
                             </label>
@@ -875,13 +875,13 @@ function ProfessionalInfo() {
                             <input type="radio" id="referenceNameYes" className="hidden peer" name="referenceName" value="false" checked={formData2.referenceName === false} onChange={handleChange2}/>
                             <label
                                 htmlFor="referenceNameYes"
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
+                                className="flex items-center gap-2 p-2 text-xs rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 peer-checked:bg-red-500 peer-checked:text-white"
                             >
                                 No
                             </label>
                         </li>
                     </ul>
-                </fieldset>
+                </section>
                 )}
 
                 <button 
