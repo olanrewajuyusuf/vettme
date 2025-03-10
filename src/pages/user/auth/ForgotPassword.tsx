@@ -19,7 +19,7 @@ export default function ForgotPassword() {
     
     try{
       await axios.post(`${baseUrl}/auth/forgot-password`, formData)
-      navigate("/auth/confirm-mail");
+      navigate("/auth/confirm-email");
     } catch(err){
         console.error(err)
         toast.error("Can not submit form")

@@ -7,15 +7,19 @@ import Index from "@/pages/user/auth/Index";
 import AppIndex from "@/pages/user/dashboard/Index";
 import BackOfficeIndex from "@/pages/back-office";
 import AddressIndex from "@/pages/address-verification";
+import DocLayout from "@/layouts/DocLayout";
+import DocIndex from "@/pages/docs/DocIndex";
 
 import { lazy, Suspense } from "react";
 import { VideoProvider } from "./context/VideoContext";
-import AllChats from "@/pages/back-office/all-chats/AllChats";
-import SupportAdmin from "@/pages/back-office/support/SupportAdmin";
 import UserProvider from "./context/UserProvider";
 import { NotificationProvider } from "./context/NotificationContext";
+import Features from "@/pages/docs/Features";
+import Activation from "@/pages/docs/Activation";
+import DocVerification from "@/pages/docs/Verification";
 
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
+const ForgotPasswordMail = lazy(() => import("@/pages/user/auth/ForgotPasswordMail"));
 const Activate = lazy(() => import("@/pages/user/auth/Activate"));
 const VerifyEmail = lazy(() => import("@/pages/user/auth/VerifyEmail"));
 const EmailVerified = lazy(() => import("@/pages/user/auth/EmailVerified"));
@@ -40,6 +44,12 @@ const FormSetup = lazy(() => import("@/pages/user/setup/FormSetup"));
 const GenForms = lazy(() => import("@/pages/user/forms/GenForm"));
 const PreviewForms = lazy(() => import("@/pages/user/forms/PreviewForms"));
 
+const NotFound = lazy(() => import("@/pages/misc/NotFound"));
+
+// Docs
+const DocHome = lazy(() => import("@/pages/docs/Home"));
+
+// Back Office
 const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Dashboard"));
 const Batches  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/Batches"));
 const VerificationsBatch  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationsBatch"));
@@ -50,7 +60,10 @@ const AgentInfo = lazy(() => import("@/pages/back-office/all-agents/AgentInfo"))
 const AllAddresses = lazy(() => import("@/pages/back-office/all-addresses/AllAddresses"));
 const AddressDetail = lazy(() => import("@/pages/back-office/all-addresses/AddressDetail"));
 const AdminLoginPage = lazy(() => import("@/pages/back-office/auth/AdminLoginPage"));
+const AllChats = lazy(() => import("@/pages/back-office/all-chats/AllChats"));
+const SupportAdmin = lazy(() => import("@/pages/back-office/support/SupportAdmin"));
 
+// Address verification
 const AddressVerification = lazy(() => import("@/pages/address-verification/Address"));
 const PersonnelsList = lazy(() => import("@/pages/address-verification/PersonnelsList"));
 const AddressVettForm = lazy(() => import("@/pages/address-verification/AddressVettForm"));
@@ -96,6 +109,10 @@ export const routes = [
       {
         path: "forgot-password",
         element: <ForgotPassword />,
+      },
+      {
+        path: "confirm-email",
+        element: <ForgotPasswordMail />,
       },
       {
         path: "reset-password/:token",
@@ -286,5 +303,36 @@ export const routes = [
   {
     path: "/professional-info-form/:id/:personnelName/:organizationId",
     element: <ProfessionalInfo/>,
+  },
+
+  {
+    path: "docs",
+    element: (
+      <DocLayout>
+        <DocIndex />
+      </DocLayout>
+    ),
+    children: [
+      {
+        path: "",
+        element: <DocHome />,
+      },
+      {
+        path: "features",
+        element: <Features />,
+      },
+      {
+        path: "activation",
+        element: <Activation />,
+      },
+      {
+        path: "verification",
+        element: <DocVerification />,
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ];

@@ -18,7 +18,9 @@ export const VerifiedAddress = async (
       toast.success(res?.data?.message || "Data submited", {
         id: toastId,
       });
-
+      localStorage.removeItem("landmark")
+      localStorage.removeItem("busStop")
+      localStorage.removeItem("confirmation")
       navigate("/address-verification/personnelslist");
     })
     .catch((err) => {
