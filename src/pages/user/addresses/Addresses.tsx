@@ -9,7 +9,6 @@ import {
 import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { MixerVerticalIcon } from "@radix-ui/react-icons";
-// import { useFetchAddresses } from "@/hooks/backOffice";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
@@ -205,7 +204,19 @@ const Addresses = () => {
                                     <TableCell className="text-gray-400">{address.lga}</TableCell>
                                     <TableCell className="text-gray-400">{address.address}</TableCell>
                                     <TableCell>
-                                        <Badge className={`pointer-events-none ${address.status === "VERIFIED" ? "bg-green-400" : address.status === "PENDING" ? "border-yellow-500 border-[1px] text-yellow-500 bg-transparent" : address.status === "FAILED" ? "bg-red-500" : "bg-orange-400"}`}>
+                                        <Badge className={`pointer-events-none 
+                                            ${
+                                            address.status === "VERIFIED" 
+                                            ? "bg-green-400" 
+                                            : address.status === "PENDING" 
+                                            ? "border-yellow-500 border-[1px] text-yellow-500 bg-transparent" 
+                                            : address.status === "submitted"
+                                            ? "bg-blue-500"
+                                            : address.status === "FAILED" 
+                                            ? "bg-red-500" 
+                                            : "bg-orange-400"
+                                            }
+                                            `}>
                                             {address.status}
                                         </Badge>
                                     </TableCell>

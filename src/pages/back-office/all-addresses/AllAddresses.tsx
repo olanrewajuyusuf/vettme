@@ -202,7 +202,7 @@ const AllAddresses = () => {
                                             : address.status === "PENDING" 
                                             ? "border-yellow-500 border-[1px] text-yellow-500 bg-transparent" 
                                             : address.status === "submitted"
-                                            ? "bg-blue-600"
+                                            ? "bg-blue-500"
                                             : address.status === "FAILED" 
                                             ? "bg-red-500" 
                                             : "bg-orange-400"
