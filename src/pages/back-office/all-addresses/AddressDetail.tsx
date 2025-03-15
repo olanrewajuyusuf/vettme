@@ -13,14 +13,14 @@ import { calculateDistance, getAddressFromCoordinates, getCoordinatesFromAddress
 import { MdPeopleAlt } from "react-icons/md";
 
 interface addressesProps {
-    id: string,
-    personnelName: string,
-    personnelType: string,
-    country: string,
-    state: string,
-    lga: string,
-    address: string,
-    status: string,
+    id: string;
+    personnelName: string;
+    personnelType: string;
+    country: string;
+    state: string;
+    lga: string;
+    address: string;
+    status: string;
 }
 
 interface findingsProps {
@@ -36,24 +36,31 @@ interface findingsProps {
 }
 
 const AddressDetail = () => {
-    const [ address, setAddress ] = useState<addressesProps[] | null>(null);
-    const [coordinates, setCoordinates] = useState<{ lat: number; lon: number } | null>(null);
+    const [address, setAddress] = useState<addressesProps[] | null>(null);
+    const [coordinates, setCoordinates] = useState<{
+        lat: number;
+        lon: number;
+    } | null>(null);
     const [coordAddress, setCoordAddress] = useState<any | null>(null);
-    const [ findings, setFindings ] = useState<findingsProps | null>(null);
-    const [ agent, setAgent ] = useState<any | null>(null);
-    const [ isVideo, setIsVideo ] = useState(false);
+    const [findings, setFindings] = useState<findingsProps | null>(null);
+    const [agent, setAgent] = useState<any | null>(null);
+    const [isVideo, setIsVideo] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [accepting, setAccepting] = useState(false);
+    const [rejecting, setRejecting] = useState(false);
     const { fetchAddresses } = useFetchAddresses();
     const { fetchAddress } = useFetchAddress();
     const { acceptAddress } = useAcceptAddress();
     const { rejectAddress } = useRejectAddress();
     const { id } = useParams();
-        
+
     useEffect(() => {
         const getAddress = async () => {
             try {
-                const data = await fetchAddresses();                  
-                const personnel = data.data.filter((person: addressesProps) => person.id === id)          
+                const data = await fetchAddresses();
+                const personnel = data.data.filter(
+                (person: addressesProps) => person.id === id
+                );
                 setAddress(personnel);
             } catch (error) {
                 console.error("Failed to fetch company info:", error);
@@ -62,61 +69,72 @@ const AddressDetail = () => {
 
         const getFindings = async () => {
             try {
-                const data = await fetchAddress(id as string);                  
-                setFindings(data.data.addressVerificationData);         
-                setAgent(data.data.agent);         
+                const data = await fetchAddress(id as string);
+                setFindings(data.data.addressVerificationData);
+                setAgent(data.data.agent);
             } catch (error) {
                 console.error("Failed to fetch agent's findings:", error);
             } finally {
                 setLoading(false);
             }
         };
-        
+
         getAddress();
         getFindings();
-    }, [fetchAddresses, id, fetchAddress]);    
+    }, [fetchAddresses, id, fetchAddress]);
 
     useEffect(() => {
         const fetchCoordinates = async () => {
-          const coords = await getCoordinatesFromAddress(address && address[0].address);
-          if (coords) {
+        const coords = await getCoordinatesFromAddress(
+            address && address[0].address
+        );
+        if (coords) {
             setCoordinates(coords);
-          }
+        }
         };
-    
+
         fetchCoordinates();
     }, [address]);
 
     useEffect(() => {
         const fetchCoordsAddress = async () => {
-          const coords = await getAddressFromCoordinates(findings?.initialLocation.lat, findings?.initialLocation.lon);
-          if (coords) {
+        const coords = await getAddressFromCoordinates(
+            findings?.initialLocation.lat,
+            findings?.initialLocation.lon
+        );
+        if (coords) {
             setCoordAddress(coords);
-          }
+        }
         };
-    
+
         fetchCoordsAddress();
-    }, [findings?.initialLocation.lat, findings?.initialLocation.lon]);    
-    
+    }, [findings?.initialLocation.lat, findings?.initialLocation.lon]);
+
     const handleAccept = async () => {
+        setAccepting(true);
         try {
-            await acceptAddress();
+            await acceptAddress(id as string);
         } catch (error: any) {
             console.error("Failed to accept the verdict:", error.message);
+        } finally {
+            setAccepting(false);
         }
     };
 
     const handleReject = async () => {
+        setRejecting(true);
         try {
-            await rejectAddress();
+            await rejectAddress(id as string);
         } catch (error: any) {
             console.error("Failed to reject the verdict:", error.message);
+        } finally {
+            setRejecting(false);
         }
     };
 
-    return (
-        <>
-        <div className="border-[1px] border-stroke-clr bg-white rounded-lg grid grid-cols-3">
+  return (
+    <>
+        <div className="border-[1px] border-stroke-clr bg-white rounded-lg grid grid-cols-3 gap-5">
             <div className="border-r-[1px] border-stroke-clr p-5">
                 <h2>Claim</h2>
                 {loading && (
@@ -216,7 +234,6 @@ const AddressDetail = () => {
                 </>)}
             </div>
         </div>
-
         <div className="grid grid-cols-3 gap-5 my-5">
             <div className="col-span-2">
                 <div className="bg-white rounded-lg border-[1px] border-stroke-clr">
@@ -327,13 +344,13 @@ const AddressDetail = () => {
                             onClick={() => handleAccept()}
                             className="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-500 text-sm"
                             >
-                                Accept
+                                {accepting ? "Accepting..." : "Accept"}
                             </button>
                             <button
                             onClick={() => handleReject()}
                             className="bg-destructive text-white px-3 py-1 rounded-md hover:bg-red-400 text-sm"
                             >
-                                Reject
+                                {rejecting ? "Rejecting..." : "Reject"}
                             </button>
                         </div>
                     </div>
@@ -409,8 +426,8 @@ const AddressDetail = () => {
                 </div>
             </div>
         </div>
-        </>
-    )
-}
+    </>
+    );
+};
 
 export default AddressDetail;

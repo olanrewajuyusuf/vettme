@@ -17,6 +17,8 @@ import { NotificationProvider } from "./context/NotificationContext";
 import Features from "@/pages/docs/Features";
 import Activation from "@/pages/docs/Activation";
 import DocVerification from "@/pages/docs/Verification";
+import Addresses from "@/pages/user/addresses/Addresses";
+// import Addresses from "@/pages/user/account/Addresses";
 
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const ForgotPasswordMail = lazy(() => import("@/pages/user/auth/ForgotPasswordMail"));
@@ -164,6 +166,10 @@ export const routes = [
       {
         path: "verifications/:id",
         element: <Verification />,
+      },
+      {
+        path: "verifications/:id/physicalAddressVerifications",
+        element: <Addresses />
       },
       {
         path: "verifications/:verification_id/personnel-info/:personnel_id",

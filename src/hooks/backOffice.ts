@@ -566,7 +566,7 @@ export const useUpdateVerdict = () => {
 export const useAcceptAddress = () => {
   const acceptAddress = useCallback(
     async (
-      // id: string,
+      id: string,
   ) => {
       try {
         const token = sessionStorage.getItem("adminToken");
@@ -578,9 +578,11 @@ export const useAcceptAddress = () => {
         const res = await axios.put(
           `${baseUrl}/address-verification/accept`,
           {
+            addressId: id, // The address ID you want to reject
+          },
+          {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
             },
           }
         );
@@ -604,7 +606,7 @@ export const useAcceptAddress = () => {
 export const useRejectAddress = () => {
   const rejectAddress = useCallback(
     async (
-      // id: string,
+      id: string,
   ) => {
       try {
         const token = sessionStorage.getItem("adminToken");
@@ -616,9 +618,11 @@ export const useRejectAddress = () => {
         const res = await axios.put(
           `${baseUrl}/address-verification/reject`,
           {
+            addressId: id, // The address ID you want to reject
+          },
+          {
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
             },
           }
         );
