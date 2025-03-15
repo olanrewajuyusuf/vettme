@@ -384,3 +384,29 @@ export const useFetchVerificationRating = () => {
   }, []);
   return {fetchVerificationRating};
 };
+
+
+export const useFetchAddresses = () => {
+
+  const fetchAddresses = useCallback(async (id: string) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/address/one/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching addresses:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch addresses");
+    throw new Error(error?.response?.data?.message || "Cannot fetch addresses");
+  }
+}, []);
+return { fetchAddresses };
+};

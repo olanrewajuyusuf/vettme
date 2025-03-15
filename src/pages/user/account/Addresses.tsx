@@ -6,10 +6,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { MixerVerticalIcon } from "@radix-ui/react-icons";
-import { useFetchAddresses } from "@/hooks/backOffice";
+// import { useFetchAddresses } from "@/hooks/backOffice";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { usePagination } from "@/hooks/usePagination";
 import Pagination from "@/components/pagination";
+import { useFetchAddresses } from "@/hooks/company";
 
 interface AddressesProps {
     id: string,
@@ -37,12 +38,20 @@ const AllAddresses = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchQuery, setSearchQuery] = useState("");
     const filter = searchParams.get("filter") || "all";
-    const navigate = useNavigate();
+    const {id} = useParams()
 
     useEffect(() => {
         const getAddresses = async () => {
+            if (!id) {
+                // If id is undefined, don't attempt to fetch data
+                setError("ID is missing");
+                setLoading(false);
+                return;
+            }
+    
             try {
-                const data = await fetchAddresses();
+                setLoading(true); // Set loading before fetching
+                const data = await fetchAddresses(id); // Now `id` is guaranteed to be a string
                 setAddresses(data.data);
             } catch (error) {
                 console.error("Failed to fetch company info:", error);
@@ -51,9 +60,10 @@ const AllAddresses = () => {
                 setLoading(false);
             }
         };
-
+    
         getAddresses();
-    }, [fetchAddresses]);
+    }, [id, fetchAddresses]); // Add `id` to dependency array
+    
 
     // Handle Filter Change
     const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -91,10 +101,10 @@ const AllAddresses = () => {
                 ? "You have no pending Address."
                 : filter === "in_progress"
                 ? "You have no In progress Address."
-                : filter === "failed"
-                ? "You have no failed Address."
                 : filter === "verified"
                 ? "You have no verified Address."
+                : filter === "failed"
+                ? "You have no failed Address."
                 : "No processing Address."
             : null;
 
@@ -102,7 +112,7 @@ const AllAddresses = () => {
 
     return (
         <div>
-            <h1 className="font-normal">All personnel's addresses</h1>
+            <h1 className="font-normal">Addresses</h1>
             <p className="mb-10">Manage all Personnel's addresses to be verified or already verified.</p>
             <div className="w-full bg-white rounded-xl border-[1px] border-stroke-clr overflow-hidden">
                 {/* Filter and Search */}
@@ -175,7 +185,7 @@ const AllAddresses = () => {
                             {paginatedData.map((address) => (
                                 <TableRow
                                     key={address.id}
-                                    onClick={() => navigate(`address-detail/${address.id}`)}
+                                    
                                 >
                                     <TableCell>
                                       <div 
