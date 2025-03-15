@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useFetchBatchesResponse, useFetchBatchesResponseCards, useFetchCompletionPercentage } from "@/hooks/company";
@@ -18,6 +18,8 @@ import moment from "moment";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
 import { usePagination } from "@/hooks/usePagination";
 import Pagination from "@/components/pagination";
+import axios from "axios";
+import { baseUrl } from "@/api/baseUrl";
 
 interface ResponseProps {
   id: string,
@@ -50,7 +52,37 @@ export default function Verification() {
   const [percentage, setPercentage] = useState<any | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = searchParams.get("filter") || "all";
+  const [form, setForm] = useState<any>(null)
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!id) {
+      // Skip the API call if id is undefined
+      console.warn("ID is missing.");
+      return;
+    }
+
+    const getForm = async () => {
+      setLoading(true); // Start loading
+      try {
+        const data = await axios.get(`${baseUrl}/verification/form/${id}`);
+        setForm(data.data.data.fields); // Update form state with the response
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false); // End loading
+      }
+    };
+
+    getForm();
+  }, [id]); // Re-run when id changes
+
+   // Log form data when it changes
+   useEffect(() => {
+    if (form) {
+      console.log(form); // Logs updated form data after state change
+    }
+  }, [form]); // This effect runs when form state updates
 
   useEffect(() => {
     const getResponse = async () => {
@@ -300,6 +332,16 @@ const filteredBatches = batchesResponse
         <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
         </>)}
       </div>
+
+      <br />
+
+      {(form?.piPhysicalAddressRequest || form?.giPhysicalAddressRequest1 || form?.giPhysicalAddressRequest2 || form?.giPhysicalAddressRequest3 || form?.giPhysicalAddressRequest4) && 
+        <Link to={`/verifications/${id}/physicalAddressVerifications`}>
+          <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-all ml-auto block">
+            Physical Address Verification
+          </button>
+        </Link>
+      }
     </>
   );
 }
