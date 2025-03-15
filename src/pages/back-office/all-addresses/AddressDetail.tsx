@@ -99,8 +99,8 @@ const AddressDetail = () => {
     useEffect(() => {
         const fetchCoordsAddress = async () => {
         const coords = await getAddressFromCoordinates(
-            findings?.initialLocation.lat,
-            findings?.initialLocation.lon
+            findings?.initialLocation.lat || findings?.finalLocation.lat,
+            findings?.initialLocation.lon || findings?.finalLocation.lon
         );
         if (coords) {
             setCoordAddress(coords);
@@ -108,7 +108,7 @@ const AddressDetail = () => {
         };
 
         fetchCoordsAddress();
-    }, [findings?.initialLocation.lat, findings?.initialLocation.lon]);
+    }, [findings?.initialLocation.lat, findings?.initialLocation.lon, findings?.finalLocation.lon, findings?.finalLocation.lat]);
 
     const handleAccept = async () => {
         setAccepting(true);
@@ -131,6 +131,9 @@ const AddressDetail = () => {
             setRejecting(false);
         }
     };
+
+    // Calculate distance
+    const distance = calculateDistance(coordinates?.lat, coordinates?.lon, findings?.initialLocation.lat || findings?.finalLocation.lat, findings?.initialLocation.lon || findings?.finalLocation.lon);    
 
   return (
     <>
@@ -286,7 +289,7 @@ const AddressDetail = () => {
                                 </td>
                                 <td>
                                     <span className="flex items-center gap-2 text-sm">
-                                        <TbWorldLongitude />Lon: {findings?.initialLocation.lon}
+                                        <TbWorldLongitude />Lon: {findings?.initialLocation.lon || findings?.finalLocation.lon}
                                     </span>
                                 </td>
                             </tr>
@@ -310,7 +313,7 @@ const AddressDetail = () => {
                                 </td>
                                 <td>
                                     <span className="flex items-center gap-2 text-sm">
-                                        <TbWorldLatitude />Lat: {findings?.initialLocation.lat}
+                                        <TbWorldLatitude />Lat: {findings?.initialLocation.lat || findings?.finalLocation.lat}
                                     </span>
                                 </td>
                             </tr>
@@ -322,7 +325,7 @@ const AddressDetail = () => {
                             </div>
                             <div>
                                 <h3 className="font-bold">Distance</h3>
-                                <p>{calculateDistance(coordinates?.lat, coordinates?.lon, findings?.initialLocation.lat, findings?.initialLocation.lon).toFixed(2)}</p>
+                                <p>{distance.toFixed(2)}km</p>
                             </div>
                         </div>
                     </div>
@@ -330,11 +333,11 @@ const AddressDetail = () => {
                         <div>
                             <span className="font-bold">Verdict:</span>
                             <span className={`text-sm ml-5 px-3 py-1 rounded-md
-                                ${calculateDistance(coordinates?.lat, coordinates?.lon, findings?.initialLocation.lat, findings?.initialLocation.lon) <= 5 ?
+                                ${distance <= 5 ?
                                 "bg-green-300 text-green-900" : "bg-red-300 text-red-700"}
                                 `}>
                             {
-                                calculateDistance(coordinates?.lat, coordinates?.lon, findings?.initialLocation.lat, findings?.initialLocation.lon) <= 5 ?
+                                distance <= 5 ?
                                 "Within the threshold." : "Not within the threshold."
                             }
                             </span>
