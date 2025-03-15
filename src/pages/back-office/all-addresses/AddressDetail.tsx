@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import loader from "@/assets/loader.svg";
 import { useParams } from "react-router-dom";
 import { IoIosPerson, IoIosTimer } from "react-icons/io";
-import { FaAddressBook, FaLandmark } from "react-icons/fa";
+import { FaAddressBook, FaCalendarCheck, FaLandmark } from "react-icons/fa";
 import { FaBusSimple } from "react-icons/fa6";
 import { TiInfoLarge } from "react-icons/ti";
 import { calculateDistance, getAddressFromCoordinates, getCoordinatesFromAddress } from "@/lib/geolocation";
@@ -32,6 +32,7 @@ interface findingsProps {
     finalLocation: any,
     video: string,
     status: string,
+    confirmation: string,
 }
 
 const AddressDetail = () => {
@@ -183,6 +184,13 @@ const AddressDetail = () => {
                     <div>
                         <p className="font-bold">Busstop</p>
                         <p>{findings?.busStop}</p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 bg-blue-900 rounded-full grid place-items-center text-white text-xl"><FaCalendarCheck /></div>
+                    <div>
+                        <p className="font-bold">Does this person live here?</p>
+                        <p>{findings?.confirmation}</p>
                     </div>
                 </div>
                 {!isVideo && <div className="bg-blue-600 rounded-lg text-white p-3 mb-3 shadow-md">
