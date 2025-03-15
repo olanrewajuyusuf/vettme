@@ -561,3 +561,79 @@ export const useUpdateVerdict = () => {
   );
   return { updateVerdict };
 };
+
+// Accept agent's verification
+export const useAcceptAddress = () => {
+  const acceptAddress = useCallback(
+    async (
+      // id: string,
+  ) => {
+      try {
+        const token = sessionStorage.getItem("adminToken");
+
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const res = await axios.put(
+          `${baseUrl}/address-verification/accept`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        toast.success("Verification accepted");
+        return res.data;
+      } catch (error: any) {
+        console.error("Error accepting verification:", error);
+        toast.error(
+          error?.response?.data?.message || "Cannot accept verification"
+        );
+        throw new Error(
+          error?.response?.data?.message || "Cannot accept verification"
+        );
+      }
+    },[] 
+  );
+  return { acceptAddress };
+};
+
+// Reject agent's verification
+export const useRejectAddress = () => {
+  const rejectAddress = useCallback(
+    async (
+      // id: string,
+  ) => {
+      try {
+        const token = sessionStorage.getItem("adminToken");
+
+        if (!token) {
+          throw new Error("Authentication token is missing");
+        }
+
+        const res = await axios.put(
+          `${baseUrl}/address-verification/reject`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        toast.success("Verification rejected");
+        return res.data;
+      } catch (error: any) {
+        console.error("Error rejecting verification:", error);
+        toast.error(
+          error?.response?.data?.message || "Cannot reject verification"
+        );
+        throw new Error(
+          error?.response?.data?.message || "Cannot reject verification"
+        );
+      }
+    },[] 
+  );
+  return { rejectAddress };
+};

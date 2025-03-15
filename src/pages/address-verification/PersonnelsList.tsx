@@ -37,7 +37,8 @@ const PersonnelsList = () => {
         const res = await axios.get(
           `${baseUrl}/address/assigned/${fieldAgentId}?status=INPROGRESS`
         );
-        setAddresses(res.data.data)
+        setAddresses(res.data.data);
+        console.log(res);
       } catch (err) {
         console.error(err);
         setError("No personnel data");
