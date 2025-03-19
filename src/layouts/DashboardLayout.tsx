@@ -125,7 +125,7 @@ export default function DashboardLayout({ children }: LayoutProps) {
                 <span className="text-white text-xl"><MdAccountBalanceWallet /></span>
                 <span className="text-white mx-2">{balance.toLocaleString()}</span>
                 <FaPlusCircle 
-                // onClick={() => setTopupModalOpen(true)}
+                onClick={() => setTopupModalOpen(true)}
                 className="text-white text-xl ml-2 cursor-pointer"
                 />
               </div>
