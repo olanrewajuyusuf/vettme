@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import FormSubmissionModal from "@/components/modals/FormSubmissionModal";
 import { TbCurrencyNaira } from "react-icons/tb";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 
 interface GuarantorForm {
     personnelName: string,           

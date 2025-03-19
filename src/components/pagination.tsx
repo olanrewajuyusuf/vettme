@@ -8,7 +8,7 @@ interface PaginationProps {
   handlePageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handlePageChange, ind }) => {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, handlePageChange }) => {
   return (
     <div className="flex items-center justify-center w-full gap-3 py-3 border-t-[1px]">
       <Button

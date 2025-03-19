@@ -31,7 +31,7 @@ const GuarantorForm = () => {
     id, 
     personnelName, 
     guarantorId,
-    verificationType
+    // verificationType
   } = useParams();
 
   const [idCardUrl, setIdCardUrl] = useState<string>('');
