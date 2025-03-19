@@ -7,14 +7,16 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import loader from "@/assets/loader.svg";
-import { useAssignAddress, useFetchAddresses, useFetchAgents, useFetchAssignedAddress } from "@/hooks/backOffice";
+import { useAssignAddress, useFetchAddresses, useFetchAgents, useFetchAssignedAddress, useUnassignAddress } from "@/hooks/backOffice";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AvatarIcon, CheckCircledIcon, CrossCircledIcon, GlobeIcon } from "@radix-ui/react-icons";
+import { AvatarIcon, CheckCircledIcon, CopyIcon, CrossCircledIcon, GlobeIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
+import { MouseEvent } from 'react';
+import { handleCopy } from "@/lib/copy";
   
   interface AgentProps {
     agentName: string;
@@ -23,6 +25,7 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
     lga: string;
     state: string;
     accessCode: string;
+    phone_number: string;
   }
   
   interface addressesProps {
@@ -47,6 +50,7 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
     const { fetchAgents } = useFetchAgents();
     const { fetchAssignedAddress } = useFetchAssignedAddress();
     const { assignAddress } = useAssignAddress();
+    const { unassignAddress } = useUnassignAddress();
     const [searchQuery, setSearchQuery] = useState("");
     const { id } = useParams();
     const navigate = useNavigate();
@@ -65,7 +69,7 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
       const getAddresses = async () => {
         try {
           const data = await fetchAddresses();
-          const addresses = data.data.filter((item: any) => item.status === 'PENDING');          
+          const addresses = data.data.filter((item: any) => item.state === agent?.state && item.status === "PENDING");      
           setPendingAddresses(addresses);
         } catch (error) {
           console.error("Failed to fetch pending addresses:", error);
@@ -87,7 +91,7 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
       getAgents();
       getAddresses();
       getAssignedAddresses();
-    }, [fetchAgents, id, fetchAddresses, fetchAssignedAddress]); 
+    }, [fetchAgents, id, fetchAddresses, fetchAssignedAddress, agent?.state]);     
     
     const filteredAddresses = pendingAddresses
         ? pendingAddresses
@@ -103,7 +107,7 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
 
     const noAddressMessage =
         filteredAddresses && filteredAddresses.length === 0
-        ? `No State or LGA match ${searchQuery}...`
+        ? `No LGA match ${searchQuery}...`
         : null;
   
     // Toggling checked addresses
@@ -112,6 +116,26 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
         prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
       );
     };
+
+    const handleRevoke = async (id: string, e: MouseEvent<HTMLButtonElement>)=> {
+      e.stopPropagation();
+      const data = {addressIds: [id]};
+
+      try {
+        await unassignAddress(data);
+        // Update unassigned addresses
+        const updatedAddress = await fetchAddresses();
+        const addresses = updatedAddress.data.filter((item: any) => item.state === agent?.state && item.status === "PENDING");          
+        setPendingAddresses(addresses);
+
+        // Update assigned addresses
+        const updatedAssignedAddress = await fetchAssignedAddress(id as string);
+        setAssignedAddresses(updatedAssignedAddress.data);
+        toggleChecked(id);
+      } catch (error: any) {
+          console.error("Failed to unassign address(es):", error.message);
+      }
+    }
   
     // Submit form function
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -123,10 +147,10 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
         await assignAddress(data);
         // Update unassigned addresses
         const updatedAddress = await fetchAddresses();
-        const addresses = updatedAddress.data.filter((item: any) => item.status === 'PENDING');          
+        const addresses = updatedAddress.data.filter((item: any) => item.state === agent?.state && item.status === "PENDING");          
         setPendingAddresses(addresses);
 
-        // Update unassigned addresses
+        // Update assigned addresses
         const updatedAssignedAddress = await fetchAssignedAddress(id as string);
         setAssignedAddresses(updatedAssignedAddress.data);
       } catch (error: any) {
@@ -146,11 +170,17 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
                   </li>
                   <li className="flex flex-col justify-center border-b-[1px] mb-3 pb-2">
                     <span className="text-blue-500 font-bold text-sm">Email</span>
-                    <span className="text-sm">{agent?.email}</span>
+                    <span className="text-sm flex justify-between items-center">
+                      {agent?.email}
+                      <CopyIcon className="cursor-pointer" onClick={()=>handleCopy(agent?.email as string, "Email")}/>
+                    </span>
                   </li>
                   <li className="flex flex-col justify-center border-b-[1px] mb-3 pb-2">
                     <span className="text-blue-500 font-bold text-sm">Access Code</span>
-                    <span className="text-sm">{agent?.accessCode}</span>
+                    <span className="text-sm flex justify-between items-center">
+                      {agent?.accessCode}
+                      <CopyIcon className="cursor-pointer" onClick={()=>handleCopy(agent?.accessCode as string, "Access code")}/>
+                    </span>
                   </li>
                   <li className="flex flex-col justify-center border-b-[1px] mb-3 pb-2">
                     <span className="text-blue-500 font-bold text-sm">State</span>
@@ -160,13 +190,20 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
                     <span className="text-blue-500 font-bold text-sm">LGA</span>
                     <span className="text-sm">{agent?.lga}</span>
                   </li>
+                  <li className="flex flex-col justify-center border-b-[1px] mb-3 pb-2">
+                    <span className="text-blue-500 font-bold text-sm">Phone</span>
+                    <span className="text-sm flex justify-between items-center">
+                      {agent?.phone_number}
+                      <CopyIcon className="cursor-pointer" onClick={()=>handleCopy(agent?.phone_number as string, "Phone number")}/>
+                    </span>
+                  </li>
                   <li className="flex flex-col justify-center">
                     <span className="text-blue-500 font-bold text-sm">Home Address</span>
                     <span className="text-sm">{agent?.address}</span>
                   </li>
                 </ul>
             </div>
-            <div className="bg-white p-5 rounded-lg col-span-2 h-[420px]">
+            <div className="bg-white p-5 rounded-lg col-span-2 h-[500px]">
               <h3 className="mb-5 flex items-center gap-1"><GlobeIcon className="text-purple-500"/>All assigned Address(es)</h3>
                 {assignedAddresses === null ? (
                   <div className="w-full h-[300px] flex items-center justify-center">
@@ -181,25 +218,28 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
                 <Table>
                   <TableHeader className="bg-blue-700">
                     <TableRow>
-                      <TableHead></TableHead>
-                      <TableHead className="text-white"></TableHead>
                       <TableHead className="text-white">Address</TableHead>
                       <TableHead className="text-white">State</TableHead>
                       <TableHead className="text-white">LGA</TableHead>
+                      <TableHead className="text-white">Status</TableHead>
+                      <TableHead className="text-white">Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {assignedAddresses?.map((item) => (
                       <TableRow key={item.id} onClick={()=> navigate('/back-office/all-addresses/address-detail/' + item.id)}>
-                        <TableCell >
-                          <div className="bg-blue-500 w-7 h-7 grid place-items-center text-white rounded-full">
-                            {item.personnelName.slice(0, 1)}
-                          </div>
-                        </TableCell>
-                        <TableCell>{item.personnelName}</TableCell>
                         <TableCell>{item.address}</TableCell>
                         <TableCell>{item.state}</TableCell>
                         <TableCell>{item.lga}</TableCell>
+                        <TableCell>{item.status}</TableCell>
+                        <TableCell>
+                          <Button
+                          onClick={(e)=>handleRevoke(item.id, e)}
+                          disabled={item.status === "SUBMITTED"}
+                          >
+                            Revoke
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -218,7 +258,7 @@ import { VerificationSkeleton } from "@/components/SkeletonUi";
                         type="text"
                         value={searchQuery} 
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search by State or lga"
+                        placeholder="Search by lga"
                         className="max-w-sm"
                     />
                     <SearchIcon className="text-stroke-clr absolute right-3 top-1/2 -translate-y-1/2" />

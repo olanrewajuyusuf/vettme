@@ -172,7 +172,7 @@ const AllAddresses = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {paginatedData.map((address) => (
+                            {paginatedData.map((address, ind) => (
                                 <TableRow
                                     key={address.id}
                                     onClick={() => navigate(`address-detail/${address.id}`)}
@@ -183,7 +183,7 @@ const AllAddresses = () => {
                                         w-7 h-7 grid place-items-center text-white uppercase rounded-sm ${address.personnelType === "guarantor" ? "bg-blue-500" : "bg-purple-600"}
                                       `}
                                       >
-                                        {address.personnelName.slice(0, 2)}
+                                        {(currentPage - 1) * 10 + (ind + 1)}
                                       </div>
                                     </TableCell>
                                     <TableCell>{address.personnelName}</TableCell>

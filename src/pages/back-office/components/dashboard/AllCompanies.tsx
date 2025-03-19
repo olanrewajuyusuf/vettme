@@ -12,12 +12,14 @@ import { useEffect, useState } from "react";
 import { useActivateCompany, useDeleteCompany, useFetchCompany } from "@/hooks/backOffice";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { UpdateIcon, TrashIcon } from "@radix-ui/react-icons";
+import { UpdateIcon, TrashIcon, CopyIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
 import Pagination from "@/components/pagination";
 import { usePagination } from "@/hooks/usePagination";
+import { handleCopy } from "@/lib/copy";
+import { MdConfirmationNumber } from "react-icons/md";
 
 interface CompanyProps {
     id: string,
@@ -187,7 +189,18 @@ interface CompanyProps {
                     <p className="font-bold text-sm">{company.companyName}</p>
                     <span className="text-gray-400 italic">{company.email}</span>
                   </TableCell>
-                  <TableCell className="text-blue-500">{company.companyId}</TableCell>
+                  <TableCell className="text-blue-500">
+                    <div 
+                    className="flex items-center gap-1 cursor-pointer"
+                    onClick={(e)=> {
+                        e.stopPropagation();
+                        handleCopy(company.companyId as string, "Company Id")
+                    }}
+                    >
+                      <CopyIcon className="mr-1"/>
+                      {company.companyId}
+                    </div>
+                  </TableCell>
                   <TableCell className="text-sm">
                     <div
                       className={`pointer-events-none w-2 h-2 rounded-sm ${
@@ -222,6 +235,22 @@ interface CompanyProps {
                           </button>
                         </PopoverTrigger>
                         <PopoverContent className="cursor-pointer">
+                            <div
+                              className="cursor-pointer border-b-[1px] text-xs border-gray-200 px-4 pb-2 mb-2"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                            >
+                              <a 
+                              className="flex items-center gap-1"
+                              href="http://post.cac.gov.ng/search/type/company" 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              >
+                                <MdConfirmationNumber /> 
+                                Confirm CAC
+                              </a>
+                            </div>
                             <div
                               className="cursor-pointer border-b-[1px] text-xs border-gray-200 px-4 pb-2 mb-2 flex items-center gap-1"
                               onClick={(e) => {

@@ -9,7 +9,7 @@ import {
 import { CopyIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import toast from "react-hot-toast";
 
 interface DialogModal {
   isOpen: boolean;
@@ -18,24 +18,15 @@ interface DialogModal {
 
 
 export default function FormCreation({ isOpen, createdForm }: DialogModal) {
-  const { toast } = useToast();
-
   const url = window.location.hostname + `/forms/${createdForm.data.id}`;
 
   const handleCopy = () => {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(url).then(() => {
-        toast({
-          title: "URL Copied!",
-          description: "The for URL has been copied to your clipboard",
-        });
+        toast.success("URL copied");
       });
     } else {
-      toast({
-        variant: "destructive",
-        title: "That didn't work!",
-        description: "We need permission to write to your clipboard",
-      });
+      toast.error("We need permission to write to your clipboard");
     }
   };
   return (
