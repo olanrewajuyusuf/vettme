@@ -30,6 +30,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useFetchBatchesResponse, useFetchFinding, useFetchVerdict, useFetchVerificationRating } from "@/hooks/backOffice";
 import { PersonnelInfoSkeleton } from "@/components/SkeletonUi";
+// import FurtherInfo from "@/components/FurtherInfo";
 
 export default function Personnel() {
   const [claims, setClaims] = useState<"" | any>("");
@@ -43,7 +44,7 @@ export default function Personnel() {
   const {fetchBatchesResponse} = useFetchBatchesResponse();
   const { fetchVerificationRating } = useFetchVerificationRating();
   const params = useParams();
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
 
   useEffect(() => {
     const getResponse = async () => {
@@ -125,6 +126,8 @@ export default function Personnel() {
   const professionalInformation2 = getFilteredObjects(claims && claims[0].responses, findings, professionalInput2, "pri", verdicts, '2');
   const mentalInformation = getFilteredObjects(claims && claims[0].responses, findings, mentalHealthInput, "mhi", verdicts);
 
+  const name = claims && claims[0].responses.piFullname ? claims && claims[0].responses.piFullname : `${claims && claims[0].responses.piFirstName} ${claims && claims[0].responses.piMiddleName} ${claims && claims[0].responses.piLastName}`
+
   return (
     <>
     {isLoading && <PersonnelInfoSkeleton />}
@@ -133,7 +136,7 @@ export default function Personnel() {
     <>
       <div className="mb-[30px] flex justify-between items-center">
         <div>
-          <h2>{claims && claims[0].responses.piFullname ? claims && claims[0].responses.piFullname : `${claims && claims[0].responses.piFirstName} ${claims && claims[0].responses.piMiddleName} ${claims && claims[0].responses.piLastName}`}</h2>
+          <h2>{name}</h2>
           <p className="text-sm">Date Created: {moment(claims && claims[0].submittedAt).calendar()}</p>
         </div>
 
@@ -255,6 +258,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                {/* <FurtherInfo title="guarantor-form" respId={params.id as string} typeId="1" name={name}/> */}
               </AccordionContent>
             </AccordionItem>
           </div>

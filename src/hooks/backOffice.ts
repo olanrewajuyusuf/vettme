@@ -680,3 +680,33 @@ export const useRejectAddress = () => {
   );
   return { rejectAddress };
 };
+
+// Getting Verification Batches responses cards
+export const useFetchFurtherInfo = () => {
+  const fetchFurtherInfo = async (title: string, respId: string, typeId: string) => {
+    try {
+      const token = sessionStorage.getItem("adminToken");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/${title}/${respId}/${typeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("API Response:", res.data);
+      return res.data;
+    } catch (error: any) {
+      console.error(`Error fetching ${title} data:`, error);
+      throw new Error(error?.response?.data?.message || `Cannot get ${title} data`);
+    }
+  };
+
+  return { fetchFurtherInfo };
+};

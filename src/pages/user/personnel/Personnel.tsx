@@ -34,6 +34,7 @@ import {
   professionalInput2,
 } from "@/utils/field";
 import { PersonnelInfoSkeleton } from "@/components/SkeletonUi";
+import FurtherInfo from "@/components/FurtherInfo";
 
 export default function Personnel() {
   const location = useLocation();
@@ -62,7 +63,6 @@ export default function Personnel() {
       try {
         const data = await fetchVerdict(state.id);
         setVerdicts(data.results);
-        console.log(data.results)
       } catch (error) {
         console.error("Failed to get Verdict:", error);
       }
@@ -316,6 +316,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherInfo title="Guarator" respId="1200" typeId="1" />
               </AccordionContent>
             </AccordionItem>
           </div>

@@ -410,3 +410,31 @@ export const useFetchAddresses = () => {
 }, []);
 return { fetchAddresses };
 };
+
+// Getting Verification Batches responses cards
+export const useFetchFurtherInfo = () => {
+  const fetchFurtherInfo = useCallback(async (title: string, respId: string, typeId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/${title}/${respId}/${typeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error(`Error fetching ${title} data:`, error);
+      throw new Error(error?.response?.data?.message || `Cannot get ${title} data`);
+    }
+  }, []);
+
+  return { fetchFurtherInfo };
+};
