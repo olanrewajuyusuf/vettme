@@ -34,7 +34,7 @@ import {
   professionalInput2,
 } from "@/utils/field";
 import { PersonnelInfoSkeleton } from "@/components/SkeletonUi";
-import FurtherInfo from "@/components/FurtherInfo";
+// import FurtherInfo from "@/components/FurtherInfo";
 
 export default function Personnel() {
   const location = useLocation();
@@ -316,7 +316,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
-                <FurtherInfo title="Guarator" respId="1200" typeId="1" />
+                {/* <FurtherInfo title="Guarator" respId="1200" typeId="1" /> */}
               </AccordionContent>
             </AccordionItem>
           </div>

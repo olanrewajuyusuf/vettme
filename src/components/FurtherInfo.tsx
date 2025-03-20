@@ -33,9 +33,11 @@ export default function FurtherInfo ({title, respId, typeId}: Data) {
     //   awarenessQuestion: `Are you aware that you'll be standing as a guarantor for ${name}?`,
     //   liabilityQuestion: `Do you agree to be liable to any damages caused by our employee?`,
     //   propertyQuestion: `Do you own a property?`,
-    //   bankStatement: "gfadhghgds",
-
-
+    //   propertyType: `Type of property`,
+    //   propertyValue: `What is the value of your property?`,
+    //   bankStatement: "Six months Bank statement",
+    //   idCard: "Corporate ID card!",
+    //   livenesscheck: "liveness check confidence",
     // }
     
     return (
