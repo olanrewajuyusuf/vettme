@@ -34,7 +34,8 @@ import {
   professionalInput2,
 } from "@/utils/field";
 import { PersonnelInfoSkeleton } from "@/components/SkeletonUi";
-// import FurtherInfo from "@/components/FurtherInfo";
+import FurtherGuarantorInfo from "@/components/FurtherGuarantorInfo";
+import FurtherProfInfo from "@/components/FurtherProfInfo";
 
 export default function Personnel() {
   const location = useLocation();
@@ -183,6 +184,9 @@ export default function Personnel() {
     verdicts
   );
 
+  // Personnel name
+  const name = state.responses.piFullname ? state.responses.piFullname : `${state.responses.piFirstName} ${state.responses.piMiddleName} ${state.responses.piLastName}`
+
   return (
     <>
     {isLoading && <PersonnelInfoSkeleton />}
@@ -191,7 +195,7 @@ export default function Personnel() {
     <>
       <div className="mb-[30px] flex justify-between items-center">
         <div>
-          <h2>{state.responses.piFullname ? state.responses.piFullname : `${state.responses.piFirstName} ${state.responses.piMiddleName} ${state.responses.piLastName}`}</h2>
+          <h2>{name}</h2>
           <p className="text-sm">
             Date Created: {moment(state.submittedAt).calendar()}
           </p>
@@ -316,7 +320,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
-                {/* <FurtherInfo title="Guarator" respId="1200" typeId="1" /> */}
+                <FurtherGuarantorInfo respId={state.id} typeId="1" name={name} />
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -373,6 +377,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherGuarantorInfo respId={state.id} typeId="2" name={name} />
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -429,6 +434,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherGuarantorInfo respId={state.id} typeId="3" name={name} />
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -485,6 +491,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherGuarantorInfo respId={state.id} typeId="4" name={name} />
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -597,6 +604,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherProfInfo respId={state.id} typeId="1" name={name} />
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -653,6 +661,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherProfInfo respId={state.id} typeId="2" name={name} />
               </AccordionContent>
             </AccordionItem>
           </div>

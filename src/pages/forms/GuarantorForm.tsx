@@ -232,9 +232,9 @@ const GuarantorForm = () => {
       {<FormSubmissionModal isOpen={modalOpen} />}
       <div className="min-h-[100svh] py-10 grid place-content-center">
         <form onSubmit={handleSubmit} className="text-blue-950 w-[90%] max-w-[500px] mx-auto">
-          <div className="guarantor rounded-2xl h-[70px] flex justify-between items-center gap-10 pr-5 border-b-2 border-stroke-clr">
-            <div className="">
-              <img src={images.logo} alt="Vettme" className="h-8 pl-5 object-contain" />
+          <div className="guarantor rounded-2xl h-[70px] flex justify-between items-center px-5 py-2">
+            <div>
+              <img src={images.logo} alt="Vettme" className="h-8 object-contain" />
             </div>
             <h2 className="md:text-lg text-sm text-center uppercase mt-1">
               Guarantor's<br /> Verification Form

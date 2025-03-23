@@ -284,7 +284,7 @@ a.nav-link.active .nav-icon {
 }
 .guarantor {
   padding-bottom: 10px;
-  box-shadow: 10px 10px 10px 5px #00000022, -10px -10px 10px 5px #FFFFFFCC;
+  box-shadow: 10px 10px 10px #00000022, -10px -10px 10px #FFFFFFCC;
 }
 
 .guarantor-inp {

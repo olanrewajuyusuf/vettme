@@ -71,4 +71,3 @@ export function getFilteredData(
     data: s[key] ?? null,
   }));
 }
-

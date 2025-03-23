@@ -30,14 +30,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { useFetchBatchesResponse, useFetchFinding, useFetchVerdict, useFetchVerificationRating } from "@/hooks/backOffice";
 import { PersonnelInfoSkeleton } from "@/components/SkeletonUi";
-// import FurtherInfo from "@/components/FurtherInfo";
+import FurtherGuarantorInfo from "../../components/FurtherGuarantorInfo";
+import FurtherProfInfo from "../../components/FurtherProfInfo";
+// import FurtherInfo from "../../components/FurtherGuarantorInfo";
 
 export default function Personnel() {
   const [claims, setClaims] = useState<"" | any>("");
   const [findings, setFindings] = useState<"" | any>("");
   const [verdicts, setVerdicts] = useState<"" | any>("");
   const [ratings, setRatings] = useState<"" | any>(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState('');
   const { fetchFinding } = useFetchFinding();
   const { fetchVerdict } = useFetchVerdict();
@@ -47,15 +49,17 @@ export default function Personnel() {
   const navigate = useNavigate();  
 
   useEffect(() => {
+    setIsLoading(true);
     const getResponse = async () => {
       try {
         const data = await fetchBatchesResponse(params.verification_id as string);
         const resp = data.data.filter((item: any)=> item.id === params.id);
         setClaims(resp);
-        setIsLoading(false);
       } catch (error) {
         console.error("Failed to get batches response:", error);
         setIsError("Failed to fetch data");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -131,8 +135,8 @@ export default function Personnel() {
   return (
     <>
     {isLoading && <PersonnelInfoSkeleton />}
-    {isError && <div>{isError}</div>}
-    {!isLoading && (
+    {isError && <div className="h-[300px] grid place-items-center">{isError}</div>}
+    {!isLoading && !isError && (
     <>
       <div className="mb-[30px] flex justify-between items-center">
         <div>
@@ -258,7 +262,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
-                {/* <FurtherInfo title="guarantor-form" respId={params.id as string} typeId="1" name={name}/> */}
+                <FurtherGuarantorInfo respId={params.id as string} typeId="1" name={name}/>
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -311,6 +315,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherGuarantorInfo respId={params.id as string} typeId="2" name={name}/>
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -363,6 +368,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherGuarantorInfo respId={params.id as string} typeId="3" name={name}/>
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -415,6 +421,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherGuarantorInfo respId={params.id as string} typeId="4" name={name}/>
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -519,6 +526,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherProfInfo respId={params.id as string} typeId="1" name={name}/>
               </AccordionContent>
             </AccordionItem>
           </div>
@@ -571,6 +579,7 @@ export default function Personnel() {
                     ))}
                   </TableBody>
                 </Table>
+                <FurtherProfInfo respId={params.id as string} typeId="2" name={name}/>
               </AccordionContent>
             </AccordionItem>
           </div>

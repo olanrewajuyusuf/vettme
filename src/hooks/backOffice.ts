@@ -681,9 +681,9 @@ export const useRejectAddress = () => {
   return { rejectAddress };
 };
 
-// Getting Verification Batches responses cards
-export const useFetchFurtherInfo = () => {
-  const fetchFurtherInfo = async (title: string, respId: string, typeId: string) => {
+// Getting guarantor form responses
+export const useFetchFurtherGuarantorInfo = () => {
+  const fetchFurtherGuarantorInfo = useCallback(async (respId: string, typeId: string) => {
     try {
       const token = sessionStorage.getItem("adminToken");
 
@@ -692,21 +692,45 @@ export const useFetchFurtherInfo = () => {
       }
 
       const res = await axios.get(
-        `${baseUrl}/${title}/${respId}/${typeId}`,
+        `${baseUrl}/guarantor-form/${respId}/${typeId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-
-      console.log("API Response:", res.data);
       return res.data;
     } catch (error: any) {
-      console.error(`Error fetching ${title} data:`, error);
-      throw new Error(error?.response?.data?.message || `Cannot get ${title} data`);
+      console.error(`Error fetching guarantor-form data:`, error);
+      throw new Error(error?.response?.data?.message || `Cannot get guarantor-form data`);
     }
-  };
+  }, []);
+  return {fetchFurtherGuarantorInfo};
+};
 
-  return { fetchFurtherInfo };
+// Getting professional form responses
+export const useFetchFurtherProfessionalInfo = () => {
+  const fetchFurtherProfessionalInfo = useCallback(async (respId: string, typeId: string) => {
+    try {
+      const token = sessionStorage.getItem("adminToken");
+
+      if (!token) {
+        throw new Error("Authentication token is missing");
+      }
+
+      const res = await axios.get(
+        `${baseUrl}/professional-form/${respId}/${typeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return res.data;
+    } catch (error: any) {
+      console.error(`Error fetching professional-form data:`, error);
+      throw new Error(error?.response?.data?.message || `Cannot get professional-form data`);
+    }
+  }, []);
+  return {fetchFurtherProfessionalInfo};
 };
