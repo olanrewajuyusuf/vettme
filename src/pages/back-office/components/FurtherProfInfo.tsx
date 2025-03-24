@@ -72,7 +72,7 @@ export default function FurtherProfInfo({ respId, typeId, name }: Data) {
 
     return (formResponse !== null && !isLoading) && (
         <div className="border-t-[1px] border-stroke-clr p-10">
-            <h2 className="mb-10">Further Information from the Guarantor form</h2>
+            <h2 className="mb-10">Further Information from the Professional form</h2>
             <div>
               <Table>
                 <TableHeader className="bg-stroke-clr">
