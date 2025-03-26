@@ -4,7 +4,7 @@ import { TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { RiFolderVideoLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import loader from "@/assets/loader.svg";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoIosPerson, IoIosTimer } from "react-icons/io";
 import { FaAddressBook, FaCalendarCheck, FaLandmark } from "react-icons/fa";
 import { FaBusSimple } from "react-icons/fa6";
@@ -53,6 +53,7 @@ const AddressDetail = () => {
     const { acceptAddress } = useAcceptAddress();
     const { rejectAddress } = useRejectAddress();
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getAddress = async () => {
@@ -114,6 +115,7 @@ const AddressDetail = () => {
         setAccepting(true);
         try {
             await acceptAddress(id as string);
+            navigate("/back-office/all-addresses");
         } catch (error: any) {
             console.error("Failed to accept the verdict:", error.message);
         } finally {
@@ -125,6 +127,7 @@ const AddressDetail = () => {
         setRejecting(true);
         try {
             await rejectAddress(id as string);
+            navigate("/back-office/all-addresses");
         } catch (error: any) {
             console.error("Failed to reject the verdict:", error.message);
         } finally {

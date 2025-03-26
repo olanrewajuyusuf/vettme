@@ -146,7 +146,12 @@ const PersonnelsList = () => {
                   <h3>{error}</h3>
                 </div>
             )}
-            {!loading && !error && (
+            {addresses.length === 0 && (
+              <div className="w-full h-[300px] flex justify-center items-center">
+                <h3>No assigned Address</h3>
+              </div>
+            )}
+            {!loading && !error && addresses.length > 0 && (
             <table className="hidden min-w-full text-gray-700 md:table">
               <thead className="rounded-lg text-left text-sm font-normal">
                 <tr>
