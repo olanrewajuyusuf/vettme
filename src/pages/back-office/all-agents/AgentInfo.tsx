@@ -82,6 +82,7 @@ import { handleCopy } from "@/lib/copy";
       const getAssignedAddresses = async () => {
         try {
           const data = await fetchAssignedAddress(id as string);
+          
           setAssignedAddresses(data.data);
         } catch (error) {
           console.error("Failed to fetch assigned addresses:", error);
@@ -127,11 +128,11 @@ import { handleCopy } from "@/lib/copy";
         const updatedAddress = await fetchAddresses();
         const addresses = updatedAddress.data.filter((item: any) => item.state === agent?.state && item.status === "PENDING");          
         setPendingAddresses(addresses);
+        toggleChecked(id);
 
         // Update assigned addresses
-        const updatedAssignedAddress = await fetchAssignedAddress(id as string);
+        const updatedAssignedAddress = await fetchAssignedAddress(id as string);        
         setAssignedAddresses(updatedAssignedAddress.data);
-        toggleChecked(id);
       } catch (error: any) {
           console.error("Failed to unassign address(es):", error.message);
       }
@@ -141,7 +142,6 @@ import { handleCopy } from "@/lib/copy";
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const data = {fieldAgentId: id, addressIds: checked}
-      console.log(data);
       
       try {
         await assignAddress(data);

@@ -287,12 +287,12 @@ const AddressDetail = () => {
                             <tr>
                                 <td>
                                     <span className="flex items-center gap-2 text-sm">
-                                        <TbWorldLongitude />Lon: {coordinates?.lon}
+                                        <TbWorldLongitude />Lon: {coordinates?.lon.toFixed(3)}
                                     </span>
                                 </td>
                                 <td>
                                     <span className="flex items-center gap-2 text-sm">
-                                        <TbWorldLongitude />Lon: {findings?.initialLocation.lon || findings?.finalLocation.lon}
+                                        <TbWorldLongitude />Lon: {parseFloat(findings?.initialLocation.lon || findings?.finalLocation.lon).toFixed(3)}
                                     </span>
                                 </td>
                             </tr>
@@ -311,12 +311,12 @@ const AddressDetail = () => {
                             <tr>
                                 <td>
                                     <span className="flex items-center gap-2 text-sm">
-                                        <TbWorldLatitude />Lat: {coordinates?.lat}
+                                        <TbWorldLatitude />Lat: {coordinates?.lat.toFixed(3)}
                                     </span>
                                 </td>
                                 <td>
                                     <span className="flex items-center gap-2 text-sm">
-                                        <TbWorldLatitude />Lat: {findings?.initialLocation.lat || findings?.finalLocation.lat}
+                                        <TbWorldLatitude />Lat: {parseFloat(findings?.initialLocation.lat || findings?.finalLocation.lat).toFixed(3)}
                                     </span>
                                 </td>
                             </tr>
@@ -390,11 +390,11 @@ const AddressDetail = () => {
                     <div>
                         <div className="mb-2 pb-2 flex justify-between items-center">
                             <span className="flex items-center gap-1 text-sm"><TbWorldLongitude />Longitude</span>
-                            <span className="float-right text-xs">{findings?.initialLocation.lon}</span>
+                            <span className="float-right text-xs">{parseFloat(findings?.initialLocation.lon).toFixed(3)}</span>
                         </div>
                         <div className="border-b border-stroke-clr mb-2 pb-2 flex justify-between items-center">
                             <span className="flex items-center gap-1 text-sm"><TbWorldLatitude />Latitude</span>
-                            <span className="float-right text-xs">{findings?.initialLocation.lat}</span>
+                            <span className="float-right text-xs">{parseFloat(findings?.initialLocation.lat).toFixed(3)}</span>
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="flex items-center gap-1 text-sm"><IoIosTimer />Timestamp</span>
@@ -418,11 +418,11 @@ const AddressDetail = () => {
                     <div>
                         <div className="mb-2 pb-2 flex justify-between items-center">
                             <span className="flex items-center gap-1 text-sm"><TbWorldLongitude />Longitude</span>
-                            <span className="float-right text-xs">{findings?.finalLocation.lon}</span>
+                            <span className="float-right text-xs">{parseFloat(findings?.finalLocation.lon).toFixed(3)}</span>
                         </div>
                         <div className="border-b border-stroke-clr mb-2 pb-2 flex justify-between items-center">
                             <span className="flex items-center gap-1 text-sm"><TbWorldLatitude />Latitude</span>
-                            <span className="float-right text-xs">{findings?.finalLocation.lat}</span>
+                            <span className="float-right text-xs">{parseFloat(findings?.finalLocation.lat).toFixed(3)}</span>
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="flex items-center gap-1 text-sm"><IoIosTimer />Timestamp</span>
