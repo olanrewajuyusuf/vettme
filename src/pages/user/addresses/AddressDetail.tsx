@@ -35,7 +35,6 @@ const AddressDetails = () => {
     const [agent, setAgent] = useState<any | null>(null);
     const [isVideo, setIsVideo] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
     const { fetchAddresses } = useFetchAddresses();
     const { fetchAddress } = useFetchAddress();
     const { id, address_id } = useParams();
@@ -44,7 +43,6 @@ const AddressDetails = () => {
         const getAddress = async () => {
             if (!id) {
                 // If id is undefined, don't attempt to fetch data
-                setError("ID is missing");
                 setLoading(false);
                 return;
             }
