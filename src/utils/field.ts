@@ -33,8 +33,7 @@ const guarantorInput1 = {
     'giEmailAddress1': 'Email Address',
     'giPhoneNumber1': 'Phone Number',
     'giYearsKnown1': 'Years Known',
-    // 'giNationalIdentificationNumber1': 'National Identification Number (NIN)',
-    'giNationalIdentificationNumber1': 'BVN',
+    'giNationalIdentificationNumber1': 'BVN or NIN',
 }
 
 const guarantorInput2 = {
@@ -51,8 +50,7 @@ const guarantorInput2 = {
     'giEmailAddress2': 'Email Address',
     'giPhoneNumber2': 'Phone Number',
     'giYearsKnown2': 'Years Known',
-    // 'giNationalIdentificationNumber2': 'National Identification Number (NIN)',
-    'giNationalIdentificationNumber2': 'BVN',
+    'giNationalIdentificationNumber2': 'BVN or NIN',
 
 }
 
@@ -70,8 +68,7 @@ const guarantorInput3 = {
     'giEmailAddress3': 'Email Address',
     'giPhoneNumber3': 'Phone Number',
     'giYearsKnown3': 'Years Known',
-    // 'giNationalIdentificationNumber3': 'National Identification Number (NIN)',
-    'giNationalIdentificationNumber3': 'BVN',
+    'giNationalIdentificationNumber3': 'BVN or NIN',
 }
 
 const guarantorInput4 = {
@@ -88,8 +85,7 @@ const guarantorInput4 = {
     'giEmailAddress4': 'Email Address',
     'giPhoneNumber4': 'Phone Number',
     'giYearsKnown4': 'Years Known',
-    // 'giNationalIdentificationNumber4': 'National Identification Number (NIN)',
-    'giNationalIdentificationNumber4': 'BVN',
+    'giNationalIdentificationNumber4': 'BVN or NIN',
 }
 
 const academicInput = {

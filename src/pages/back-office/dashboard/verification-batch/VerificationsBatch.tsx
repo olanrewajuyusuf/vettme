@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useFetchBatchesResponse, useFetchBatchesResponseCards, useFetchCompletionPercentage } from "@/hooks/backOffice";
@@ -18,6 +18,8 @@ import moment from "moment";
 import { VerificationSkeleton } from "@/components/SkeletonUi";
 import { usePagination } from "@/hooks/usePagination";
 import Pagination from "@/components/pagination";
+import { baseUrl } from "@/api/baseUrl";
+import axios from "axios";
 
 interface ResponseProps {
   id: string,
@@ -38,7 +40,7 @@ interface CardsProps {
 }
 
 export default function VerificationsBatch() {
-  const { verification_id } = useParams();
+  const { verification_id, id } = useParams();
   const { toast } = useToast();
   const [ batchesResponse, setBatchesResponse ] = useState<ResponseProps[] | null>(null);
   const [ cards, setCards ] = useState<CardsProps | null>(null);
@@ -50,7 +52,37 @@ export default function VerificationsBatch() {
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = searchParams.get("filter") || "all";
+  const [form, setForm] = useState<any>(null)
   const navigate = useNavigate();
+
+  useEffect(() => {
+      if (!id) {
+        // Skip the API call if id is undefined
+        console.warn("ID is missing.");
+        return;
+      }
+  
+      const getForm = async () => {
+        setLoading(true); // Start loading
+        try {
+          const data = await axios.get(`${baseUrl}/verification/form/${verification_id}`);
+          setForm(data.data.data.fields); // Update form state with the response
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false); // End loading
+        }
+      };
+  
+      getForm();
+    }, [id]); // Re-run when id changes
+  
+     // Log form data when it changes
+    useEffect(() => {
+      if (form) {
+        console.log(form); // Logs updated form data after state change
+      }
+    }, [form]); // This effect runs when form state updates
 
   useEffect(() => {
     const getResponse = async () => {
@@ -180,13 +212,13 @@ const filteredBatches = batchesResponse
           >
             <CopyIcon /> Copy Form Link
           </Button>
-          {/* <Button
-            variant="outline"
-            className="gap-2 border-red-clr text-red-clr hover:text-red-clr hover:bg-red-50"
-            onClick={() => setDeleteModalOpen(true)}
-          >
-            <TrashIcon /> Delete
-          </Button> */}
+          {(form?.piPhysicalAddressRequest || form?.giPhysicalAddressRequest1 || form?.giPhysicalAddressRequest2 || form?.giPhysicalAddressRequest3 || form?.giPhysicalAddressRequest4) && 
+            <Link to={`/back-office/verification-batch/${id}/personnels/${verification_id}/physicalAddressVerifications`}>
+              <Button variant="outline">
+                Physical Address Verification
+              </Button>
+            </Link>
+          }
         </div>
       </div>
 

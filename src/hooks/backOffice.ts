@@ -149,6 +149,31 @@ export const useFetchAddresses = () => {
 return { fetchAddresses };
 };
 
+// Getting physical addresses for a company
+export const useFetchPhysicalAddresses = () => {
+  const fetchPhysicalAddresses = useCallback(async (id: string) => {
+  try {
+    const token = sessionStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/address/one/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching physical addresses:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch physical addresses");
+    throw new Error(error?.response?.data?.message || "Cannot fetch physical addresses");
+  }
+}, []);
+return { fetchPhysicalAddresses };
+};
+
 // Getting all addresses
 export const useFetchAddress = () => {
   const fetchAddress = useCallback(async (id: string) => {

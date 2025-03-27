@@ -212,13 +212,13 @@ const filteredBatches = batchesResponse
           >
             <CopyIcon /> Copy Form Link
           </Button>
-          {/* <Button
-            variant="outline"
-            className="gap-2 border-red-clr text-red-clr hover:text-red-clr hover:bg-red-50"
-            onClick={() => setDeleteModalOpen(true)}
-          >
-            <TrashIcon /> Delete
-          </Button> */}
+          {(form?.piPhysicalAddressRequest || form?.giPhysicalAddressRequest1 || form?.giPhysicalAddressRequest2 || form?.giPhysicalAddressRequest3 || form?.giPhysicalAddressRequest4) && 
+            <Link to={`/verifications/${id}/physicalAddressVerifications`}>
+              <Button variant="outline">
+                Physical Address Verification
+              </Button>
+            </Link>
+          }
         </div>
       </div>
 
@@ -332,16 +332,6 @@ const filteredBatches = batchesResponse
         <Pagination currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}/>
         </>)}
       </div>
-
-      <br />
-
-      {(form?.piPhysicalAddressRequest || form?.giPhysicalAddressRequest1 || form?.giPhysicalAddressRequest2 || form?.giPhysicalAddressRequest3 || form?.giPhysicalAddressRequest4) && 
-        <Link to={`/verifications/${id}/physicalAddressVerifications`}>
-          <button className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-all ml-auto block">
-            Physical Address Verification
-          </button>
-        </Link>
-      }
     </>
   );
 }

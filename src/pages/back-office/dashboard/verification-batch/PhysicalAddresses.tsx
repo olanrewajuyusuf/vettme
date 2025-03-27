@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 import { usePagination } from "@/hooks/usePagination";
 import Pagination from "@/components/pagination";
-import { useFetchAddresses } from "@/hooks/company";
+import { useFetchPhysicalAddresses } from "@/hooks/backOffice";
 
 interface AddressesProps {
     id: string,
@@ -29,20 +29,20 @@ interface AddressesProps {
     status: string,
 }
 
-const Addresses = () => {
+const PhysicalAddresses= () => {
     const [addresses, setAddresses] = useState<AddressesProps[] | null>(null);
-    const { fetchAddresses } = useFetchAddresses();
+    const { fetchPhysicalAddresses } = useFetchPhysicalAddresses();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchQuery, setSearchQuery] = useState("");
     const filter = searchParams.get("filter") || "all";
     const navigate = useNavigate();
-    const {id} = useParams()
+    const {verification_id} = useParams()
 
     useEffect(() => {
         const getAddresses = async () => {
-            if (!id) {
+            if (!verification_id) {
                 // If id is undefined, don't attempt to fetch data
                 setError("ID is missing");
                 setLoading(false);
@@ -51,7 +51,7 @@ const Addresses = () => {
     
             try {
                 setLoading(true); // Set loading before fetching
-                const data = await fetchAddresses(id); // Now `id` is guaranteed to be a string
+                const data = await fetchPhysicalAddresses(verification_id); // Now `id` is guaranteed to be a string
                 setAddresses(data.data);
             } catch (error) {
                 console.error("Failed to fetch company info:", error);
@@ -62,7 +62,7 @@ const Addresses = () => {
         };
     
         getAddresses();
-    }, [id, fetchAddresses]); // Add `id` to dependency array
+    }, [verification_id, fetchPhysicalAddresses]); // Add `id` to dependency array
     
 
     // Handle Filter Change
@@ -185,7 +185,7 @@ const Addresses = () => {
                             {paginatedData.map((address) => (
                                 <TableRow
                                     key={address.id}
-                                    onClick={() => navigate(`address-details/${address.id}`)}      
+                                    onClick={() => navigate(`/back-office/all-addresses/address-detail/${address.id}`)}
                                 >
                                     <TableCell>
                                       <div 
@@ -234,4 +234,4 @@ const Addresses = () => {
     );
 }
 
-export default Addresses;
+export default PhysicalAddresses;

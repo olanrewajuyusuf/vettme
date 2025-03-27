@@ -17,8 +17,6 @@ import { NotificationProvider } from "./context/NotificationContext";
 import Features from "@/pages/docs/Features";
 import Activation from "@/pages/docs/Activation";
 import DocVerification from "@/pages/docs/Verification";
-import Addresses from "@/pages/user/addresses/Addresses";
-// import Addresses from "@/pages/user/account/Addresses";
 
 const ConfirmMail = lazy(() => import("@/pages/user/auth/ConfirmMail"));
 const ForgotPasswordMail = lazy(() => import("@/pages/user/auth/ForgotPasswordMail"));
@@ -42,6 +40,8 @@ const NotificationDetail = lazy(() => import("@/pages/user/notification/Notifica
 const Support = lazy(() => import("@/pages/user/support/Support"));
 const Account = lazy(() => import("@/pages/user/account/Account"));
 const Personnel = lazy(() => import("@/pages/user/personnel/Personnel"));
+const Addresses = lazy(() => import("@/pages/user/addresses/Addresses"));
+const AddressDetails = lazy(() => import("@/pages/user/addresses/AddressDetail"));
 const FormSetup = lazy(() => import("@/pages/user/setup/FormSetup"));
 const GenForms = lazy(() => import("@/pages/user/forms/GenForm"));
 const PreviewForms = lazy(() => import("@/pages/user/forms/PreviewForms"));
@@ -55,6 +55,7 @@ const DocHome = lazy(() => import("@/pages/docs/Home"));
 const BackOfficeDashboard = lazy(() => import("@/pages/back-office/dashboard/Dashboard"));
 const Batches  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/Batches"));
 const VerificationsBatch  = lazy(() => import("@/pages/back-office/dashboard/verification-batch/VerificationsBatch"));
+const PhysicalAddresses = lazy(() => import("@/pages/back-office/dashboard/verification-batch/PhysicalAddresses"));
 const PersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/personnel/Personnel"));
 const EditPersonnelInfo = lazy(() => import("@/pages/back-office/dashboard/edit-personnel/EditPersonnelInfo"));
 const AllAgents = lazy(() => import("@/pages/back-office/all-agents/AllAgents"));
@@ -172,6 +173,10 @@ export const routes = [
         element: <Addresses />
       },
       {
+        path: "verifications/:id/physicalAddressVerifications/address-details/:address_id",
+        element: <AddressDetails />
+      },
+      {
         path: "verifications/:verification_id/personnel-info/:personnel_id",
         element: <Personnel />,
       },
@@ -224,6 +229,10 @@ export const routes = [
       {
         path: "/back-office/verification-batch/:id/personnels/:verification_id",
         element: <VerificationsBatch />,
+      },
+      {
+        path: "/back-office/verification-batch/:id/personnels/:verification_id/physicalAddressVerifications",
+        element: <PhysicalAddresses/>,
       },
       {
         path: "/back-office/verification-batch/:id/personnels/:verification_id/personnel-info/:id",

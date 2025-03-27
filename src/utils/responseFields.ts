@@ -85,8 +85,7 @@ const guarantorInfoResponse: Field[] = [
   { id: "giYearsKnown1", label: "Years Known", type: "number" },
   {
     id: "giNationalIdentificationNumber1",
-    // label: "National Identification Number (NIN)",
-    label: "BVN",
+    label: "BVN or NIN",
     type: "text",
   },
 ];
@@ -119,8 +118,7 @@ const guarantorInfoResponse2: Field[] = [
   { id: "giYearsKnown2", label: "Years Known", type: "number" },
   {
     id: "giNationalIdentificationNumber2",
-    // label: "National Identification Number (NIN)",
-    label: "BVN",
+    label: "BVN or NIN",
     type: "text",
   },
 ];
@@ -153,8 +151,7 @@ const guarantorInfoResponse3: Field[] = [
   { id: "giYearsKnown3", label: "Years Known", type: "number" },
   {
     id: "giNationalIdentificationNumber3",
-    // label: "National Identification Number (NIN)",
-    label: "BVN",
+    label: "BVN or NIN",
     type: "text",
   },
 ];
@@ -187,8 +184,7 @@ const guarantorInfoResponse4: Field[] = [
   { id: "giYearsKnown4", label: "Years Known", type: "number" },
   {
     id: "giNationalIdentificationNumber4",
-    // label: "National Identification Number (NIN)",
-    label: "BVN",
+    label: "BVN or NIN",
     type: "text",
   },
 ];

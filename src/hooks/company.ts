@@ -411,6 +411,31 @@ export const useFetchAddresses = () => {
 return { fetchAddresses };
 };
 
+// Getting all addresses
+export const useFetchAddress = () => {
+  const fetchAddress = useCallback(async (id: string) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    const res = await axios.get(`${baseUrl}/address-verification/address/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }, 
+    });
+    return res.data;
+  } catch (error: any) {
+    console.error("Error fetching agent's addresses finding:", error);
+    toast.error(error?.response?.data?.message || "Cannot fetch agent's address finding");
+    throw new Error(error?.response?.data?.message || "Cannot fetch agent's address finding");
+  }
+  }, []);
+  return { fetchAddress };
+};
+
 // Getting guarantor form responses
 export const useFetchFurtherGuarantorInfo = () => {
   const fetchFurtherGuarantorInfo = useCallback(async (respId: string, typeId: string) => {
