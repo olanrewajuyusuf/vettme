@@ -52,6 +52,7 @@ export default function Verification() {
   const [percentage, setPercentage] = useState<any | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = searchParams.get("filter") || "all";
+  const token = localStorage.getItem("token")
   const [form, setForm] = useState<any>(null)
   const navigate = useNavigate();
 
@@ -197,6 +198,40 @@ const filteredBatches = batchesResponse
       text: !percentage ? '' : percentage +" "+ "Completed",
     },
   ];
+
+  const downloadExcel = async (formId: any) => {
+    try {
+      const response = await fetch(`${baseUrl}/address-verification/download`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ formId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download file");
+      }
+
+      // Convert response to a Blob (binary large object)
+      const blob = await response.blob();
+
+      // Create a temporary URL for the Blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Create an invisible link element and trigger the download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "address_verifications.xlsx"; // File name
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url); // Clean up memory
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
   
   return (
     <>
@@ -218,6 +253,14 @@ const filteredBatches = batchesResponse
                 Physical Address Verification
               </Button>
             </Link>
+          }
+          {(form?.piPhysicalAddressRequest || form?.giPhysicalAddressRequest1 || form?.giPhysicalAddressRequest2 || form?.giPhysicalAddressRequest3 || form?.giPhysicalAddressRequest4) && 
+              <Button variant="outline"
+                onClick={() => downloadExcel(id)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Download Address Verification Details
+              </Button>
           }
         </div>
       </div>
