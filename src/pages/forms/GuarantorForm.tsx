@@ -206,7 +206,7 @@ const GuarantorForm = () => {
       livenessCheck: livenessConfidence || formData.livenessCheck,
       propertyType: selectedPropertyTypes,
     };
-    console.log(formToSubmit);
+    // console.log(formToSubmit);
   
     try {
       // Submit the form data to the server
@@ -317,7 +317,7 @@ const GuarantorForm = () => {
                 </ul>
               </fieldset>
 
-              {(verificationType === "LOAN" || verificationType === "LOGISTIC") && (
+              {(verificationType === "LOAN" || verificationType === "LOGISTICS") && (
               <>
               <fieldset className="text-sm font-light border-b-[1px] border-stroke-clr pb-3 mb-3">
                 <legend>Do you own a property?</legend>

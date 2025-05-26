@@ -14,7 +14,6 @@ const LiveCameraCapture: React.FC = () => {
   const [result, setResult] = useState<string | null>(null);
   const [livenessFailed, setLivenessFailed] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState<number | null>(null);
   const navigate = useNavigate();
 
   // Correct usage of useTransition: isPending comes first, then startTransition
@@ -77,7 +76,9 @@ const LiveCameraCapture: React.FC = () => {
         startTransition(() => {
           performLivenessCheck(file)
             .then(response => {
-              const livenessConfidence = response.entity.liveness.liveness_probability;
+              // const livenessConfidence = response.entity.liveness.liveness_probability;
+              const livenessConfidence = response.entity.face.confidence;
+              console.log(livenessConfidence);
 
               if (livenessConfidence > 50) {
                 setResult(`Liveness check successful! Confidence: ${livenessConfidence}`);
@@ -97,7 +98,6 @@ const LiveCameraCapture: React.FC = () => {
             })
             .finally(() => {
               setIsLoading(false);  // Stop loading spinner
-              setCountdown(null);
               setIsCapturing(false);
             });
         });
@@ -113,18 +113,15 @@ const LiveCameraCapture: React.FC = () => {
     if (isCapturing) return;
 
     setIsCapturing(true);
-    setCountdown(5);
-    let count = 5;
+    let count = 2;
     const countdownInterval = setInterval(() => {
       count -= 1;
-      setCountdown(count);
       if (count === 0) {
         clearInterval(countdownInterval);
         capturePhoto();
       }
     }, 1000);
   };
-  console.log(countdown)
 
   return (
     <div className="text-center max-w-[500px] p-5 mx-auto">

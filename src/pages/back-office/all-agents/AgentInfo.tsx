@@ -235,7 +235,7 @@ import { handleCopy } from "@/lib/copy";
                         <TableCell>
                           <Button
                           onClick={(e)=>handleRevoke(item.id, e)}
-                          disabled={item.status === "SUBMITTED"}
+                          disabled={item.status !== "PENDING"}
                           >
                             Revoke
                           </Button>

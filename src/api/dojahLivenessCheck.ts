@@ -66,7 +66,6 @@ export const performLivenessCheck = async (imageFile: File): Promise<LivenessChe
         timeout: 10000, // Set a timeout of 10 seconds
       }
     );
-
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
