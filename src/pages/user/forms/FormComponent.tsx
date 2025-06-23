@@ -16,14 +16,23 @@ const FormComponent = ({ data, formData, handleChange, handleFile, country, stat
     const [countries, setCountries] = useState<any[]>([]);
 
     useEffect(() => {
-        fetch('https://restcountries.com/v3.1/all')
-            .then(response => response.json())
-            .then(data => {
-                const sortedCountries = data.map((c: any) => ({ value: c.name.common, label: c.name.common })).sort((a: any, b: any) => a.label.localeCompare(b.label));
-                setCountries(sortedCountries);
-            })
-            .catch(error => console.error('Error fetching countries:', error));
+    fetch('https://restcountries.com/v3.1/all?fields=name,flags')
+        .then(response => response.json())
+        .then(data => {
+            const sortedCountries = data
+                .map((c: any) => ({
+                    value: c.name.common,
+                    label: c.name.common,
+                    flag: c.flags?.png || c.flags?.svg || ''
+                }))
+                .sort((a: any, b: any) => a.label.localeCompare(b.label));
+
+            setCountries(sortedCountries);
+            // console.log(sortedCountries)
+        })
+        .catch(error => console.error('Error fetching countries:', error));
     }, []);
+
 
     const isNigeriaSelected = country ? formData.responses[country] === "Nigeria" : false;
 
